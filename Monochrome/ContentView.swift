@@ -8,68 +8,48 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var field = [
-        [
-            Int.random(in: 0...1),
-            Int.random(in: 0...1),
-            Int.random(in: 0...1),
-            Int.random(in: 0...1)
-        ],
-        [
-            Int.random(in: 0...1),
-            Int.random(in: 0...1),
-            Int.random(in: 0...1),
-            Int.random(in: 0...1)
-        ],
-        [
-            Int.random(in: 0...1),
-            Int.random(in: 0...1),
-            Int.random(in: 0...1),
-            Int.random(in: 0...1)
-        ],
-        [
-            Int.random(in: 0...1),
-            Int.random(in: 0...1),
-            Int.random(in: 0...1),
-            Int.random(in: 0...1)
-        ]
-    ]
-    
-    @State private var alertPresented = false
-    
+    @State private var size = 4
+    @State private var field: [[Int]] = []
+
     var body: some View {
         ZStack {
             Color(.gray)
                 .ignoresSafeArea()
             VStack {
+                Button("Start New Game", action: {createField(withSize: size)} )
+                    .font(.largeTitle)
+                    .foregroundColor(.white)
+                FieldView(field: $field)
                 HStack {
-                    ColorView(x: 0, y: 0, field: $field, alertPresented: $alertPresented)
-                    ColorView(x: 0, y: 1, field: $field, alertPresented: $alertPresented)
-                    ColorView(x: 0, y: 2, field: $field, alertPresented: $alertPresented)
-                    ColorView(x: 0, y: 3, field: $field, alertPresented: $alertPresented)
+                    Button("2") {
+                        size = 2
+                        createField(withSize: size)
+                    }
+                    Button("4") {
+                        size = 4
+                        createField(withSize: size)
+                    }
+                    Button("6") {
+                        size = 6
+                        createField(withSize: size)
+                    }
                 }
-                HStack {
-                    ColorView(x: 1, y: 0, field: $field, alertPresented: $alertPresented)
-                    ColorView(x: 1, y: 1, field: $field, alertPresented: $alertPresented)
-                    ColorView(x: 1, y: 2, field: $field, alertPresented: $alertPresented)
-                    ColorView(x: 1, y: 3, field: $field, alertPresented: $alertPresented)
-                }
-                HStack {
-                    ColorView(x: 2, y: 0, field: $field, alertPresented: $alertPresented)
-                    ColorView(x: 2, y: 1, field: $field, alertPresented: $alertPresented)
-                    ColorView(x: 2, y: 2, field: $field, alertPresented: $alertPresented)
-                    ColorView(x: 2, y: 3, field: $field, alertPresented: $alertPresented)
-                }
-                HStack {
-                    ColorView(x: 3, y: 0, field: $field, alertPresented: $alertPresented)
-                    ColorView(x: 3, y: 1, field: $field, alertPresented: $alertPresented)
-                    ColorView(x: 3, y: 2, field: $field, alertPresented: $alertPresented)
-                    ColorView(x: 3, y: 3, field: $field, alertPresented: $alertPresented)
-                }
+                .font(.largeTitle)
+                .foregroundColor(.white)
             }
-            .frame(width: 350, height: 350)
         }
-        .alert("Complete!", isPresented: $alertPresented, actions: {})
+    }
+    
+    private func createField(withSize size: Int) {
+        field = []
+        
+        for row in 0..<size {
+            field.append([])
+            for _ in 0..<size {
+                let cell = Int.random(in: 0...1)
+                field[row].append(cell)
+            }
+        }
     }
 }
 
@@ -79,7 +59,29 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct ColorView: View {
+struct FieldView: View {
+    @Binding var field: [[Int]]
+
+    @State private var alertPresented = false
+    
+    
+    var body: some View {
+        VStack {
+            
+            ForEach(0..<field.count, id: \.self) { x in
+                HStack {
+                    ForEach(0..<field.count, id: \.self) { y in
+                        CellView(x: x, y: y, field: $field, alertPresented: $alertPresented)
+                    }
+                }
+            }
+        }
+        .frame(width: 350, height: 350)
+        .alert("Complete!", isPresented: $alertPresented, actions: {})
+    }
+}
+
+struct CellView: View {
     let x: Int
     let y: Int
     
@@ -106,7 +108,7 @@ struct ColorView: View {
         var isComplete = true
         
         field.forEach { row in
-            if row != [0, 0, 0, 0] {
+            if row != [0, 0] {
                 isComplete = false
             }
         }
