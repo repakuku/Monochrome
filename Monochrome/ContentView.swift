@@ -9,14 +9,33 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var field = [
-        [1, 1, 1, 1],
-        [0, 0, 0, 1],
-        [0, 0, 0, 1],
-        [0, 0, 0, 1]
+        [
+            Int.random(in: 0...1),
+            Int.random(in: 0...1),
+            Int.random(in: 0...1),
+            Int.random(in: 0...1)
+        ],
+        [
+            Int.random(in: 0...1),
+            Int.random(in: 0...1),
+            Int.random(in: 0...1),
+            Int.random(in: 0...1)
+        ],
+        [
+            Int.random(in: 0...1),
+            Int.random(in: 0...1),
+            Int.random(in: 0...1),
+            Int.random(in: 0...1)
+        ],
+        [
+            Int.random(in: 0...1),
+            Int.random(in: 0...1),
+            Int.random(in: 0...1),
+            Int.random(in: 0...1)
+        ]
     ]
-    @State private var alertPresented = false
     
-    private let value = Int.random(in: 0...1)
+    @State private var alertPresented = false
     
     var body: some View {
         ZStack {
@@ -50,10 +69,8 @@ struct ContentView: View {
             }
             .frame(width: 350, height: 350)
         }
-        .alert("Ну ты и индеец! Я балдю! Боом! Бооом!", isPresented: $alertPresented, actions: {})
+        .alert("Complete!", isPresented: $alertPresented, actions: {})
     }
-    
-
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -65,6 +82,7 @@ struct ContentView_Previews: PreviewProvider {
 struct ColorView: View {
     let x: Int
     let y: Int
+    
     @Binding var field: [[Int]]
     @Binding var alertPresented: Bool
     
@@ -85,12 +103,14 @@ struct ColorView: View {
     }
     
     private func checkField() {
+        var isComplete = true
+        
         field.forEach { row in
-            if row == [0, 0, 0, 0] {
-                alertPresented = true
-            } else {
-                alertPresented = false
+            if row != [0, 0, 0, 0] {
+                isComplete = false
             }
         }
+        
+        alertPresented = isComplete
     }
 }
