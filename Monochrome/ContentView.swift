@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var size = 4
+    @State private var size = 2
     @State private var field: [[Int]] = []
 
     var body: some View {
@@ -16,22 +16,19 @@ struct ContentView: View {
             Color(.gray)
                 .ignoresSafeArea()
             VStack {
-                Button("Start New Game", action: {createField(withSize: size)} )
+                Button("Start New Game", action: {createNewField(withSize: size)} )
                     .font(.largeTitle)
                     .foregroundColor(.white)
                 FieldView(field: $field)
                 HStack {
-                    Button("2") {
-                        size = 2
-                        createField(withSize: size)
+                    Button("-") {
+//                        size -= 2
+//                        createNewField(withSize: size)
                     }
-                    Button("4") {
-                        size = 4
-                        createField(withSize: size)
-                    }
-                    Button("6") {
-                        size = 6
-                        createField(withSize: size)
+                    Text(size.formatted())
+                    Button("+") {
+                        size += 2
+                        createNewField(withSize: size)
                     }
                 }
                 .font(.largeTitle)
@@ -40,7 +37,7 @@ struct ContentView: View {
         }
     }
     
-    private func createField(withSize size: Int) {
+    private func createNewField(withSize size: Int) {
         field = []
         
         for row in 0..<size {
@@ -64,10 +61,8 @@ struct FieldView: View {
 
     @State private var alertPresented = false
     
-    
     var body: some View {
         VStack {
-            
             ForEach(0..<field.count, id: \.self) { x in
                 HStack {
                     ForEach(0..<field.count, id: \.self) { y in
@@ -105,14 +100,14 @@ struct CellView: View {
     }
     
     private func checkField() {
-        var isComplete = true
-        
-        field.forEach { row in
-            if row != [0, 0] {
-                isComplete = false
-            }
-        }
-        
-        alertPresented = isComplete
+//        var isComplete = true
+//
+//        field.forEach { row in
+//            if row != [0, 0] {
+//                isComplete = false
+//            }
+//        }
+//
+//        alertPresented = isComplete
     }
 }
