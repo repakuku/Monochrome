@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var size = 2
+    @State private var size = 0
     @State private var field: [[Int]] = []
 
     var body: some View {
@@ -16,30 +16,34 @@ struct ContentView: View {
             Color(.gray)
                 .ignoresSafeArea()
             VStack {
-                Button("Start New Game", action: {createNewField(withSize: size)} )
-                    .font(.largeTitle)
-                    .foregroundColor(.white)
+                Spacer()
                 FieldView(field: $field)
-                HStack {
-                    Button("-") {
-//                        size -= 2
-//                        createNewField(withSize: size)
-                    }
-                    Text(size.formatted())
-                    Button("+") {
-                        size += 2
+                Spacer()
+                Group {
+                    Text(size == 0 ? "" : "\(size)x\(size)")
+                    Button(size == 0 || size == 10 ? "New Game" : "Next Game") {
+                        size += size == 10 ? 0 : 2
                         createNewField(withSize: size)
+                    }
+                    Button("Restart") {
+                        startNewGame()
                     }
                 }
                 .font(.largeTitle)
                 .foregroundColor(.white)
+
             }
         }
     }
     
+    private func startNewGame() {
+        size = 0
+        field = []
+    }
+    
     private func createNewField(withSize size: Int) {
         field = []
-        
+
         for row in 0..<size {
             field.append([])
             for _ in 0..<size {
@@ -50,10 +54,8 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+#Preview {
+    ContentView()
 }
 
 struct FieldView: View {
@@ -66,28 +68,16 @@ struct FieldView: View {
             ForEach(0..<field.count, id: \.self) { x in
                 HStack {
                     ForEach(0..<field.count, id: \.self) { y in
-                        CellView(x: x, y: y, field: $field, alertPresented: $alertPresented)
+                        Color(field[x][y] == 0 ? .white : .black)
+                            .onTapGesture {
+                                changeColor(x: x, y: y)
+                            }
                     }
                 }
             }
         }
         .frame(width: 350, height: 350)
         .alert("Complete!", isPresented: $alertPresented, actions: {})
-    }
-}
-
-struct CellView: View {
-    let x: Int
-    let y: Int
-    
-    @Binding var field: [[Int]]
-    @Binding var alertPresented: Bool
-    
-    var body: some View {
-        Color(UIColor(field[x][y] == 0 ? .white : .black))
-            .onTapGesture {
-                changeColor(x: x, y: y)
-            }
     }
     
     private func changeColor(x: Int, y: Int) {
@@ -96,18 +86,5 @@ struct CellView: View {
             field[index][y] = 1 - field[index][y]
         }
         field[x][y] = 1 - field[x][y]
-        checkField()
-    }
-    
-    private func checkField() {
-//        var isComplete = true
-//
-//        field.forEach { row in
-//            if row != [0, 0] {
-//                isComplete = false
-//            }
-//        }
-//
-//        alertPresented = isComplete
     }
 }
