@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var size = 0
+    @State private var size = 2
     @State private var field: [[Int]] = []
 
     var body: some View {
@@ -17,36 +17,42 @@ struct ContentView: View {
                 .ignoresSafeArea()
             VStack {
                 Spacer()
+                Text("Monochrome")
+                    .foregroundStyle(.white)
+                Spacer()
                 FieldView(field: $field)
                 Spacer()
-                Group {
-                    Text(size == 0 ? "" : "\(size)x\(size)")
-                    Button(size == 0 || size == 10 ? "New Game" : "Next Game") {
-                        size += size == 10 ? 0 : 2
-                        createNewField(withSize: size)
+                HStack(alignment: .center) {
+                    Button(size == 2 ? "" : "-") {
+                        size -= size == 2 ? 0 : 2
                     }
-                    Button("Restart") {
-                        startNewGame()
+                    Text("\(size)x\(size)")
+                        .frame(width: 100)
+                    Button(size == 10 ? "" : "+") {
+                        size += size == 10 ? 0 : 2
                     }
                 }
                 .font(.largeTitle)
-                .foregroundColor(.white)
-
+                .foregroundStyle(.white)
+                
+                Button("Start Game") {
+                    withAnimation {
+                        startNewGame(withFieldSize: size)
+                    }
+                }
+                .font(.largeTitle)
+                .foregroundStyle(.white)
+                Spacer()
             }
         }
     }
     
-    private func startNewGame() {
-        size = 0
+    private func startNewGame(withFieldSize fieldSize: Int) {
         field = []
-    }
-    
-    private func createNewField(withSize size: Int) {
-        field = []
-
-        for row in 0..<size {
+        
+        for row in 0..<fieldSize {
             field.append([])
-            for _ in 0..<size {
+            for _ in 0..<fieldSize {
                 let cell = Int.random(in: 0...1)
                 field[row].append(cell)
             }
@@ -56,35 +62,4 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-}
-
-struct FieldView: View {
-    @Binding var field: [[Int]]
-
-    @State private var alertPresented = false
-    
-    var body: some View {
-        VStack {
-            ForEach(0..<field.count, id: \.self) { x in
-                HStack {
-                    ForEach(0..<field.count, id: \.self) { y in
-                        Color(field[x][y] == 0 ? .white : .black)
-                            .onTapGesture {
-                                changeColor(x: x, y: y)
-                            }
-                    }
-                }
-            }
-        }
-        .frame(width: 350, height: 350)
-        .alert("Complete!", isPresented: $alertPresented, actions: {})
-    }
-    
-    private func changeColor(x: Int, y: Int) {
-        for index in 0..<field.count {
-            field[x][index] = 1 - field[x][index]
-            field[index][y] = 1 - field[index][y]
-        }
-        field[x][y] = 1 - field[x][y]
-    }
 }
