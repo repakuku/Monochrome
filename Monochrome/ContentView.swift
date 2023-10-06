@@ -15,35 +15,45 @@ struct ContentView: View {
         ZStack {
             Color(.gray)
                 .ignoresSafeArea()
-            VStack {
-                Spacer()
+            
+            VStack(spacing: 50) {
                 Text("Monochrome")
                     .foregroundStyle(.white)
-                Spacer()
+                    .font(.title)
+                
                 FieldView(field: $field)
-                Spacer()
+                
                 HStack(alignment: .center) {
-                    Button(size == 2 ? "" : "-") {
+                    Button("-") {
                         size -= size == 2 ? 0 : 2
                     }
+                    .disabled(size == 2)
+                    .opacity(size == 2 ? 0.3 : 0.8)
+                    .font(.system(size: 100))
+                    
                     Text("\(size)x\(size)")
-                        .frame(width: 100)
-                    Button(size == 10 ? "" : "+") {
-                        size += size == 10 ? 0 : 2
+                        .font(.system(size: 80))
+                        .frame(width: 240)
+                    
+                    Button("+") {
+                        size += size == 6 ? 0 : 2
                     }
+                    .disabled(size == 6)
+                    .opacity(size == 6 ? 0.3 : 0.8)
+                    .font(.system(size: 100))
                 }
-                .font(.largeTitle)
                 .foregroundStyle(.white)
                 
-                Button("Start Game") {
+                
+                Button("Start New Game") {
                     withAnimation {
                         startNewGame(withFieldSize: size)
                     }
                 }
-                .font(.largeTitle)
                 .foregroundStyle(.white)
-                Spacer()
+                .font(.largeTitle)
             }
+            
         }
     }
     
