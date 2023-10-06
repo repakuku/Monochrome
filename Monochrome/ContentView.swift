@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var size = 2
+    @State private var size = 10
     @State private var field: [[Int]] = []
 
     var body: some View {
@@ -38,12 +38,12 @@ struct ContentView: View {
                         .opacity(0.8)
                     
                     Button("+") {
-                        size += size == 6 ? 0 : 2
+                        size += size == 10 ? 0 : 2
                     }
-                    .disabled(size == 6)
-                    .opacity(size == 6 ? 0.3 : 1)
+                    .disabled(size == 10)
+                    .opacity(size == 10 ? 0.3 : 1)
                     .font(.system(size: 100))
-                    .foregroundStyle(size == 6 ? .black : .white)
+                    .foregroundStyle(size == 10 ? .black : .white)
                 }
                 .foregroundStyle(.white)
                 .animation(.default, value: size)
