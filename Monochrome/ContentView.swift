@@ -13,8 +13,8 @@ struct ContentView: View {
     
     @State private var gameStarted = false
     
-    private let minOpacity = 0.2
-    private let maxOpacity = 0.5
+    private let minOpacity = 0.4
+    private let maxOpacity = 1.0
     
     private let mainColor = "Main"
     private let minorColor = "Minor"
@@ -23,6 +23,7 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             Color(backgroundColor)
+                .opacity(0.6)
                 .ignoresSafeArea()
             
             VStack(spacing: 30) {
@@ -30,8 +31,11 @@ struct ContentView: View {
                     .foregroundStyle(Color(mainColor))
                     .font(.title)
                 
-                FieldView(field: $field)
+                Spacer()
                 
+                FieldView(field: $field, firstColor: mainColor, secondColor: minorColor)
+                
+                Spacer()
                 
                 HStack(alignment: .center) {
                     Button("-") {
@@ -45,7 +49,7 @@ struct ContentView: View {
                     Text("\(size)x\(size)")
                         .font(.system(size: 80))
                         .frame(width: 240)
-                        .opacity(0.8)
+                        .foregroundStyle(Color(mainColor))
                     
                     Button("+") {
                         size += size == 10 ? 0 : 2
@@ -55,9 +59,7 @@ struct ContentView: View {
                     .font(.system(size: 100))
                     .foregroundStyle(size == 10 ? Color(minorColor) : Color(mainColor))
                 }
-                .foregroundStyle(Color(mainColor))
                 .animation(.default, value: size)
-                
                 
                 Button("Start New Game") {
                     withAnimation {
@@ -66,13 +68,12 @@ struct ContentView: View {
                 }
                 .foregroundStyle(Color(mainColor))
                 .font(.largeTitle)
-                .onAppear {
-                    withAnimation(Animation.easeInOut(duration: 3)) {
-                        startNewGame(withFieldSize: size)
-                    }
-                }
             }
-            
+        }
+        .onAppear {
+            withAnimation(Animation.easeInOut(duration: 1)) {
+                startNewGame(withFieldSize: size)
+            }
         }
     }
     

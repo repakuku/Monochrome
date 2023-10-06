@@ -9,6 +9,9 @@ import SwiftUI
 
 struct FieldView: View {
     @Binding var field: [[Int]]
+    
+    let firstColor: String
+    let secondColor: String
 
     @State private var alertPresented = false
     
@@ -17,7 +20,7 @@ struct FieldView: View {
             ForEach(0..<field.count, id: \.self) { x in
                 HStack(spacing: 2) {
                     ForEach(0..<field.count, id: \.self) { y in
-                        Color(field[x][y] == 0 ? .white : .black)
+                        Color(field[x][y] == 0 ? secondColor : firstColor)
                             .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
                             .onTapGesture {
                                 changeColor(x: x, y: y)
@@ -40,5 +43,5 @@ struct FieldView: View {
 }
 
 #Preview {
-    FieldView(field: .constant([[0, 1], [1, 0]]))
+    FieldView(field: .constant([[0, 1], [1, 0]]), firstColor: "Main", secondColor: "Minor")
 }
