@@ -8,20 +8,23 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var size = 10
+    @State private var size = 2
     @State private var field: [[Int]] = []
+    
+    @State private var gameStarted = false
 
     var body: some View {
         ZStack {
             Color(uiColor: .darkGray)
                 .ignoresSafeArea()
             
-            VStack(spacing: 50) {
+            VStack(spacing: 30) {
                 Text("Monochrome")
                     .foregroundStyle(.white)
                     .font(.title)
                 
                 FieldView(field: $field)
+                
                 
                 HStack(alignment: .center) {
                     Button("-") {
@@ -56,6 +59,11 @@ struct ContentView: View {
                 }
                 .foregroundStyle(.white)
                 .font(.largeTitle)
+                .onAppear {
+                    withAnimation(Animation.easeInOut(duration: 3)) {
+                        startNewGame(withFieldSize: size)
+                    }
+                }
             }
             
         }
