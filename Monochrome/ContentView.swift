@@ -28,21 +28,25 @@ struct ContentView: View {
                         size -= size == 2 ? 0 : 2
                     }
                     .disabled(size == 2)
-                    .opacity(size == 2 ? 0.3 : 0.8)
+                    .opacity(size == 2 ? 0.3 : 1)
                     .font(.system(size: 100))
+                    .foregroundStyle(size == 2 ? .black : .white)
                     
                     Text("\(size)x\(size)")
                         .font(.system(size: 80))
                         .frame(width: 240)
+                        .opacity(0.8)
                     
                     Button("+") {
                         size += size == 6 ? 0 : 2
                     }
                     .disabled(size == 6)
-                    .opacity(size == 6 ? 0.3 : 0.8)
+                    .opacity(size == 6 ? 0.3 : 1)
                     .font(.system(size: 100))
+                    .foregroundStyle(size == 6 ? .black : .white)
                 }
                 .foregroundStyle(.white)
+                .animation(.default, value: size)
                 
                 
                 Button("Start New Game") {
