@@ -18,6 +18,7 @@ struct FieldView: View {
                 HStack {
                     ForEach(0..<field.count, id: \.self) { y in
                         Color(field[x][y] == 0 ? .white : .black)
+                            .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
                             .onTapGesture {
                                 changeColor(x: x, y: y)
                             }
