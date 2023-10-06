@@ -12,15 +12,22 @@ struct ContentView: View {
     @State private var field: [[Int]] = []
     
     @State private var gameStarted = false
+    
+    private let minOpacity = 0.2
+    private let maxOpacity = 0.5
+    
+    private let mainColor = "Main"
+    private let minorColor = "Minor"
+    private let backgroundColor = "Background"
 
     var body: some View {
         ZStack {
-            Color(uiColor: .darkGray)
+            Color(backgroundColor)
                 .ignoresSafeArea()
             
             VStack(spacing: 30) {
                 Text("Monochrome")
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color(mainColor))
                     .font(.title)
                 
                 FieldView(field: $field)
@@ -31,9 +38,9 @@ struct ContentView: View {
                         size -= size == 2 ? 0 : 2
                     }
                     .disabled(size == 2)
-                    .opacity(size == 2 ? 0.3 : 1)
+                    .opacity(size == 2 ? minOpacity : maxOpacity)
                     .font(.system(size: 100))
-                    .foregroundStyle(size == 2 ? .black : .white)
+                    .foregroundStyle(size == 2 ? Color(minorColor) : Color(mainColor))
                     
                     Text("\(size)x\(size)")
                         .font(.system(size: 80))
@@ -44,11 +51,11 @@ struct ContentView: View {
                         size += size == 10 ? 0 : 2
                     }
                     .disabled(size == 10)
-                    .opacity(size == 10 ? 0.3 : 1)
+                    .opacity(size == 10 ? minOpacity : maxOpacity)
                     .font(.system(size: 100))
-                    .foregroundStyle(size == 10 ? .black : .white)
+                    .foregroundStyle(size == 10 ? Color(minorColor) : Color(mainColor))
                 }
-                .foregroundStyle(.white)
+                .foregroundStyle(Color(mainColor))
                 .animation(.default, value: size)
                 
                 
@@ -57,7 +64,7 @@ struct ContentView: View {
                         startNewGame(withFieldSize: size)
                     }
                 }
-                .foregroundStyle(.white)
+                .foregroundStyle(Color(mainColor))
                 .font(.largeTitle)
                 .onAppear {
                     withAnimation(Animation.easeInOut(duration: 3)) {

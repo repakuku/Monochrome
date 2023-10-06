@@ -13,9 +13,9 @@ struct FieldView: View {
     @State private var alertPresented = false
     
     var body: some View {
-        VStack {
+        VStack(spacing: 2) {
             ForEach(0..<field.count, id: \.self) { x in
-                HStack {
+                HStack(spacing: 2) {
                     ForEach(0..<field.count, id: \.self) { y in
                         Color(field[x][y] == 0 ? .white : .black)
                             .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
