@@ -66,9 +66,15 @@ struct ContentView: View {
                         startNewGame(withFieldSize: size)
                     }
                 }
+                .frame(width: 300, height: 60)
                 .foregroundStyle(Color(mainColor))
                 .font(.largeTitle)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color(mainColor), lineWidth: 3)
+                )
             }
+            .shadow(radius: 5, x: 0.0, y: 0.0)
         }
         .onAppear {
             withAnimation(Animation.easeInOut(duration: 1)) {
