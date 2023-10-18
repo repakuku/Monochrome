@@ -40,6 +40,7 @@ struct ContentView: View {
 					majorColor: majorColor,
 					minorColor: minorColor
 				)
+				.shadow(radius: 5, x: 20.0, y: 20.0)
 
 				Spacer()
 
@@ -80,7 +81,6 @@ struct ContentView: View {
 						.stroke(Color(majorColor), lineWidth: 3)
 				)
 			}
-			.shadow(radius: 5, x: 0.0, y: 0.0)
 		}
 		.onAppear {
 			withAnimation(Animation.easeInOut(duration: 1)) {
