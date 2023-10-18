@@ -9,12 +9,12 @@ import SwiftUI
 
 struct FieldView: View {
     @Binding var field: [[Int]]
-    
+
     let firstColor: String
     let secondColor: String
 
     @State private var alertPresented = false
-    
+
     var body: some View {
         VStack(spacing: 2) {
             ForEach(0..<field.count, id: \.self) { x in
@@ -32,7 +32,7 @@ struct FieldView: View {
         .frame(width: 350, height: 350)
         .alert("Complete!", isPresented: $alertPresented, actions: {})
     }
-    
+
     private func changeColor(x: Int, y: Int) {
         for index in 0..<field.count {
             field[x][index] = 1 - field[x][index]
