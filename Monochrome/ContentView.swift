@@ -11,7 +11,6 @@ struct ContentView: View {
 	@State private var size = 2
 	@State private var field: [[Int]] = []
 
-	@State private var gameStarted = false
 	@State private var alertPresented = false
 
 	private let minOpacity = 0.4
