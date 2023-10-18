@@ -1,0 +1,39 @@
+@startuml
+ 
+!include https://raw.githubusercontent.com/patrik-csak/one-dark-plantuml-theme/v1.0.1/theme.puml
+skinparam backgroundcolor #1E2021
+skinparam linetype ortho
+
+title Monochrome
+
+package Model {
+    struct Game {
+        field
+    }
+}
+
+package ViewModel {
+    class GameViewModel {
+        size
+
+        - field
+
+        startNewGame()
+        changeColor()
+        checkGame()
+    }
+}
+
+package View {
+    struct MonochromeApp
+    struct GameView
+    struct FieldView
+}
+
+' package SwiftUI {
+'     protocol App
+'     protocol Scene
+'     protocol View
+' }
+
+@enduml

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct GameView: View {
 	@State private var size = 2
 	@State private var field: [[Int]] = []
 
@@ -109,5 +109,5 @@ struct ContentView: View {
 }
 
 #Preview {
-	ContentView()
+	GameView()
 }
