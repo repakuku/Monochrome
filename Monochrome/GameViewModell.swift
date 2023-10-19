@@ -5,23 +5,35 @@
 //  Created by Alexey Turulin on 10/19/23.
 //
 
-import Foundation
+import Combine
 
 final class GameViewModell: ObservableObject {
 
-	var size: Int {
-		game.field.count
+	var objectWillChange = ObservableObjectPublisher()
+
+	var size = 0 {
+		didSet {
+			createNewField()
+		}
 	}
 
-	@Published var alertPresented = false
+	var alertPresented = false
 
 	private let firstColor = "Major"
 	private let secondColor = "Minor"
 
-	private var game = Game(field: [[1]])
+	private var game = Game(field: [])
 
-	func createNewField(withSize size: Int) {
-		game = Game(field: [])
+	func decreaseSize() {
+		size -= size == 2 ? 0 : 2
+	}
+
+	func increaseSize() {
+		size += size == 10 ? 0 : 2
+	}
+
+	func createNewField() {
+		game.field = []
 
 		for row in 0..<size {
 			game.field.append([])
@@ -30,6 +42,7 @@ final class GameViewModell: ObservableObject {
 				game.field[row].append(cell)
 			}
 		}
+		objectWillChange.send()
 	}
 
 	func getColorForCellAt(x: Int, y: Int) -> String {
@@ -37,13 +50,14 @@ final class GameViewModell: ObservableObject {
 		return color
 	}
 
-//	func changeColor(x: Int, y: Int) {
-//		for index in 0..<field.count {
-//			field[x][index] = 1 - field[x][index]
-//			field[index][y] = 1 - field[index][y]
-//		}
-//		field[x][y] = 1 - field[x][y]
-//	}
+	func changeColor(x: Int, y: Int) {
+		for index in 0..<size {
+			game.field[x][index] = 1 - game.field[x][index]
+			game.field[index][y] = 1 - game.field[index][y]
+		}
+		game.field[x][y] = 1 - game.field[x][y]
+		objectWillChange.send()
+	}
 
 	func checkGame() {
 		for row in game.field {

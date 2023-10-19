@@ -10,8 +10,6 @@ import SwiftUI
 struct GameView: View {
 	@StateObject private var viewModel = GameViewModell()
 
-	@State private var size = 2
-
 	private let minOpacity = 0.4
 	private let maxOpacity = 1.0
 
@@ -39,31 +37,31 @@ struct GameView: View {
 
 				HStack(alignment: .center) {
 					Button("-") {
-						size -= size == 2 ? 0 : 2
+						viewModel.decreaseSize()
 					}
-					.disabled(size == 2)
-					.opacity(size == 2 ? minOpacity : maxOpacity)
+//					.disabled(size == 2)
+//					.opacity(size == 2 ? minOpacity : maxOpacity)
 					.font(.system(size: 100))
-					.foregroundStyle(size == 2 ? Color(minorColor) : Color(majorColor))
+//					.foregroundStyle(size == 2 ? Color(minorColor) : Color(majorColor))
 
-					Text("\(size)x\(size)")
+					Text("\(viewModel.size)x\(viewModel.size)")
 						.font(.system(size: 80))
 						.frame(width: 240)
 						.foregroundStyle(Color(majorColor))
 
 					Button("+") {
-						size += size == 10 ? 0 : 2
+						viewModel.increaseSize()
 					}
-					.disabled(size == 10)
-					.opacity(size == 10 ? minOpacity : maxOpacity)
+//					.disabled(size == 10)
+//					.opacity(size == 10 ? minOpacity : maxOpacity)
 					.font(.system(size: 100))
-					.foregroundStyle(size == 10 ? Color(minorColor) : Color(majorColor))
+//					.foregroundStyle(size == 10 ? Color(minorColor) : Color(majorColor))
 				}
-				.animation(.default, value: size)
+				.animation(.default, value: viewModel.size)
 
 				Button("Start New Game") {
 					withAnimation {
-
+						
 					}
 				}
 				.frame(width: 300, height: 60)
@@ -77,13 +75,13 @@ struct GameView: View {
 		}
 		.onAppear {
 			withAnimation(Animation.easeInOut(duration: 1)) {
-
+				
 			}
 		}
 		.alert("Complete!", isPresented: $viewModel.alertPresented) {
 			Button("Start new game") {
 				withAnimation {
-
+					
 				}
 			}
 		}

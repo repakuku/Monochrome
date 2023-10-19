@@ -20,6 +20,7 @@ struct FieldView: View {
 						Color(color)
 							.clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
 							.onTapGesture {
+								viewModel.changeColor(x: x, y: y)
 								viewModel.checkGame()
 							}
 					}
