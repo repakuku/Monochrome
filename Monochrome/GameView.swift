@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct GameView: View {
-	@State private var size = 2
-	@State private var field: [[Int]] = []
+	@StateObject private var viewModel = GameViewModell()
 
-	@State private var alertPresented = false
+	@State private var size = 2
+//	@State private var field: [[Int]] = []
+
+//	@State private var alertPresented = false
 
 	private let minOpacity = 0.4
 	private let maxOpacity = 1.0
@@ -33,13 +35,8 @@ struct GameView: View {
 
 				Spacer()
 
-				FieldView(
-					field: $field,
-					alertPresented: $alertPresented,
-					majorColor: majorColor,
-					minorColor: minorColor
-				)
-				.shadow(radius: 5, x: 20.0, y: 20.0)
+				FieldView(viewModel: viewModel)
+					.shadow(radius: 5, x: 20.0, y: 20.0)
 
 				Spacer()
 
@@ -69,7 +66,7 @@ struct GameView: View {
 
 				Button("Start New Game") {
 					withAnimation {
-						startNewGame(withFieldSize: size)
+						viewModel.createNewField(withSize: size)
 					}
 				}
 				.frame(width: 300, height: 60)
@@ -83,29 +80,29 @@ struct GameView: View {
 		}
 		.onAppear {
 			withAnimation(Animation.easeInOut(duration: 1)) {
-				startNewGame(withFieldSize: size)
+				viewModel.createNewField(withSize: size)
 			}
 		}
-		.alert("Complete!", isPresented: $alertPresented) {
+		.alert("Complete!", isPresented: $viewModel.alertPresented) {
 			Button("Start new game") {
 				withAnimation {
-					startNewGame(withFieldSize: size)
+					viewModel.createNewField(withSize: size)
 				}
 			}
 		}
 	}
 
-	private func startNewGame(withFieldSize fieldSize: Int) {
-		field = []
-
-		for row in 0..<fieldSize {
-			field.append([])
-			for _ in 0..<fieldSize {
-				let cell = Int.random(in: 0...1)
-				field[row].append(cell)
-			}
-		}
-	}
+//	private func startNewGame(withFieldSize fieldSize: Int) {
+//		field = []
+//
+//		for row in 0..<fieldSize {
+//			field.append([])
+//			for _ in 0..<fieldSize {
+//				let cell = Int.random(in: 0...1)
+//				field[row].append(cell)
+//			}
+//		}
+//	}
 }
 
 #Preview {
