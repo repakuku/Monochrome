@@ -11,9 +11,9 @@ final class GameViewModell: ObservableObject {
 
 	var objectWillChange = ObservableObjectPublisher()
 
-	var size = 0 {
+	var size = 2 {
 		didSet {
-			createNewField()
+			startNewGame()
 		}
 	}
 
@@ -24,6 +24,10 @@ final class GameViewModell: ObservableObject {
 
 	private var game = Game(field: [])
 
+	init() {
+		startNewGame()
+	}
+
 	func decreaseSize() {
 		size -= size == 2 ? 0 : 2
 	}
@@ -32,8 +36,8 @@ final class GameViewModell: ObservableObject {
 		size += size == 10 ? 0 : 2
 	}
 
-	func createNewField() {
-		game.field = []
+	func startNewGame() {
+		game = Game(field: [])
 
 		for row in 0..<size {
 			game.field.append([])

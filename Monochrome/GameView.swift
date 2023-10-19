@@ -32,6 +32,7 @@ struct GameView: View {
 
 				FieldView(viewModel: viewModel)
 					.shadow(radius: 5, x: 20.0, y: 20.0)
+					.animation(.default, value: viewModel.size)
 
 				Spacer()
 
@@ -61,7 +62,7 @@ struct GameView: View {
 
 				Button("Start New Game") {
 					withAnimation {
-						
+						viewModel.startNewGame()
 					}
 				}
 				.frame(width: 300, height: 60)
@@ -75,13 +76,13 @@ struct GameView: View {
 		}
 		.onAppear {
 			withAnimation(Animation.easeInOut(duration: 1)) {
-				
+				viewModel.startNewGame()
 			}
 		}
 		.alert("Complete!", isPresented: $viewModel.alertPresented) {
 			Button("Start new game") {
 				withAnimation {
-					
+					viewModel.startNewGame()
 				}
 			}
 		}
