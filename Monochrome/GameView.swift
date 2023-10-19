@@ -40,10 +40,10 @@ struct GameView: View {
 					Button("-") {
 						viewModel.decreaseSize()
 					}
-//					.disabled(size == 2)
-//					.opacity(size == 2 ? minOpacity : maxOpacity)
+					.disabled(viewModel.size == 2)
+					.opacity(viewModel.size == 2 ? minOpacity : maxOpacity)
 					.font(.system(size: 100))
-//					.foregroundStyle(size == 2 ? Color(minorColor) : Color(majorColor))
+					.foregroundStyle(viewModel.size == 2 ? Color(minorColor) : Color(majorColor))
 
 					Text("\(viewModel.size)x\(viewModel.size)")
 						.font(.system(size: 80))
@@ -53,10 +53,10 @@ struct GameView: View {
 					Button("+") {
 						viewModel.increaseSize()
 					}
-//					.disabled(size == 10)
-//					.opacity(size == 10 ? minOpacity : maxOpacity)
+					.disabled(viewModel.size == 10)
+					.opacity(viewModel.size == 10 ? minOpacity : maxOpacity)
 					.font(.system(size: 100))
-//					.foregroundStyle(size == 10 ? Color(minorColor) : Color(majorColor))
+					.foregroundStyle(viewModel.size == 10 ? Color(minorColor) : Color(majorColor))
 				}
 				.animation(.default, value: viewModel.size)
 
