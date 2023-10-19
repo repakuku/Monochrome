@@ -11,9 +11,6 @@ struct GameView: View {
 	@StateObject private var viewModel = GameViewModell()
 
 	@State private var size = 2
-//	@State private var field: [[Int]] = []
-
-//	@State private var alertPresented = false
 
 	private let minOpacity = 0.4
 	private let maxOpacity = 1.0
@@ -66,7 +63,7 @@ struct GameView: View {
 
 				Button("Start New Game") {
 					withAnimation {
-						viewModel.createNewField(withSize: size)
+
 					}
 				}
 				.frame(width: 300, height: 60)
@@ -80,29 +77,17 @@ struct GameView: View {
 		}
 		.onAppear {
 			withAnimation(Animation.easeInOut(duration: 1)) {
-				viewModel.createNewField(withSize: size)
+
 			}
 		}
 		.alert("Complete!", isPresented: $viewModel.alertPresented) {
 			Button("Start new game") {
 				withAnimation {
-					viewModel.createNewField(withSize: size)
+
 				}
 			}
 		}
 	}
-
-//	private func startNewGame(withFieldSize fieldSize: Int) {
-//		field = []
-//
-//		for row in 0..<fieldSize {
-//			field.append([])
-//			for _ in 0..<fieldSize {
-//				let cell = Int.random(in: 0...1)
-//				field[row].append(cell)
-//			}
-//		}
-//	}
 }
 
 #Preview {

@@ -13,13 +13,12 @@ final class GameViewModell: ObservableObject {
 		game.field.count
 	}
 
-	var alertPresented = false
+	@Published var alertPresented = false
 
-	private let majorColor = "Major"
-	private let minorColor = "Minor"
-	private let backgroundColor = "Background"
+	private let firstColor = "Major"
+	private let secondColor = "Minor"
 
-	private var game = Game(field: [])
+	private var game = Game(field: [[1]])
 
 	func createNewField(withSize size: Int) {
 		game = Game(field: [])
@@ -34,17 +33,17 @@ final class GameViewModell: ObservableObject {
 	}
 
 	func getColorForCellAt(x: Int, y: Int) -> String {
-		let color = game.field[x][y] == 0 ? minorColor : majorColor
+		let color = game.field[x][y] == 0 ? secondColor : firstColor
 		return color
 	}
 
-	func changeColor(x: Int, y: Int) {
+//	func changeColor(x: Int, y: Int) {
 //		for index in 0..<field.count {
 //			field[x][index] = 1 - field[x][index]
 //			field[index][y] = 1 - field[index][y]
 //		}
 //		field[x][y] = 1 - field[x][y]
-	}
+//	}
 
 	func checkGame() {
 		for row in game.field {
