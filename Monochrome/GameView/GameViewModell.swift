@@ -22,7 +22,7 @@ final class GameViewModell: ObservableObject {
 	private let firstColor = "Major"
 	private let secondColor = "Minor"
 
-	private var game = Game(field: [])
+	private var game: IGame = Game(field: [])
 
 	init() {
 		startNewGame()
