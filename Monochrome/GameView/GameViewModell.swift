@@ -19,8 +19,17 @@ final class GameViewModell: ObservableObject {
 
 	var alertPresented = false
 
-	private let firstColor = "Major"
-	private let secondColor = "Minor"
+	var majorColor: String {
+		GameColor.major.rawValue
+	}
+
+	var minorColor: String {
+		GameColor.minor.rawValue
+	}
+
+	var backgroundColor: String {
+		GameColor.background.rawValue
+	}
 
 	private var game: IGame = Game(field: [])
 
@@ -50,7 +59,7 @@ final class GameViewModell: ObservableObject {
 	}
 
 	func getColorForCellAt(x: Int, y: Int) -> String {
-		let color = game.field[x][y] == 0 ? secondColor : firstColor
+		let color = game.field[x][y] == 0 ? minorColor : majorColor
 		return color
 	}
 

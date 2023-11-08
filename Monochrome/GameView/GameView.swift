@@ -13,19 +13,15 @@ struct GameView: View {
 	private let minOpacity = 0.4
 	private let maxOpacity = 1.0
 
-	private let majorColor = "Major"
-	private let minorColor = "Minor"
-	private let backgroundColor = "Background"
-
 	var body: some View {
 		ZStack {
-			Color(backgroundColor)
+			Color(viewModel.backgroundColor)
 				.opacity(0.6)
 				.ignoresSafeArea()
 
 			VStack(spacing: 30) {
 				Text("Monochrome")
-					.foregroundStyle(Color(majorColor))
+					.foregroundStyle(Color(viewModel.majorColor))
 					.font(.title)
 
 				Spacer()
@@ -43,12 +39,12 @@ struct GameView: View {
 					.disabled(viewModel.size == 2)
 					.opacity(viewModel.size == 2 ? minOpacity : maxOpacity)
 					.font(.system(size: 100))
-					.foregroundStyle(viewModel.size == 2 ? Color(minorColor) : Color(majorColor))
+					.foregroundStyle(viewModel.size == 2 ? Color(viewModel.minorColor) : Color(viewModel.majorColor))
 
 					Text("\(viewModel.size)x\(viewModel.size)")
 						.font(.system(size: 80))
 						.frame(width: 240)
-						.foregroundStyle(Color(majorColor))
+						.foregroundStyle(Color(viewModel.majorColor))
 
 					Button("+") {
 						viewModel.increaseSize()
@@ -56,7 +52,7 @@ struct GameView: View {
 					.disabled(viewModel.size == 10)
 					.opacity(viewModel.size == 10 ? minOpacity : maxOpacity)
 					.font(.system(size: 100))
-					.foregroundStyle(viewModel.size == 10 ? Color(minorColor) : Color(majorColor))
+					.foregroundStyle(viewModel.size == 10 ? Color(viewModel.minorColor) : Color(viewModel.majorColor))
 				}
 				.animation(.default, value: viewModel.size)
 
@@ -66,11 +62,11 @@ struct GameView: View {
 					}
 				}
 				.frame(width: 300, height: 60)
-				.foregroundStyle(Color(majorColor))
+				.foregroundStyle(Color(viewModel.majorColor))
 				.font(.largeTitle)
 				.overlay(
 					RoundedRectangle(cornerRadius: 10)
-						.stroke(Color(majorColor), lineWidth: 3)
+						.stroke(Color(viewModel.majorColor), lineWidth: 3)
 				)
 			}
 		}
