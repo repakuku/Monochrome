@@ -36,10 +36,12 @@ struct GameView: View {
 					Button("-") {
 						viewModel.decreaseSize()
 					}
-					.disabled(viewModel.size == 2)
-					.opacity(viewModel.size == 2 ? minOpacity : maxOpacity)
-					.font(.system(size: 100))
-					.foregroundStyle(viewModel.size == 2 ? Color(viewModel.minorColor) : Color(viewModel.majorColor))
+					.style(
+						size: viewModel.size,
+						limitSize: 2,
+						majorColor: viewModel.majorColor,
+						minorColor: viewModel.minorColor
+					)
 
 					Text("\(viewModel.size)x\(viewModel.size)")
 						.font(.system(size: 80))
@@ -49,10 +51,12 @@ struct GameView: View {
 					Button("+") {
 						viewModel.increaseSize()
 					}
-					.disabled(viewModel.size == 10)
-					.opacity(viewModel.size == 10 ? minOpacity : maxOpacity)
-					.font(.system(size: 100))
-					.foregroundStyle(viewModel.size == 10 ? Color(viewModel.minorColor) : Color(viewModel.majorColor))
+					.style(
+						size: viewModel.size,
+						limitSize: 10,
+						majorColor: viewModel.majorColor,
+						minorColor: viewModel.minorColor
+					)
 				}
 				.animation(.default, value: viewModel.size)
 
@@ -87,4 +91,37 @@ struct GameView: View {
 
 #Preview {
 	GameView()
+}
+
+struct CustomeStyle: ViewModifier {
+	let size: Int
+	let limitSize: Int
+	let minorColor: String
+	let majorColor: String
+
+	func body(content: Content) -> some View {
+		content
+			.disabled(size == limitSize)
+			.opacity(size == limitSize ? 0.4 : 1.0)
+			.font(.system(size: 100))
+			.foregroundStyle(size == 2 ? Color(minorColor) : Color(majorColor))
+	}
+}
+
+extension Button {
+	func style(
+		size: Int,
+		limitSize: Int,
+		majorColor: String,
+		minorColor: String
+	) -> some View {
+		modifier(
+			CustomeStyle(
+				size: size,
+				limitSize: limitSize,
+				minorColor: minorColor,
+				majorColor: majorColor
+			)
+		)
+	}
 }
