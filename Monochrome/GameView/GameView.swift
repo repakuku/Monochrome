@@ -10,9 +10,6 @@ import SwiftUI
 struct GameView: View {
 	@StateObject private var viewModel = GameViewModell()
 
-	private let minOpacity = 0.4
-	private let maxOpacity = 1.0
-
 	var body: some View {
 		ZStack {
 			Color(viewModel.backgroundColor)
@@ -27,8 +24,6 @@ struct GameView: View {
 				Spacer()
 
 				FieldView(viewModel: viewModel)
-					.shadow(radius: 5, x: 20.0, y: 20.0)
-					.animation(.default, value: viewModel.size)
 
 				Spacer()
 
@@ -93,7 +88,7 @@ struct GameView: View {
 	GameView()
 }
 
-struct CustomeStyle: ViewModifier {
+struct CustomeButtonStyle: ViewModifier {
 	let size: Int
 	let limitSize: Int
 	let minorColor: String
@@ -116,7 +111,7 @@ extension Button {
 		minorColor: String
 	) -> some View {
 		modifier(
-			CustomeStyle(
+			CustomeButtonStyle(
 				size: size,
 				limitSize: limitSize,
 				minorColor: minorColor,

@@ -30,6 +30,8 @@ struct FieldView: View {
 			}
 		}
 		.frame(width: 350, height: 350)
+		.shadow(radius: 5, x: 20.0, y: 20.0)
+		.animation(.default, value: viewModel.size)
 	}
 }
 
