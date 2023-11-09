@@ -22,19 +22,7 @@ struct GameView: View {
 				FieldView(viewModel: viewModel)
 				Spacer()
 				SizeView(viewModel: viewModel)
-
-				Button("Start New Game") {
-					withAnimation {
-						viewModel.startNewGame()
-					}
-				}
-				.frame(width: 300, height: 60)
-				.foregroundStyle(Color(viewModel.majorColor))
-				.font(.largeTitle)
-				.overlay(
-					RoundedRectangle(cornerRadius: 10)
-						.stroke(Color(viewModel.majorColor), lineWidth: 3)
-				)
+				NewGameButtonView(viewModel: viewModel)
 			}
 		}
 		.onAppear {
