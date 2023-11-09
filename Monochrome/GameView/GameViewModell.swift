@@ -76,10 +76,8 @@ final class GameViewModell: ObservableObject {
 	}
 
 	func checkGame() {
-		for row in game.field {
-			if row.contains(0) {
-				return
-			}
+		for row in game.field where row.contains(0) {
+			return
 		}
 
 		alertPresented.toggle()
