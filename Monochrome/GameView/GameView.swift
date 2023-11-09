@@ -104,7 +104,7 @@ struct CustomeStyle: ViewModifier {
 			.disabled(size == limitSize)
 			.opacity(size == limitSize ? 0.4 : 1.0)
 			.font(.system(size: 100))
-			.foregroundStyle(size == 2 ? Color(minorColor) : Color(majorColor))
+			.foregroundStyle(size == limitSize ? Color(minorColor) : Color(majorColor))
 	}
 }
 
