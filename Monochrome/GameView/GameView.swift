@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GameView: View {
-	@StateObject private var viewModel = GameViewModell()
+	@ObservedObject var viewModel: GameViewModell
 
 	var body: some View {
 		ZStack {
@@ -41,5 +41,5 @@ struct GameView: View {
 }
 
 #Preview {
-	GameView()
+	GameView(viewModel: GameViewModell())
 }

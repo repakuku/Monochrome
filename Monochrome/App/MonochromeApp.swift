@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct MonochromeApp: App {
+	@StateObject private var viewModel = GameViewModell()
+
     var body: some Scene {
         WindowGroup {
-            GameView()
+            GameView(viewModel: viewModel)
         }
     }
 }
