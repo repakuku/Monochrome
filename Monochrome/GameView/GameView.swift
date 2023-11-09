@@ -17,14 +17,9 @@ struct GameView: View {
 				.ignoresSafeArea()
 
 			VStack(spacing: 30) {
-				Text("Monochrome")
-					.foregroundStyle(Color(viewModel.majorColor))
-					.font(.title)
-
+				MonochromeLabelView(color: viewModel.majorColor)
 				Spacer()
-
 				FieldView(viewModel: viewModel)
-
 				Spacer()
 
 				HStack(alignment: .center) {
