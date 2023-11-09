@@ -16,13 +16,13 @@ struct SizeView: View {
 				viewModel.decreaseSize()
 			}
 			.style(
-				size: viewModel.size,
+				size: viewModel.fieldSize,
 				limitSize: viewModel.minimumSize,
 				majorColor: viewModel.majorColor,
 				minorColor: viewModel.minorColor
 			)
 
-			Text("\(viewModel.size)x\(viewModel.size)")
+			Text("\(viewModel.fieldSize)x\(viewModel.fieldSize)")
 				.font(.system(size: 80))
 				.frame(width: 240)
 				.foregroundStyle(Color(viewModel.majorColor))
@@ -31,13 +31,13 @@ struct SizeView: View {
 				viewModel.increaseSize()
 			}
 			.style(
-				size: viewModel.size,
+				size: viewModel.fieldSize,
 				limitSize: viewModel.maximumSize,
 				majorColor: viewModel.majorColor,
 				minorColor: viewModel.minorColor
 			)
 		}
-		.animation(.default, value: viewModel.size)
+		.animation(.default, value: viewModel.fieldSize)
     }
 }
 

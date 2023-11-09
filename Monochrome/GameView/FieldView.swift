@@ -18,9 +18,9 @@ struct FieldView: View {
 
 	var body: some View {
 		VStack(spacing: stackSpacing) {
-			ForEach(0..<viewModel.size, id: \.self) { x in
+			ForEach(0..<viewModel.fieldSize, id: \.self) { x in
 				HStack(spacing: stackSpacing) {
-					ForEach(0..<viewModel.size, id: \.self) { y in
+					ForEach(0..<viewModel.fieldSize, id: \.self) { y in
 						let color = viewModel.getColorForCellAt(x: x, y: y)
 
 						Color(color)
@@ -30,7 +30,6 @@ struct FieldView: View {
 							.onTapGesture {
 								withAnimation {
 									viewModel.changeColor(x: x, y: y)
-									viewModel.checkGame()
 								}
 							}
 					}
@@ -39,7 +38,7 @@ struct FieldView: View {
 		}
 		.frame(width: frameSize, height: frameSize)
 		.shadow(radius: shadowRadius, x: shadowOffset, y: shadowOffset)
-		.animation(.default, value: viewModel.size)
+		.animation(.default, value: viewModel.fieldSize)
 	}
 }
 

@@ -11,16 +11,11 @@ final class GameViewModell: ObservableObject {
 
 	var objectWillChange = ObservableObjectPublisher()
 
-	var size = 2 {
-		didSet {
-			startNewGame()
-		}
-	}
-
-	var minimumSize = 2
-	var maximumSize = 10
-
 	var alertPresented = false
+
+	var fieldSize: Int {
+		size
+	}
 
 	var majorColor: String {
 		GameColor.major.rawValue
@@ -35,6 +30,15 @@ final class GameViewModell: ObservableObject {
 	}
 
 	private var game: IGame = Game(field: [])
+
+	private var size = 2 {
+		didSet {
+			startNewGame()
+		}
+	}
+
+	private(set) var minimumSize = 2
+	private(set) var maximumSize = 10
 
 	init() {
 		startNewGame()
@@ -58,6 +62,7 @@ final class GameViewModell: ObservableObject {
 				game.field[row].append(cell)
 			}
 		}
+
 		objectWillChange.send()
 	}
 
@@ -72,10 +77,13 @@ final class GameViewModell: ObservableObject {
 			game.field[index][y] = 1 - game.field[index][y]
 		}
 		game.field[x][y] = 1 - game.field[x][y]
+
+		checkGame()
+
 		objectWillChange.send()
 	}
 
-	func checkGame() {
+	private func checkGame() {
 		for row in game.field where row.contains(0) {
 			return
 		}
