@@ -17,6 +17,9 @@ final class GameViewModell: ObservableObject {
 		}
 	}
 
+	var minimumSize = 2
+	var maximumSize = 10
+
 	var alertPresented = false
 
 	var majorColor: String {

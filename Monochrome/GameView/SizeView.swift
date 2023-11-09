@@ -17,7 +17,7 @@ struct SizeView: View {
 			}
 			.style(
 				size: viewModel.size,
-				limitSize: 2,
+				limitSize: viewModel.minimumSize,
 				majorColor: viewModel.majorColor,
 				minorColor: viewModel.minorColor
 			)
@@ -32,7 +32,7 @@ struct SizeView: View {
 			}
 			.style(
 				size: viewModel.size,
-				limitSize: 10,
+				limitSize: viewModel.maximumSize,
 				majorColor: viewModel.majorColor,
 				minorColor: viewModel.minorColor
 			)

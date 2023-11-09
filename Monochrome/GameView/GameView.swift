@@ -10,13 +10,17 @@ import SwiftUI
 struct GameView: View {
 	@ObservedObject var viewModel: GameViewModell
 
+	private let animation = Animation.easeInOut(duration: 1)
+	private let backgroundOpacity = 0.6
+	private let verticalStackSpaceing = 30.0
+
 	var body: some View {
 		ZStack {
 			Color(viewModel.backgroundColor)
-				.opacity(0.6)
+				.opacity(backgroundOpacity)
 				.ignoresSafeArea()
 
-			VStack(spacing: 30) {
+			VStack(spacing: verticalStackSpaceing) {
 				MonochromeLabelView(color: viewModel.majorColor)
 				Spacer()
 				FieldView(viewModel: viewModel)
@@ -26,13 +30,13 @@ struct GameView: View {
 			}
 		}
 		.onAppear {
-			withAnimation(Animation.easeInOut(duration: 1)) {
+			withAnimation(animation) {
 				viewModel.startNewGame()
 			}
 		}
 		.alert("Complete!", isPresented: $viewModel.alertPresented) {
 			Button("Start new game") {
-				withAnimation {
+				withAnimation(animation) {
 					viewModel.startNewGame()
 				}
 			}
