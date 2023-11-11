@@ -11,12 +11,12 @@ struct NewGameButtonView: View {
 	@ObservedObject var viewModel: GameViewModell
 
     var body: some View {
-		Button("Start New Game") {
+		Button("New Game") {
 			withAnimation {
 				viewModel.startNewGame()
 			}
 		}
-		.frame(width: 300, height: 60)
+		.frame(width: 200, height: 60)
 		.foregroundStyle(Color(viewModel.majorColor))
 		.font(.largeTitle)
 		.overlay(

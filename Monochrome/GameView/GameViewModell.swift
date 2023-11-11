@@ -31,6 +31,8 @@ final class GameViewModell: ObservableObject {
 
 	private var game: IGame = Game(field: [])
 
+	private var wrongField = false
+
 	private var size = 2 {
 		didSet {
 			startNewGame()
@@ -64,6 +66,15 @@ final class GameViewModell: ObservableObject {
 		}
 
 		objectWillChange.send()
+
+		checkGame()
+
+		guard !alertPresented else {
+			print("test")
+			alertPresented.toggle()
+			startNewGame()
+			return
+		}
 	}
 
 	func getColorForCellAt(x: Int, y: Int) -> String {
