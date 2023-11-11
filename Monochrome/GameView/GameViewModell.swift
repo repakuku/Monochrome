@@ -70,7 +70,6 @@ final class GameViewModell: ObservableObject {
 		checkGame()
 
 		guard !alertPresented else {
-			print("test")
 			alertPresented.toggle()
 			startNewGame()
 			return
