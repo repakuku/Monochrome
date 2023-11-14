@@ -13,6 +13,7 @@ enum Sizes {
 	static let verticalStackSpacing = 30.0
 
 	enum F {
+		static let stackSpacing = 2.0
 	}
 }
 // swiftlint:enable type_name
