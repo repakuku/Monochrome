@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum GameSizes {
+enum GameParameters {
 	static let backgroundOpacity = 0.6
 	static let verticalStackSpacing = 30.0
 

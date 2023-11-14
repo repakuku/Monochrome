@@ -23,8 +23,8 @@ struct SizeView: View {
 			)
 
 			Text("\(viewModel.fieldSize)x\(viewModel.fieldSize)")
-				.font(.system(size: GameSizes.SizeView.textFontSize))
-				.frame(width: GameSizes.SizeView.width)
+				.font(.system(size: GameParameters.SizeView.textFontSize))
+				.frame(width: GameParameters.SizeView.width)
 				.foregroundStyle(Color(viewModel.majorColor))
 
 			Button("+") {
@@ -54,8 +54,8 @@ struct CustomeButtonStyle: ViewModifier {
 	func body(content: Content) -> some View {
 		content
 			.disabled(size == limitSize)
-			.opacity(size == limitSize ? GameSizes.SizeView.minOpacity : GameSizes.SizeView.maxOpacity)
-			.font(.system(size: GameSizes.SizeView.buttonFontSize))
+			.opacity(size == limitSize ? GameParameters.SizeView.minOpacity : GameParameters.SizeView.maxOpacity)
+			.font(.system(size: GameParameters.SizeView.buttonFontSize))
 			.foregroundStyle(size == limitSize ? Color(minorColor) : Color(majorColor))
 	}
 }

@@ -16,12 +16,12 @@ struct NewGameButtonView: View {
 				viewModel.startNewGame()
 			}
 		}
-		.frame(width: GameSizes.NewGameButtonView.width, height: GameSizes.NewGameButtonView.height)
+		.frame(width: GameParameters.NewGameButtonView.width, height: GameParameters.NewGameButtonView.height)
 		.foregroundStyle(Color(viewModel.majorColor))
 		.font(.largeTitle)
 		.overlay(
-			RoundedRectangle(cornerRadius: GameSizes.NewGameButtonView.cornerRadius)
-				.stroke(Color(viewModel.majorColor), lineWidth: GameSizes.NewGameButtonView.lineWidth)
+			RoundedRectangle(cornerRadius: GameParameters.NewGameButtonView.cornerRadius)
+				.stroke(Color(viewModel.majorColor), lineWidth: GameParameters.NewGameButtonView.lineWidth)
 		)
     }
 }

@@ -15,10 +15,10 @@ struct GameView: View {
 	var body: some View {
 		ZStack {
 			Color(viewModel.backgroundColor)
-				.opacity(GameSizes.backgroundOpacity)
+				.opacity(GameParameters.backgroundOpacity)
 				.ignoresSafeArea()
 
-			VStack(spacing: GameSizes.verticalStackSpacing) {
+			VStack(spacing: GameParameters.verticalStackSpacing) {
 				MonochromeLabelView(color: viewModel.majorColor)
 				Spacer()
 				FieldView(viewModel: viewModel)
