@@ -11,16 +11,14 @@ struct GameView: View {
 	@ObservedObject var viewModel: GameViewModell
 
 	private let animation = Animation.easeInOut(duration: 1)
-	private let backgroundOpacity = 0.6
-	private let verticalStackSpaceing = 30.0
 
 	var body: some View {
 		ZStack {
 			Color(viewModel.backgroundColor)
-				.opacity(backgroundOpacity)
+				.opacity(Sizes.backgroundOpacity)
 				.ignoresSafeArea()
 
-			VStack(spacing: verticalStackSpaceing) {
+			VStack(spacing: Sizes.verticalStackSpacing) {
 				MonochromeLabelView(color: viewModel.majorColor)
 				Spacer()
 				FieldView(viewModel: viewModel)
