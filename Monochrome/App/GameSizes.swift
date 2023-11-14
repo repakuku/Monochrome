@@ -26,4 +26,11 @@ enum GameSizes {
 		static let textFontSize: CGFloat = 80
 		static let buttonFontSize: CGFloat = 100
 	}
+
+	enum NewGameButtonView {
+		static let width: CGFloat = 200
+		static let height: CGFloat = 60
+		static let cornerRadius: CGFloat = 10
+		static let lineWidth: CGFloat = 3
+	}
 }
