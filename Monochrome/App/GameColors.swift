@@ -7,8 +7,8 @@
 
 import Foundation
 
-enum GameColor: String {
-	case major = "Major"
-	case minor = "Minor"
-	case background = "Background"
+enum GameColors: String {
+	case main
+	case secondary
+	case background
 }

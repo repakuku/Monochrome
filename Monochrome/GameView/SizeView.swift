@@ -10,6 +10,9 @@ import SwiftUI
 struct SizeView: View {
 	@ObservedObject var viewModel: GameViewModell
 
+	private let mainColor = GameColors.main.rawValue
+	private let secondaryColor = GameColors.secondary.rawValue
+
     var body: some View {
 		HStack(alignment: .center) {
 			Button("-") {
@@ -18,14 +21,14 @@ struct SizeView: View {
 			.style(
 				size: viewModel.fieldSize,
 				limitSize: viewModel.minimumSize,
-				majorColor: viewModel.majorColor,
-				minorColor: viewModel.minorColor
+				mainColor: mainColor,
+				secondaryColor: secondaryColor
 			)
 
 			Text("\(viewModel.fieldSize)x\(viewModel.fieldSize)")
 				.font(.system(size: GameParameters.SizeView.textFontSize))
 				.frame(width: GameParameters.SizeView.width)
-				.foregroundStyle(Color(viewModel.majorColor))
+				.foregroundStyle(Color(mainColor))
 
 			Button("+") {
 				viewModel.increaseSize()
@@ -33,8 +36,8 @@ struct SizeView: View {
 			.style(
 				size: viewModel.fieldSize,
 				limitSize: viewModel.maximumSize,
-				majorColor: viewModel.majorColor,
-				minorColor: viewModel.minorColor
+				mainColor: mainColor,
+				secondaryColor: secondaryColor
 			)
 		}
 		.animation(.default, value: viewModel.fieldSize)
@@ -48,15 +51,15 @@ struct SizeView: View {
 struct CustomeButtonStyle: ViewModifier {
 	let size: Int
 	let limitSize: Int
-	let minorColor: String
-	let majorColor: String
+	let mainColor: String
+	let secondaryColor: String
 
 	func body(content: Content) -> some View {
 		content
 			.disabled(size == limitSize)
 			.opacity(size == limitSize ? GameParameters.SizeView.minOpacity : GameParameters.SizeView.maxOpacity)
 			.font(.system(size: GameParameters.SizeView.buttonFontSize))
-			.foregroundStyle(size == limitSize ? Color(minorColor) : Color(majorColor))
+			.foregroundStyle(size == limitSize ? Color(secondaryColor) : Color(mainColor))
 	}
 }
 
@@ -64,15 +67,15 @@ extension Button {
 	func style(
 		size: Int,
 		limitSize: Int,
-		majorColor: String,
-		minorColor: String
+		mainColor: String,
+		secondaryColor: String
 	) -> some View {
 		modifier(
 			CustomeButtonStyle(
 				size: size,
 				limitSize: limitSize,
-				minorColor: minorColor,
-				majorColor: majorColor
+				mainColor: mainColor,
+				secondaryColor: secondaryColor
 			)
 		)
 	}

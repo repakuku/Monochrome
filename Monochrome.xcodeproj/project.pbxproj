@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		071087332AFB419E002A8E8D /* GameColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071087322AFB419E002A8E8D /* GameColor.swift */; };
+		071087332AFB419E002A8E8D /* GameColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071087322AFB419E002A8E8D /* GameColors.swift */; };
 		07230B872AE1C330002D9A2B /* GameViewModell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07230B862AE1C330002D9A2B /* GameViewModell.swift */; };
 		07230B892AE1C380002D9A2B /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07230B882AE1C380002D9A2B /* Game.swift */; };
 		074DA5242AFD322900CD6B08 /* MonochromeLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074DA5232AFD322900CD6B08 /* MonochromeLabelView.swift */; };
@@ -33,7 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		071087322AFB419E002A8E8D /* GameColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameColor.swift; sourceTree = "<group>"; };
+		071087322AFB419E002A8E8D /* GameColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameColors.swift; sourceTree = "<group>"; };
 		07230B862AE1C330002D9A2B /* GameViewModell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModell.swift; sourceTree = "<group>"; };
 		07230B882AE1C380002D9A2B /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		074DA5232AFD322900CD6B08 /* MonochromeLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonochromeLabelView.swift; sourceTree = "<group>"; };
@@ -140,7 +140,7 @@
 			children = (
 				07AAA3B32A90224500AED136 /* MonochromeApp.swift */,
 				07B3D7492B04135800A5925D /* GameParameters.swift */,
-				071087322AFB419E002A8E8D /* GameColor.swift */,
+				071087322AFB419E002A8E8D /* GameColors.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -285,7 +285,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				07230B872AE1C330002D9A2B /* GameViewModell.swift in Sources */,
-				071087332AFB419E002A8E8D /* GameColor.swift in Sources */,
+				071087332AFB419E002A8E8D /* GameColors.swift in Sources */,
 				07230B892AE1C380002D9A2B /* Game.swift in Sources */,
 				074DA5242AFD322900CD6B08 /* MonochromeLabelView.swift in Sources */,
 				07AAA3B62A90224500AED136 /* GameView.swift in Sources */,

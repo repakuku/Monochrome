@@ -18,15 +18,11 @@ final class GameViewModell: ObservableObject {
 	}
 
 	var majorColor: String {
-		GameColor.major.rawValue
+		GameColors.main.rawValue
 	}
 
 	var minorColor: String {
-		GameColor.minor.rawValue
-	}
-
-	var backgroundColor: String {
-		GameColor.background.rawValue
+		GameColors.secondary.rawValue
 	}
 
 	private var game: IGame = Game(field: [])

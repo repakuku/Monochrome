@@ -10,6 +10,8 @@ import SwiftUI
 struct NewGameButtonView: View {
 	@ObservedObject var viewModel: GameViewModell
 
+	private let mainColor = GameColors.main.rawValue
+
     var body: some View {
 		Button("New Game") {
 			withAnimation {
@@ -17,11 +19,11 @@ struct NewGameButtonView: View {
 			}
 		}
 		.frame(width: GameParameters.NewGameButtonView.width, height: GameParameters.NewGameButtonView.height)
-		.foregroundStyle(Color(viewModel.majorColor))
+		.foregroundStyle(Color(mainColor))
 		.font(.largeTitle)
 		.overlay(
 			RoundedRectangle(cornerRadius: GameParameters.NewGameButtonView.cornerRadius)
-				.stroke(Color(viewModel.majorColor), lineWidth: GameParameters.NewGameButtonView.lineWidth)
+				.stroke(Color(mainColor), lineWidth: GameParameters.NewGameButtonView.lineWidth)
 		)
     }
 }

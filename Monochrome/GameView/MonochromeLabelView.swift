@@ -18,5 +18,5 @@ struct MonochromeLabelView: View {
 }
 
 #Preview {
-	MonochromeLabelView(color: "Major")
+	MonochromeLabelView(color: GameColors.main.rawValue)
 }
