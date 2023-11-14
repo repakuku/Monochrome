@@ -7,17 +7,23 @@
 
 import Foundation
 
-// swiftlint:disable type_name
-enum Sizes {
+enum GameSizes {
 	static let backgroundOpacity = 0.6
 	static let verticalStackSpacing = 30.0
 
-	enum F {
+	enum FieldView {
 		static let stackSpacing = 2.0
 		static let cornerRadius = 10
 		static let frameSize = 350.0
 		static let shadowRadius = 5.0
 		static let shadowOffset = 20.0
 	}
+
+	enum SizeView {
+		static let width: CGFloat = 240
+		static let minOpacity = 0.4
+		static let maxOpacity = 1.0
+		static let textFontSize: CGFloat = 80
+		static let buttonFontSize: CGFloat = 100
+	}
 }
-// swiftlint:enable type_name

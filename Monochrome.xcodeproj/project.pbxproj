@@ -18,7 +18,7 @@
 		07AAA3B42A90224500AED136 /* MonochromeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AAA3B32A90224500AED136 /* MonochromeApp.swift */; };
 		07AAA3B62A90224500AED136 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AAA3B52A90224500AED136 /* GameView.swift */; };
 		07AAA3B82A90224600AED136 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07AAA3B72A90224600AED136 /* Assets.xcassets */; };
-		07B3D74A2B04135800A5925D /* Sizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B3D7492B04135800A5925D /* Sizes.swift */; };
+		07B3D74A2B04135800A5925D /* GameSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B3D7492B04135800A5925D /* GameSizes.swift */; };
 		07D0A2FC2AD0D837008A40A9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07D0A2FB2AD0D837008A40A9 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -46,7 +46,7 @@
 		07AAA3B32A90224500AED136 /* MonochromeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonochromeApp.swift; sourceTree = "<group>"; };
 		07AAA3B52A90224500AED136 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		07AAA3B72A90224600AED136 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		07B3D7492B04135800A5925D /* Sizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sizes.swift; sourceTree = "<group>"; };
+		07B3D7492B04135800A5925D /* GameSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSizes.swift; sourceTree = "<group>"; };
 		07D0A2FB2AD0D837008A40A9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -118,7 +118,6 @@
 			isa = PBXGroup;
 			children = (
 				07230B882AE1C380002D9A2B /* Game.swift */,
-				071087322AFB419E002A8E8D /* GameColor.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -140,7 +139,8 @@
 			isa = PBXGroup;
 			children = (
 				07AAA3B32A90224500AED136 /* MonochromeApp.swift */,
-				07B3D7492B04135800A5925D /* Sizes.swift */,
+				07B3D7492B04135800A5925D /* GameSizes.swift */,
+				071087322AFB419E002A8E8D /* GameColor.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -290,7 +290,7 @@
 				074DA5242AFD322900CD6B08 /* MonochromeLabelView.swift in Sources */,
 				07AAA3B62A90224500AED136 /* GameView.swift in Sources */,
 				074DA5282AFD33B000CD6B08 /* NewGameButtonView.swift in Sources */,
-				07B3D74A2B04135800A5925D /* Sizes.swift in Sources */,
+				07B3D74A2B04135800A5925D /* GameSizes.swift in Sources */,
 				076995572ACF756D0060E081 /* FieldView.swift in Sources */,
 				07AAA3B42A90224500AED136 /* MonochromeApp.swift in Sources */,
 				074DA5262AFD330A00CD6B08 /* SizeView.swift in Sources */,
