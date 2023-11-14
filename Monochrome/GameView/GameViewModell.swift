@@ -17,12 +17,12 @@ final class GameViewModell: ObservableObject {
 		size
 	}
 
-	var majorColor: String {
-		GameColors.main.rawValue
+	var cellColor: String {
+		GameColors.secondary.rawValue
 	}
 
-	var minorColor: String {
-		GameColors.secondary.rawValue
+	var changedCellColor: String {
+		GameColors.main.rawValue
 	}
 
 	private var game: IGame = Game(field: [])
@@ -73,7 +73,7 @@ final class GameViewModell: ObservableObject {
 	}
 
 	func getColorForCellAt(x: Int, y: Int) -> String {
-		let color = game.field[x][y] == 0 ? minorColor : majorColor
+		let color = game.field[x][y] == 0 ? cellColor : changedCellColor
 		return color
 	}
 
