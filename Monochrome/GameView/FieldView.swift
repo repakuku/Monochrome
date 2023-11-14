@@ -10,11 +10,6 @@ import SwiftUI
 struct FieldView: View {
 	@ObservedObject var viewModel: GameViewModell
 
-	private let cornerRadius = 10
-	private let frameSize = 350.0
-	private let shadowRadius = 5.0
-	private let shadowOffset = 20.0
-
 	var body: some View {
 		VStack(spacing: Sizes.F.stackSpacing) {
 			ForEach(0..<viewModel.fieldSize, id: \.self) { x in
@@ -24,7 +19,7 @@ struct FieldView: View {
 
 						Color(color)
 							.clipShape(
-								RoundedRectangle(cornerSize: CGSize(width: cornerRadius, height: cornerRadius))
+								RoundedRectangle(cornerSize: CGSize(width: Sizes.F.cornerRadius, height: Sizes.F.cornerRadius))
 							)
 							.onTapGesture {
 								withAnimation {
@@ -35,8 +30,8 @@ struct FieldView: View {
 				}
 			}
 		}
-		.frame(width: frameSize, height: frameSize)
-		.shadow(radius: shadowRadius, x: shadowOffset, y: shadowOffset)
+		.frame(width: Sizes.F.frameSize, height: Sizes.F.frameSize)
+		.shadow(radius: Sizes.F.shadowRadius, x: Sizes.F.shadowOffset, y: Sizes.F.shadowOffset)
 		.animation(.default, value: viewModel.fieldSize)
 	}
 }
