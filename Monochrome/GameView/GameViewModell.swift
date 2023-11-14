@@ -33,7 +33,7 @@ final class GameViewModell: ObservableObject {
 
 	private var wrongField = false
 
-	private var size = 2 {
+	private(set) var size = 2 {
 		didSet {
 			startNewGame()
 		}
