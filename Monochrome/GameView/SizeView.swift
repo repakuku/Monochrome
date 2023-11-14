@@ -10,6 +10,8 @@ import SwiftUI
 struct SizeView: View {
 	@ObservedObject var viewModel: GameViewModell
 
+	let animation: Animation
+
 	private let mainColor = GameColors.main.rawValue
 	private let secondaryColor = GameColors.secondary.rawValue
 
@@ -40,12 +42,12 @@ struct SizeView: View {
 				secondaryColor: secondaryColor
 			)
 		}
-		.animation(.default, value: viewModel.fieldSize)
+		.animation(animation, value: viewModel.fieldSize)
     }
 }
 
 #Preview {
-    SizeView(viewModel: GameViewModell())
+	SizeView(viewModel: GameViewModell(), animation: .default)
 }
 
 struct CustomeButtonStyle: ViewModifier {

@@ -21,10 +21,10 @@ struct GameView: View {
 			VStack(spacing: GameParameters.verticalStackSpacing) {
 				MonochromeLabelView(color: GameColors.main.rawValue)
 				Spacer()
-				FieldView(viewModel: viewModel)
+				FieldView(viewModel: viewModel, animation: animation)
 				Spacer()
-				SizeView(viewModel: viewModel)
-				NewGameButtonView(viewModel: viewModel)
+				SizeView(viewModel: viewModel, animation: animation)
+				NewGameButtonView(viewModel: viewModel, animation: animation)
 			}
 		}
 		.onAppear {

@@ -10,11 +10,13 @@ import SwiftUI
 struct NewGameButtonView: View {
 	@ObservedObject var viewModel: GameViewModell
 
+	let animation: Animation
+
 	private let mainColor = GameColors.main.rawValue
 
     var body: some View {
 		Button("New Game") {
-			withAnimation {
+			withAnimation(animation) {
 				viewModel.startNewGame()
 			}
 		}
@@ -29,5 +31,5 @@ struct NewGameButtonView: View {
 }
 
 #Preview {
-    NewGameButtonView(viewModel: GameViewModell())
+	NewGameButtonView(viewModel: GameViewModell(), animation: .default)
 }

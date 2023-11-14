@@ -10,6 +10,8 @@ import SwiftUI
 struct FieldView: View {
 	@ObservedObject var viewModel: GameViewModell
 
+	let animation: Animation
+
 	var body: some View {
 		VStack(spacing: GameParameters.FieldView.stackSpacing) {
 			ForEach(0..<viewModel.fieldSize, id: \.self) { x in
@@ -27,7 +29,7 @@ struct FieldView: View {
 								)
 							)
 							.onTapGesture {
-								withAnimation {
+								withAnimation(animation) {
 									viewModel.changeColor(x: x, y: y)
 								}
 							}
@@ -41,10 +43,10 @@ struct FieldView: View {
 			x: GameParameters.FieldView.shadowOffset,
 			y: GameParameters.FieldView.shadowOffset
 		)
-		.animation(.default, value: viewModel.fieldSize)
+		.animation(animation, value: viewModel.fieldSize)
 	}
 }
 
 #Preview {
-	FieldView(viewModel: GameViewModell())
+	FieldView(viewModel: GameViewModell(), animation: Animation.default)
 }
