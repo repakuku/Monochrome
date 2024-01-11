@@ -32,8 +32,6 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 ## How to Play
 
-## How to Play
-
 1. **Convert Colors:**
    - Touch any cell to toggle its color.
    - The entire row and column of the selected cell will switch to the opposite color.
