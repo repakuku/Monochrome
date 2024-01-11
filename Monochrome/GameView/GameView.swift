@@ -10,7 +10,7 @@ import SwiftUI
 struct GameView: View {
 	@ObservedObject var viewModel: GameViewModell
 
-	private let animation = Animation.easeInOut(duration: 1)
+	private let animation = Animation.easeInOut(duration: 0.2)
 
 	var body: some View {
 		ZStack {
