@@ -10,11 +10,11 @@ import SwiftUI
 struct MonochromeLabelView: View {
 	let color: String
 
-    var body: some View {
+	var body: some View {
 		Text("Monochrome")
 			.foregroundStyle(Color(color))
 			.font(.title)
-    }
+	}
 }
 
 #Preview {

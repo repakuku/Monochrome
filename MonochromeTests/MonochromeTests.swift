@@ -10,11 +10,11 @@ import XCTest
 
 final class MonochromeTests: XCTestCase {
 
-	var sut: GameViewModell!
+	var sut: GameViewModel!
 
 	override func setUp() {
 		super.setUp()
-		sut = GameViewModell()
+		sut = GameViewModel()
 	}
 
 	override func tearDown() {

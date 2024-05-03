@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SizeView: View {
-	@ObservedObject var viewModel: GameViewModell
+	@ObservedObject var viewModel: GameViewModel
 
 	let animation: Animation
 
@@ -47,7 +47,7 @@ struct SizeView: View {
 }
 
 #Preview {
-	SizeView(viewModel: GameViewModell(), animation: .default)
+	SizeView(viewModel: GameViewModel(), animation: .default)
 }
 
 struct CustomeButtonStyle: ViewModifier {

@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct MonochromeApp: App {
-	@StateObject private var viewModel = GameViewModell()
+	@StateObject private var viewModel = GameViewModel()
 
     var body: some Scene {
         WindowGroup {

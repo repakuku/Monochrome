@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		071087332AFB419E002A8E8D /* GameColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071087322AFB419E002A8E8D /* GameColors.swift */; };
-		07230B872AE1C330002D9A2B /* GameViewModell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07230B862AE1C330002D9A2B /* GameViewModell.swift */; };
+		07230B872AE1C330002D9A2B /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07230B862AE1C330002D9A2B /* GameViewModel.swift */; };
 		07230B892AE1C380002D9A2B /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07230B882AE1C380002D9A2B /* Game.swift */; };
 		074DA5242AFD322900CD6B08 /* MonochromeLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074DA5232AFD322900CD6B08 /* MonochromeLabelView.swift */; };
 		074DA5262AFD330A00CD6B08 /* SizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074DA5252AFD330A00CD6B08 /* SizeView.swift */; };
@@ -34,7 +34,7 @@
 
 /* Begin PBXFileReference section */
 		071087322AFB419E002A8E8D /* GameColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameColors.swift; sourceTree = "<group>"; };
-		07230B862AE1C330002D9A2B /* GameViewModell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModell.swift; sourceTree = "<group>"; };
+		07230B862AE1C330002D9A2B /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		07230B882AE1C380002D9A2B /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		074DA5232AFD322900CD6B08 /* MonochromeLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonochromeLabelView.swift; sourceTree = "<group>"; };
 		074DA5252AFD330A00CD6B08 /* SizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeView.swift; sourceTree = "<group>"; };
@@ -68,6 +68,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0789BBA62BE5855C002E8DEA /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				07B3D7492B04135800A5925D /* GameParameters.swift */,
+				071087322AFB419E002A8E8D /* GameColors.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
 		078FA6C92B0315D300E80102 /* MonochromeTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -97,6 +106,7 @@
 		07AAA3B22A90224500AED136 /* Monochrome */ = {
 			isa = PBXGroup;
 			children = (
+				0789BBA62BE5855C002E8DEA /* Theme */,
 				07E64BB72AE73EDC000230DC /* App */,
 				07E64BB62AE73EBB000230DC /* GameView */,
 				07E64BB52AE73EAE000230DC /* Models */,
@@ -125,9 +135,9 @@
 		07E64BB62AE73EBB000230DC /* GameView */ = {
 			isa = PBXGroup;
 			children = (
-				07AAA3B52A90224500AED136 /* GameView.swift */,
-				07230B862AE1C330002D9A2B /* GameViewModell.swift */,
 				076995562ACF756D0060E081 /* FieldView.swift */,
+				07AAA3B52A90224500AED136 /* GameView.swift */,
+				07230B862AE1C330002D9A2B /* GameViewModel.swift */,
 				074DA5232AFD322900CD6B08 /* MonochromeLabelView.swift */,
 				074DA5252AFD330A00CD6B08 /* SizeView.swift */,
 				074DA5272AFD33B000CD6B08 /* NewGameButtonView.swift */,
@@ -139,8 +149,6 @@
 			isa = PBXGroup;
 			children = (
 				07AAA3B32A90224500AED136 /* MonochromeApp.swift */,
-				07B3D7492B04135800A5925D /* GameParameters.swift */,
-				071087322AFB419E002A8E8D /* GameColors.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -200,7 +208,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1510;
 				TargetAttributes = {
 					078FA6C72B0315D300E80102 = {
 						CreatedOnToolsVersion = 15.0;
@@ -284,7 +292,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				07230B872AE1C330002D9A2B /* GameViewModell.swift in Sources */,
+				07230B872AE1C330002D9A2B /* GameViewModel.swift in Sources */,
 				071087332AFB419E002A8E8D /* GameColors.swift in Sources */,
 				07230B892AE1C380002D9A2B /* Game.swift in Sources */,
 				074DA5242AFD322900CD6B08 /* MonochromeLabelView.swift in Sources */,

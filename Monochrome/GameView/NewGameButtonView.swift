@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct NewGameButtonView: View {
-	@ObservedObject var viewModel: GameViewModell
+	@ObservedObject var viewModel: GameViewModel
 
 	let animation: Animation
 
 	private let mainColor = GameColors.main.rawValue
 
-    var body: some View {
+	var body: some View {
 		Button("New Game") {
 			withAnimation(animation) {
 				viewModel.startNewGame()
@@ -27,9 +27,9 @@ struct NewGameButtonView: View {
 			RoundedRectangle(cornerRadius: GameParameters.NewGameButtonView.cornerRadius)
 				.stroke(Color(mainColor), lineWidth: GameParameters.NewGameButtonView.lineWidth)
 		)
-    }
+	}
 }
 
 #Preview {
-	NewGameButtonView(viewModel: GameViewModell(), animation: .default)
+	NewGameButtonView(viewModel: GameViewModel(), animation: .default)
 }

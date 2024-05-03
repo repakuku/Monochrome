@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct GameView: View {
-	@ObservedObject var viewModel: GameViewModell
+	@ObservedObject var viewModel: GameViewModel
 
-	private let animation = Animation.easeInOut(duration: 0.2)
+	private let animation: Animation = .interactiveSpring(response: 0.5, dampingFraction: 0.85, blendDuration: 0.5)
 
 	var body: some View {
 		ZStack {
@@ -21,7 +21,7 @@ struct GameView: View {
 			VStack(spacing: GameParameters.verticalStackSpacing) {
 				MonochromeLabelView(color: GameColors.main.rawValue)
 				Spacer()
-				FieldView(viewModel: viewModel, animation: animation)
+				FieldView(viewModel: viewModel)
 				Spacer()
 				SizeView(viewModel: viewModel, animation: animation)
 				NewGameButtonView(viewModel: viewModel, animation: animation)
@@ -43,5 +43,5 @@ struct GameView: View {
 }
 
 #Preview {
-	GameView(viewModel: GameViewModell())
+	GameView(viewModel: GameViewModel())
 }

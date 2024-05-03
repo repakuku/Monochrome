@@ -12,11 +12,11 @@ enum GameParameters {
 	static let verticalStackSpacing = 30.0
 
 	enum FieldView {
-		static let stackSpacing = 2.0
-		static let cornerRadius = 10
-		static let frameSize = 350.0
-		static let shadowRadius = 5.0
-		static let shadowOffset = 20.0
+		static let stackSpacing: CGFloat = 2.0
+		static let cornerRadius: CGFloat = 10
+		static let frameSize: CGFloat = 350.0
+		static let shadowRadius: CGFloat = 5.0
+		static let shadowOffset: CGFloat = 20.0
 	}
 
 	enum SizeView {
