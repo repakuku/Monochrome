@@ -52,29 +52,27 @@ enum FlatColor {
 		static let WhiteSmoke = UIColor(hex: 0xEFEFEF)
 		static let Iron = UIColor(hex: 0xD1D5D8)
 		static let IronGray = UIColor(hex: 0x75706B)
-
-		static let Test = UIColor(hex: 0x313131)
 	}
 
 	enum Black {
 		static let BlackHole = UIColor(hex: 0x000000)
+		static let Black = UIColor(hex: 0x313137)
 	}
 }
 
 enum Colors {
-	static let blue = UIColor.color(light: FlatColor.Blue.Chambray, dark: FlatColor.Gray.Test)
-
 	static let white = UIColor.color(light: FlatColor.Gray.WhiteSmoke, dark: FlatColor.Gray.Iron)
-	static let gray = UIColor.color(light: FlatColor.Gray.Iron, dark: FlatColor.Gray.AlmondFrost)
-	static let black = UIColor.color(light: FlatColor.Black.BlackHole, dark: FlatColor.Gray.WhiteSmoke)
+	static let black = UIColor.color(light: FlatColor.Blue.Chambray, dark: FlatColor.Black.Black)
 
 	static let light = UIColor.color(light: FlatColor.Blue.Chambray, dark: FlatColor.Gray.Iron)
 	static let dark = UIColor.color(light: FlatColor.Blue.Chambray, dark: FlatColor.Blue.BlueWhale)
+
+	static let gray = UIColor.color(light: FlatColor.Gray.Iron, dark: FlatColor.Gray.IronGray)
 }
 
 enum Theme {
 	static let frontCellColor = Colors.white
-	static let backCellColor = Colors.blue
+	static let backCellColor = Colors.black
 
 	static let mainColor = Colors.light
 	static let accentColor = Colors.dark

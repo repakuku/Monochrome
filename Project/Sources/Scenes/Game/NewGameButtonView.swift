@@ -20,9 +20,9 @@ struct NewGameButtonView: View {
 				viewModel.startNewGame()
 			}
 		}
-		.frame(width: GameParameters.NewGameButtonView.width, height: GameParameters.NewGameButtonView.height)
+		.frame(width: 200, height: 50)
 		.foregroundStyle(Color(mainColor))
-		.font(.largeTitle)
+		.font(.title)
 		.overlay(
 			RoundedRectangle(cornerRadius: GameParameters.NewGameButtonView.cornerRadius)
 				.stroke(Color(mainColor), lineWidth: GameParameters.NewGameButtonView.lineWidth)
