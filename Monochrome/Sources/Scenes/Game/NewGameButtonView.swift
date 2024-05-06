@@ -12,7 +12,7 @@ struct NewGameButtonView: View {
 
 	let animation: Animation
 
-	private let mainColor = GameColors.main.rawValue
+	private let mainColor = Theme.mainColor
 
 	var body: some View {
 		Button("New Game") {

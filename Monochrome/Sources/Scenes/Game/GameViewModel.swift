@@ -5,6 +5,7 @@
 //  Created by Alexey Turulin on 10/19/23.
 //
 
+import UIKit
 import Combine
 
 final class GameViewModel: ObservableObject {
@@ -18,12 +19,12 @@ final class GameViewModel: ObservableObject {
 		size
 	}
 
-	var cellColor: String {
-		GameColors.secondary.rawValue
+	var cellColor: UIColor {
+		Theme.mainColor
 	}
 
-	var changedCellColor: String {
-		GameColors.main.rawValue
+	var changedCellColor: UIColor {
+		Theme.accentColor
 	}
 
 	private(set) var game: IGame = Game(field: [])
@@ -57,7 +58,7 @@ final class GameViewModel: ObservableObject {
 		checkGame()
 	}
 
-	func getColorForCellAt(x: Int, y: Int) -> String {
+	func getColorForCellAt(x: Int, y: Int) -> UIColor {
 		let color = game.field[x][y].value == 0 ? cellColor : changedCellColor
 		return color
 	}

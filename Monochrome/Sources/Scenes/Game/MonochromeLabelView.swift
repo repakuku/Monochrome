@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MonochromeLabelView: View {
-	let color: String
+	let color: UIColor
 
 	var body: some View {
 		Text("Monochrome")
@@ -18,5 +18,5 @@ struct MonochromeLabelView: View {
 }
 
 #Preview {
-	MonochromeLabelView(color: GameColors.main.rawValue)
+	MonochromeLabelView(color: Theme.accentColor)
 }

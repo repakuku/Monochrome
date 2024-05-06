@@ -12,8 +12,8 @@ struct SizeView: View {
 
 	let animation: Animation
 
-	private let mainColor = GameColors.main.rawValue
-	private let secondaryColor = GameColors.secondary.rawValue
+	private let mainColor = Theme.mainColor
+	private let accentColor = Theme.accentColor
 
     var body: some View {
 		HStack(alignment: .center) {
@@ -24,7 +24,7 @@ struct SizeView: View {
 				size: viewModel.fieldSize,
 				limitSize: viewModel.minimumSize,
 				mainColor: mainColor,
-				secondaryColor: secondaryColor
+				accentColor: accentColor
 			)
 
 			Text("\(viewModel.fieldSize)x\(viewModel.fieldSize)")
@@ -39,7 +39,7 @@ struct SizeView: View {
 				size: viewModel.fieldSize,
 				limitSize: viewModel.maximumSize,
 				mainColor: mainColor,
-				secondaryColor: secondaryColor
+				accentColor: accentColor
 			)
 		}
 		.animation(animation, value: viewModel.fieldSize)
@@ -53,15 +53,15 @@ struct SizeView: View {
 struct CustomeButtonStyle: ViewModifier {
 	let size: Int
 	let limitSize: Int
-	let mainColor: String
-	let secondaryColor: String
+	let mainColor: UIColor
+	let accentColor: UIColor
 
 	func body(content: Content) -> some View {
 		content
 			.disabled(size == limitSize)
 			.opacity(size == limitSize ? GameParameters.SizeView.minOpacity : GameParameters.SizeView.maxOpacity)
 			.font(.system(size: GameParameters.SizeView.buttonFontSize))
-			.foregroundStyle(size == limitSize ? Color(secondaryColor) : Color(mainColor))
+			.foregroundStyle(size == limitSize ? Color(accentColor) : Color(mainColor))
 	}
 }
 
@@ -69,15 +69,15 @@ extension Button {
 	func style(
 		size: Int,
 		limitSize: Int,
-		mainColor: String,
-		secondaryColor: String
+		mainColor: UIColor,
+		accentColor: UIColor
 	) -> some View {
 		modifier(
 			CustomeButtonStyle(
 				size: size,
 				limitSize: limitSize,
 				mainColor: mainColor,
-				secondaryColor: secondaryColor
+				accentColor: accentColor
 			)
 		)
 	}
