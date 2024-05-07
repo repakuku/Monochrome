@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GameView: View {
-	@ObservedObject var viewModel: GameViewModel
+	@StateObject private var viewModel = GameViewModel()
 
 	private let animation: Animation = .interactiveSpring(response: 0.5, dampingFraction: 0.85, blendDuration: 0.5)
 
@@ -43,5 +43,5 @@ struct GameView: View {
 }
 
 #Preview {
-	GameView(viewModel: GameViewModel())
+	GameView()
 }

@@ -1,0 +1,176 @@
+@startuml Monochrome Game Architectural
+ 
+!include https://raw.githubusercontent.com/patrik-csak/one-dark-plantuml-theme/v1.0.1/theme.puml
+skinparam backgroundcolor #1E2021
+skinparam linetype ortho
+
+title Monochrome
+
+'  User
+
+struct User {
+    # id: UUID
+    # name: String
+    # email: String
+    # gameProgress: Int
+    # isRegistered: Bool
+}
+
+protocol IAuthService {
+    login(user: User)
+    logout()
+    authenticate(user: User)
+}
+
+class AuthService {
+    # login(user: User)
+    # logout()
+    # authenticate(user: User)
+}
+
+AuthService .U.> IAuthService
+AuthService o-D- User
+
+protocol IUserRepository {
+    create(user: User)
+    get(user: User)
+    update(user: User)
+    delete(user: User)
+}
+
+class UserRepository {
+    # create(user: User)
+    # get(user: User)
+    # update(user: User)
+    # delete(user: User)
+}
+
+UserRepository .U.> IUserRepository
+UserRepository o-D- User
+
+protocol IUserManager {
+    login()
+    logout()
+    register(user: User)
+}
+
+class UserManager {
+    - user: User
+
+    - authService: AuthService
+    - userRepository: UserRepository
+
+    # login()
+    # logout()
+    # register(user: User)
+}
+
+UserManager .U.> IUserManager
+UserManager *-D- User
+UserManager *-D- IAuthService
+UserManager *-D- IUserRepository
+
+' Game
+
+enum Difficulty {
+    easy(Int)
+    medium(Int)
+    hard(Int)
+}
+
+enum CellSide {
+    front 
+    back
+
+    # value: Int
+}
+
+struct Cell {
+    # side: CellSide
+}
+
+Cell *-D- CellSide
+
+struct Game {
+    # field: [[Cell]]
+    # difficulty: Difficulty
+}
+
+Game *-D- Cell
+Game *-D- Difficulty
+
+protocol IGameManager {
+    startGame()
+    saveGame(game: Game)
+}
+
+class GameManager {
+    # startGame()
+    # saveGame(game: Game)
+}
+
+GameManager .U.> IGameManager
+GameManager o-D- Game
+
+protocol IGameViewModel {
+    startGame()
+    stopGame()
+    getColorForCellAt(x: Int, y: Int)
+    changeCellColorAt(x: Int, y: Int)
+}
+
+class GameViewModel {
+    - game: Game
+    - gameService: GameManager
+
+    # startGame()
+    # stopGame()
+    # getColorForCellAt(x: Int, y: Int)
+    # changeCellColorAt(x: Int, y: Int)
+}
+
+GameViewModel .U.> IGameViewModel
+GameViewModel *-D- Game
+GameViewModel *-D- IGameManager
+' GameViewModel and User progress connection?
+' GameViewModel o-- IUserManager
+
+' Views
+
+struct MonochromeApp {}
+
+struct RootView {
+    - @StateObject userManager: IUserManager
+}
+
+RootView *-D- IUserManager
+
+struct LoginView {
+    - @EnvironmentObject userManager: IUserManager
+}
+
+LoginView o-D- IUserManager
+
+struct MainView {}
+
+struct GameView {}
+
+GameView *-D- IGameViewModel
+
+struct SettingsView {}
+
+' Relationships
+
+' MonochromeApp
+MonochromeApp *-D- RootView
+
+' RootView
+RootView *-D- LoginView
+RootView *-D- MainView
+
+' MainView
+MainView *-D- GameView
+MainView *-D- SettingsView
+
+
+@enduml
