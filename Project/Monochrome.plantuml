@@ -6,171 +6,235 @@ skinparam linetype ortho
 
 title Monochrome
 
-'  User
+package App {
 
-struct User {
-    # id: UUID
-    # name: String
-    # email: String
-    # gameProgress: Int
-    # isRegistered: Bool
+package GameModel {
+    enum Difficulty {
+        easy(Int)
+        medium(Int)
+        hard(Int)
+    }
+
+    enum CellSide {
+        front 
+        back
+
+        + value: Int
+    }
+
+    struct Cell {
+        + side: CellSide
+    }
+
+    struct Game {
+        + field: [[Cell]]
+        + difficulty: Difficulty
+        + currentScore: Int
+        + timeElapsed: Double
+    }
+
+    Cell *-- CellSide
+    Game *-- Cell
+    Game *-- Difficulty 
 }
 
-protocol IAuthService {
-    login(user: User)
-    logout()
-    authenticate(user: User)
+package UserModel {
+    struct GameProgress {
+        + games: [Game]
+    }
+
+    struct User {
+        + id: UUID
+        + name: String
+        + email: String
+        + gameProgress: GameProgress
+        + isRegistered: Bool
+    }
+
+    User *-- GameProgress
+
+    GameProgress o-R- Game
 }
 
-class AuthService {
-    # login(user: User)
-    # logout()
-    # authenticate(user: User)
+package NetworkLayer {
+    protocol INetworkService {
+        perform(request: Request, completion: (Result<Response, Error>) -> Void)
+    }
+
+    protocol IAuthService {
+        + login(user: User, completion: (Result<Void, Error>) -> Void)
+    }
+
+    class AuthService {
+        - networkService: INetworkService
+
+        + login(user: User, completion: (Result<Void, Error>) -> Void)
+    }
+
+    AuthService .U.> IAuthService
+    AuthService o-R- User
+    AuthService *-D- INetworkService
+
+    INetworkService o-- Networking
 }
 
-AuthService .U.> IAuthService
-AuthService o-D- User
+package UserService {
+    protocol IUserRepository {
+        + save(user: User)
+        + get(id: UUID) -> User
+        + update(user: User) -> Bool
+        + delete(user: User) -> Bool
+    }
 
-protocol IUserRepository {
-    create(user: User)
-    get(user: User)
-    update(user: User)
-    delete(user: User)
+    class UserRepository {
+        + save(user: User) -> Bool
+        + get(id: UUID) -> User
+        + update(user: User) -> Bool
+        + delete(user: User) -> Bool
+    }
+
+    protocol IUserManager {
+        +isLogged: Bool
+        
+        +login(user: User, completion: (Result<Void, Error>) -> Void)
+        +logout(completion: (Result<Void, Error>) -> Void)
+    }
+
+    class UserManager {
+        - user: User
+
+        - authService: AuthService
+        - userRepository: UserRepository
+
+        +isLogged: Bool
+        
+        +login(user: User, completion: (Result<Void, Error>) -> Void)
+        +logout(completion: (Result<Void, Error>) -> Void)
+    }
+
+    UserRepository .U.> IUserRepository
+    UserRepository o-- User
+
+    UserManager .U.> IUserManager
+    UserManager *-- User
+    UserManager *-- IUserRepository
+
+    UserManager *-L- IAuthService
 }
 
-class UserRepository {
-    # create(user: User)
-    # get(user: User)
-    # update(user: User)
-    # delete(user: User)
+package GaneService {
+    protocol IGameRepository {
+        + getGame(id: UUID) -> Game
+        + save(game: Game) -> Bool
+    }
+
+    class GameRepository {
+        + getGame(id: UUID) -> Game
+        + save(game: Game) -> Bool
+    }
+
+    protocol IGameManager {
+        + startGame() -> Game
+        + saveGame(game: Game) -> Bool
+    }
+
+    class GameManager {
+        - game: Game
+
+        + startGame() -> Game
+        + saveGame(game: Game) -> Bool
+    }
+
+    GameRepository .U.> IGameRepository
+    GameRepository o-- Game
+    GameRepository o-- User
+
+    GameManager .U.> IGameManager
+    GameManager *-- IGameRepository
+    GameManager *-- Game
 }
 
-UserRepository .U.> IUserRepository
-UserRepository o-D- User
+package ViewModel {
+    protocol IGameViewModel {
+        + logout(completion: (Result<Void, Error>) -> Void)
+        + startNewGame() -> Game
+        + saveGame() -> Bool
+        + getColorForCellAt(x: Int, y: Int) -> UIColor
+        + changeCellColorAt(x: Int, y: Int) -> Bool
+    }
 
-protocol IUserManager {
-    login()
-    logout()
-    register(user: User)
+    class GameViewModel {
+        - gameManager: IGameManager
+        - userManager: IUserManager
+
+        + logout(completion: (Result<Void, Error>) -> Void)
+        + startNewGame() -> Game
+        + saveGame() -> Bool
+        + getColorForCellAt(x: Int, y: Int) -> UIColor
+        + changeCellColorAt(x: Int, y: Int) -> Bool
+    }
+
+    protocol ILoginViewModel {
+        + login(user: User, completion: (Result<Void, Error>) -> Void)
+    }
+
+    class LoginViewModel {
+        - userManager: IUserManager
+
+        + login(user: User, completion: (Result<Void, Error>) -> Void)
+    }
+
+    protocol IRootViewModel {
+        + isLogged: Bool
+    }
+
+    class RootViewModel {
+        - userManager: IUserManager
+        + isLogged: Bool
+    }
+
+    GameViewModel .U.> IGameViewModel
+    GameViewModel *-- IGameManager
+    GameViewModel o-- IUserManager
+
+    LoginViewModel o-- IUserManager
+    LoginViewModel .U.> ILoginViewModel
+
+    RootViewModel .U.> IRootViewModel
+    RootViewModel *-- IUserManager
 }
 
-class UserManager {
-    - user: User
+package View {
 
-    - authService: AuthService
-    - userRepository: UserRepository
+    struct GameView {
+        - logout()
+        - startGame()
+        - stopGame()
+        - getColorForCellAt() -> Color
+        - changeCellColorAt() -> Color
+    }
 
-    # login()
-    # logout()
-    # register(user: User)
+    struct LoginView {
+        - login(email: String, password: String) -> Bool
+    }
+
+    struct RootView {
+        - isLogged: Bool
+    }
+
+    GameView *-D- IGameViewModel
+
+    LoginView *-- ILoginViewModel
+
+    RootView *-D- IRootViewModel
+    RootView *-L- LoginView
+    RootView *-R- GameView
 }
-
-UserManager .U.> IUserManager
-UserManager *-D- User
-UserManager *-D- IAuthService
-UserManager *-D- IUserRepository
-
-' Game
-
-enum Difficulty {
-    easy(Int)
-    medium(Int)
-    hard(Int)
-}
-
-enum CellSide {
-    front 
-    back
-
-    # value: Int
-}
-
-struct Cell {
-    # side: CellSide
-}
-
-Cell *-D- CellSide
-
-struct Game {
-    # field: [[Cell]]
-    # difficulty: Difficulty
-}
-
-Game *-D- Cell
-Game *-D- Difficulty
-
-protocol IGameManager {
-    startGame()
-    saveGame(game: Game)
-}
-
-class GameManager {
-    # startGame()
-    # saveGame(game: Game)
-}
-
-GameManager .U.> IGameManager
-GameManager o-D- Game
-
-protocol IGameViewModel {
-    startGame()
-    stopGame()
-    getColorForCellAt(x: Int, y: Int)
-    changeCellColorAt(x: Int, y: Int)
-}
-
-class GameViewModel {
-    - game: Game
-    - gameService: GameManager
-
-    # startGame()
-    # stopGame()
-    # getColorForCellAt(x: Int, y: Int)
-    # changeCellColorAt(x: Int, y: Int)
-}
-
-GameViewModel .U.> IGameViewModel
-GameViewModel *-D- Game
-GameViewModel *-D- IGameManager
-' GameViewModel and User progress connection?
-' GameViewModel o-- IUserManager
-
-' Views
 
 struct MonochromeApp {}
 
-struct RootView {
-    - @StateObject userManager: IUserManager
-}
-
-RootView *-D- IUserManager
-
-struct LoginView {
-    - @EnvironmentObject userManager: IUserManager
-}
-
-LoginView o-D- IUserManager
-
-struct MainView {}
-
-struct GameView {}
-
-GameView *-D- IGameViewModel
-
-struct SettingsView {}
-
-' Relationships
-
-' MonochromeApp
 MonochromeApp *-D- RootView
 
-' RootView
-RootView *-D- LoginView
-RootView *-D- MainView
-
-' MainView
-MainView *-D- GameView
-MainView *-D- SettingsView
-
+}
 
 @enduml
