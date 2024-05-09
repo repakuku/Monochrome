@@ -8,6 +8,8 @@
 
 import Foundation
 
-struct User {
+struct User: Codable {
+	var id = UUID()
+	var email: String
 	var isRegistered = false
 }

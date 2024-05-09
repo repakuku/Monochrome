@@ -9,12 +9,17 @@ import SwiftUI
 
 @main
 struct MonochromeApp: App {
-	@StateObject private var userManager = UserManager()
+	@StateObject var userManager = UserManager(
+		userRepository: UserRepository(),
+		authService: MockAuthService()
+	)
 
-    var body: some Scene {
-        WindowGroup {
-            RootView()
-				.environmentObject(userManager)
-        }
-    }
+	var body: some Scene {
+		WindowGroup {
+			NavigationView {
+				RootView()
+			}
+			.environmentObject(userManager)
+		}
+	}
 }

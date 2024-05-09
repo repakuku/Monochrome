@@ -207,19 +207,15 @@ package ViewModel {
 package View {
 
     struct GameView {
-        - logout()
-        - startGame()
-        - stopGame()
-        - getColorForCellAt() -> Color
-        - changeCellColorAt() -> Color
+        - viewModel: IGameViewModel
     }
 
     struct LoginView {
-        - login(email: String, password: String) -> Bool
+        - viewModel: ILoginViewModel
     }
 
     struct RootView {
-        - isLogged: Bool
+        - viewModel: IRootViewModel
     }
 
     GameView *-D- IGameViewModel

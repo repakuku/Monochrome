@@ -9,11 +9,23 @@
 import SwiftUI
 
 struct LoginView: View {
-	@EnvironmentObject private var userManager: UserManager
+	@EnvironmentObject var userManager: UserManager
+	@State var email = ""
+	@State var password = ""
 
 	var body: some View {
-		Button("Login") {
-			userManager.login()
+		VStack {
+			MonochromeLabelView()
+			Spacer()
+			TextField("Email", text: $email)
+				.keyboardType(.emailAddress)
+			SecureField("Password", text: $password)
+			Button("Login") {
+				Task {
+					await userManager.signIn(email: email, password: password)
+				}
+			}
+			Spacer()
 		}
 	}
 }

@@ -5,7 +5,7 @@
 //  Created by Alexey Turulin on 10/19/23.
 //
 
-struct Cell {
+struct Cell: Codable {
 	var value: Int
 
 	var isFlipped: Bool {
@@ -13,10 +13,6 @@ struct Cell {
 	}
 }
 
-protocol IGame {
-	var field: [[Cell]] { get set }
-}
-
-struct Game: IGame {
+struct Game: Codable {
 	var field: [[Cell]]
 }

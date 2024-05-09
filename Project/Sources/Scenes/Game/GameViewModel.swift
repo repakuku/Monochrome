@@ -27,7 +27,7 @@ final class GameViewModel: ObservableObject {
 		Theme.backCellColor
 	}
 
-	private(set) var game: IGame = Game(field: [])
+	private(set) var game = Game(field: [])
 
 	private var wrongField = false
 

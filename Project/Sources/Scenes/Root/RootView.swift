@@ -9,16 +9,17 @@
 import SwiftUI
 
 struct RootView: View {
-	@EnvironmentObject private var userManager: UserManager
+	@EnvironmentObject var userManager: UserManager
 
 	var body: some View {
 		Group {
-			if userManager.user.isRegistered {
+			if userManager.isLoggedIn {
 				GameView()
 			} else {
 				LoginView()
 			}
 		}
+		.environmentObject(userManager)
 	}
 }
 
