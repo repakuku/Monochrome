@@ -9,14 +9,16 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
+	@State private var game = Game()
+
+	var body: some View {
 		ZStack {
-			BackgroundView()
-			FieldView(size: 4)
+			BackgroundView(game: $game)
+			FieldView(game: $game)
 		}
-    }
+	}
 }
 
 #Preview {
-    ContentView()
+	ContentView()
 }

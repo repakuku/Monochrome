@@ -9,18 +9,25 @@
 import SwiftUI
 
 struct FieldView: View {
-	let size: Int
+	@Binding var game: Game
 
 	var body: some View {
 		VStack {
-			ForEach(0..<size) { _ in
+			ForEach(0..<game.fieldSize, id: \.self) { x in
 				HStack {
-					ForEach(0..<size) { _ in
-						RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
-							.frame(
-								width: Sizes.General.roundedViewLength,
-								height: Sizes.General.roundedViewLength
-							)
+					ForEach(0..<game.fieldSize, id: \.self) { y in
+						Button {
+							game.toggleColors(atX: x, atY: y)
+						} label: {
+							RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+								.frame(
+									width: Sizes.General.roundedViewLength,
+									height: Sizes.General.roundedViewLength
+								)
+								.foregroundStyle(
+									game.field[x][y] == 0 ? Color.red : Color.black
+								)
+						}
 					}
 				}
 			}
@@ -29,5 +36,5 @@ struct FieldView: View {
 }
 
 #Preview {
-	FieldView(size: 4)
+	FieldView(game: .constant(Game()))
 }

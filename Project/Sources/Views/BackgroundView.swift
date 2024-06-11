@@ -9,11 +9,13 @@
 import SwiftUI
 
 struct BackgroundView: View {
+	@Binding var game: Game
+
 	var body: some View {
 		VStack {
 			TopView()
 			Spacer()
-			BottomView()
+			BottomView(game: $game)
 		}
 		.padding()
 		.background(
@@ -33,11 +35,13 @@ struct TopView: View {
 }
 
 struct BottomView: View {
+	@Binding var game: Game
+
 	var body: some View {
 		HStack {
-			NumberView(title: "Score", text: "999")
+			NumberView(title: "Score", text: game.score.formatted())
 			Spacer()
-			NumberView(title: "Level", text: "1")
+			NumberView(title: "Level", text: game.level.formatted())
 		}
 	}
 }
@@ -57,5 +61,5 @@ struct NumberView: View {
 }
 
 #Preview {
-	BackgroundView()
+	BackgroundView(game: .constant(Game()))
 }
