@@ -1,6 +1,6 @@
 //
-//  MonochromeTests.swift
-//  MonochromeTests
+//  GameTests.swift
+//  GameTests
 //
 //  Created by Alexey Turulin on 11/13/23.
 //
@@ -8,7 +8,7 @@
 import XCTest
 @testable import Monochrome
 
-final class MonochromeTests: XCTestCase {
+final class GameTests: XCTestCase {
 
 	var game: Game!
 

@@ -29,5 +29,11 @@ enum Sizes {
 		static let small: CGFloat = -0.2
 		static let normal: CGFloat = 1.5
 	}
+
+	enum Background {
+		static let initialSquareSize = 100
+		static let strokeWidth: CGFloat = 20
+		static let roundedRectRadius: CGFloat = 25
+	}
 }
 // swiftlint:enable type_name

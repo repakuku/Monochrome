@@ -17,7 +17,9 @@ struct FieldView: View {
 				HStack {
 					ForEach(0..<game.fieldSize, id: \.self) { y in
 						Button {
-							game.toggleColors(atX: x, atY: y)
+							withAnimation {
+								game.toggleColors(atX: x, atY: y)
+							}
 						} label: {
 							RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
 								.frame(
@@ -25,8 +27,9 @@ struct FieldView: View {
 									height: Sizes.General.roundedViewLength
 								)
 								.foregroundStyle(
-									game.field[x][y] == 0 ? Color.red : Color.black
+									game.field[x][y] == 0 ? Color(Theme.mainCellColor) : Color(Theme.accentCellColor)
 								)
+								.transition(.slide)
 						}
 					}
 				}
