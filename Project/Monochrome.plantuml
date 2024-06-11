@@ -9,11 +9,6 @@ title Monochrome
 package App {
 
 package GameModel {
-    enum Difficulty {
-        easy(Int)
-        medium(Int)
-        hard(Int)
-    }
 
     enum CellSide {
         front 
@@ -28,14 +23,10 @@ package GameModel {
 
     struct Game {
         + field: [[Cell]]
-        + difficulty: Difficulty
-        + currentScore: Int
-        + timeElapsed: Double
     }
 
     Cell *-- CellSide
     Game *-- Cell
-    Game *-- Difficulty 
 }
 
 package UserModel {
@@ -93,18 +84,11 @@ package UserService {
         + delete(user: User) -> Bool
     }
 
-    protocol IUserManager {
-        +isLogged: Bool
-        
-        +login(user: User, completion: (Result<Void, Error>) -> Void)
-        +logout(completion: (Result<Void, Error>) -> Void)
-    }
-
     class UserManager {
         - user: User
 
-        - authService: AuthService
-        - userRepository: UserRepository
+        - authService: IAuthService
+        - userRepository: IUserRepository
 
         +isLogged: Bool
         
@@ -115,7 +99,6 @@ package UserService {
     UserRepository .U.> IUserRepository
     UserRepository o-- User
 
-    UserManager .U.> IUserManager
     UserManager *-- User
     UserManager *-- IUserRepository
 
@@ -133,13 +116,8 @@ package GaneService {
         + save(game: Game) -> Bool
     }
 
-    protocol IGameManager {
-        + startGame() -> Game
-        + saveGame(game: Game) -> Bool
-    }
-
     class GameManager {
-        - game: Game
+        - game: IGame
 
         + startGame() -> Game
         + saveGame(game: Game) -> Bool
@@ -149,87 +127,64 @@ package GaneService {
     GameRepository o-- Game
     GameRepository o-- User
 
-    GameManager .U.> IGameManager
     GameManager *-- IGameRepository
     GameManager *-- Game
 }
 
 package ViewModel {
-    protocol IGameViewModel {
-        + logout(completion: (Result<Void, Error>) -> Void)
-        + startNewGame() -> Game
-        + saveGame() -> Bool
-        + getColorForCellAt(x: Int, y: Int) -> UIColor
-        + changeCellColorAt(x: Int, y: Int) -> Bool
-    }
 
     class GameViewModel {
-        - gameManager: IGameManager
-        - userManager: IUserManager
+        - gameManager: GameManager
+        - userManager: UserManager
 
         + logout(completion: (Result<Void, Error>) -> Void)
         + startNewGame() -> Game
         + saveGame() -> Bool
         + getColorForCellAt(x: Int, y: Int) -> UIColor
         + changeCellColorAt(x: Int, y: Int) -> Bool
-    }
-
-    protocol ILoginViewModel {
-        + login(user: User, completion: (Result<Void, Error>) -> Void)
     }
 
     class LoginViewModel {
-        - userManager: IUserManager
+        - userManager: UserManager
 
-        + login(user: User, completion: (Result<Void, Error>) -> Void)
+        + login(email: String, password: String, completion: (Result<Void, Error>) -> Void)
     }
 
-    protocol IRootViewModel {
-        + isLogged: Bool
-    }
+    GameViewModel *-- GameManager
+    GameViewModel o-- UserManager
 
-    class RootViewModel {
-        - userManager: IUserManager
-        + isLogged: Bool
-    }
-
-    GameViewModel .U.> IGameViewModel
-    GameViewModel *-- IGameManager
-    GameViewModel o-- IUserManager
-
-    LoginViewModel o-- IUserManager
-    LoginViewModel .U.> ILoginViewModel
-
-    RootViewModel .U.> IRootViewModel
-    RootViewModel *-- IUserManager
+    LoginViewModel o-- UserManager
 }
 
 package View {
 
     struct GameView {
-        - viewModel: IGameViewModel
+        - viewModel: GameViewModel
     }
 
     struct LoginView {
-        - viewModel: ILoginViewModel
+        - viewModel: LoginViewModel
     }
 
     struct RootView {
-        - viewModel: IRootViewModel
+        userManager: UserManager
     }
 
-    GameView *-D- IGameViewModel
+    GameView *-D- GameViewModel
 
-    LoginView *-- ILoginViewModel
+    LoginView *-- LoginViewModel
 
-    RootView *-D- IRootViewModel
     RootView *-L- LoginView
     RootView *-R- GameView
+    RootView o-- UserManager
 }
 
-struct MonochromeApp {}
+struct MonochromeApp {
+    userManager: UserManager
+}
 
 MonochromeApp *-D- RootView
+MonochromeApp *-- UserManager
 
 }
 

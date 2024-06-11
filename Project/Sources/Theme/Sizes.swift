@@ -7,64 +7,27 @@
 
 import Foundation
 
-enum GameParameters {
-	static let backgroundOpacity = 0.6
-	static let verticalStackSpacing = 30.0
-
-	enum FieldView {
-		static let stackSpacing: CGFloat = 2.0
-		static let cornerRadius: CGFloat = 10
-		static let frameSize: CGFloat = 350.0
-		static let shadowRadius: CGFloat = 5.0
-		static let shadowOffset: CGFloat = 20.0
-	}
-
-	enum SizeView {
-		static let width: CGFloat = 240
-		static let minOpacity = 0.4
-		static let maxOpacity = 1.0
-		static let textFontSize: CGFloat = 80
-		static let buttonFontSize: CGFloat = 100
-	}
-
-	enum NewGameButtonView {
-		static let width: CGFloat = 200
-		static let height: CGFloat = 60
-		static let cornerRadius: CGFloat = 10
-		static let lineWidth: CGFloat = 3
-	}
-}
-
 // swiftlint:disable type_name
 enum Sizes {
+	enum General {
+		static let roundedViewLength: CGFloat = 56
+		static let roundedRectRadius: CGFloat = 15
 
-	static let cornerRadius: CGFloat = 6
-	static let borderWidth: CGFloat = 1
-
-	enum Padding {
-		static let micro: CGFloat = 4
-		static let small: CGFloat = 8
-		static let normal: CGFloat = 16
-		static let double: CGFloat = 32
+		static let roundedRectViewWidth: CGFloat = 68
+		static let roundedRectViewHeight: CGFloat = 56
 	}
 
-	enum L {
-		static let width: CGFloat = 200
-		static let height: CGFloat = 50
-		static let widthMultiplier: CGFloat = 0.9
-		static let icon: CGFloat = 32
+	enum Stroke {
+		static let width: CGFloat = 2
 	}
 
-	enum M {
-		static let width: CGFloat = 100
-		static let height: CGFloat = 40
-		static let icon: CGFloat = 24
+	enum Spacing {
+		static let normal: CGFloat = 5
 	}
 
-	enum S {
-		static let width: CGFloat = 80
-		static let height: CGFloat = 30
-		static let icon: CGFloat = 16
+	enum Kerning {
+		static let small: CGFloat = -0.2
+		static let normal: CGFloat = 1.5
 	}
 }
 // swiftlint:enable type_name
