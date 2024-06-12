@@ -9,17 +9,23 @@
 import SwiftUI
 
 struct ResultView: View {
-	@Binding var alertIsVisible: Bool
+	@Binding var game: Game
+
 	var body: some View {
 		VStack {
 			InstructionText(text: "Level completed!")
-			BodyText(text: "What would you do next?")
+				.padding(.bottom)
+			BodyText(text: "You solved the game for \(game.steps) steps.")
+				.padding(.bottom)
 			Button {
-				alertIsVisible = false
+				withAnimation {
+					game.nextGame()
+				}
 			} label: {
-				ButtonText(text: "Play Again")
+				ButtonText(text: "Start Next Level")
 			}
 		}
+		.padding()
 		.frame(width: 300)
 		.background(
 			Color(Theme.backgroundColor)
@@ -32,5 +38,5 @@ struct ResultView: View {
 }
 
 #Preview {
-	ResultView(alertIsVisible: .constant(true))
+	ResultView(game: .constant(Game()))
 }

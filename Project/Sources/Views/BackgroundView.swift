@@ -15,6 +15,7 @@ struct BackgroundView: View {
 		VStack {
 			TopView(game: $game)
 			Spacer()
+			BottomView(game: $game)
 		}
 		.padding()
 	}
@@ -41,11 +42,13 @@ struct TopView: View {
 }
 
 struct BottomView: View {
+	@Binding var game: Game
+
 	var body: some View {
 		HStack {
-			NumberView(title: "Score", text: "0")
+			NumberView(title: "Steps", text: String(game.steps))
 			Spacer()
-			NumberView(title: "Level", text: "1")
+			NumberView(title: "Level", text: String(game.level))
 		}
 	}
 }

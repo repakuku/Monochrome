@@ -10,32 +10,37 @@ import Foundation
 
 struct Field {
 	var cells: [[Int]]
+	var isSolved = false
 }
 
 struct Game {
-	var field = Field(
-		cells: [
-			[0, 0],
-			[1, 0]
-		]
-	)
-
-	var level = 1
-
-	var fields: [Field]
-
-	var showInstructions = true
-
+	var level: Int
+	var field: Field
+	var steps: Int
+	var showInstructions: Bool
 	var fieldSize: Int {
 		field.cells.count
 	}
 
+	var gameCompleted: Bool {
+		field.isSolved
+	}
+
+	var maxLevel: Int {
+		repository.count - 1
+	}
+
+	private let repository = FieldRepository()
+
 	init() {
-		fields = [field]
+		level = 0
+		steps = 0
+		field = Field(cells: [[0]])
+		showInstructions = true
 	}
 
 	mutating func toggleColors(atX x: Int, atY y: Int) {
-		guard x < fieldSize && y < fieldSize else {
+		guard x >= 0 && x < fieldSize && y >= 0 && y < fieldSize else {
 			return
 		}
 
@@ -45,10 +50,38 @@ struct Game {
 				field.cells[index][y] = 1 - field.cells[index][y]
 			}
 		}
+
+		steps += 1
+
+		if checkField() {
+			field.isSolved = true
+		}
 	}
 
 	mutating func restart() {
+		steps = 0
 		showInstructions = true
-		field = fields[level - 1]
+		field = repository.getField(forLevel: level)
+	}
+
+	mutating func nextGame() {
+		level += 1
+
+		if level > maxLevel {
+			level = maxLevel
+		}
+
+		steps = 0
+		field = repository.getField(forLevel: level)
+	}
+
+	private func checkField() -> Bool {
+		for row in field.cells {
+			for cell in row where cell == 0 {
+				return false
+			}
+		}
+
+		return true
 	}
 }

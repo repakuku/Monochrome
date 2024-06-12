@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ContentView: View {
 	@State private var game = Game()
-	@State private var alertIsVisible = false
 
 	var body: some View {
 		ZStack {
@@ -20,10 +19,13 @@ struct ContentView: View {
 					.transition(.offset(x: Sizes.Transition.largeOffset))
 			}
 
-			if alertIsVisible {
-				ResultView(alertIsVisible: $alertIsVisible)
+			if game.gameCompleted {
+				ResultView(game: $game)
+					.transition(.scale)
 			} else {
 				FieldView(game: $game)
+					.zIndex(1)
+					.transition(.scale)
 			}
 		}
 	}
@@ -32,7 +34,7 @@ struct ContentView: View {
 struct InstructionView: View {
 	var body: some View {
 		VStack {
-			InstructionText(text: "Tap on any cell...")
+			InstructionText(text: "Tap on the cell...")
 				.padding(.bottom, Sizes.Padding.large)
 			InstructionText(text: "Target: Fill all the cells.")
 		}
