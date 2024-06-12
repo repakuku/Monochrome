@@ -13,35 +13,39 @@ struct BackgroundView: View {
 
 	var body: some View {
 		VStack {
-			TopView()
+			TopView(game: $game)
 			Spacer()
-			BottomView(game: $game)
 		}
 		.padding()
-		.background(
-			SquaresView()
-		)
 	}
 }
 
 struct TopView: View {
+	@Binding var game: Game
+
 	var body: some View {
 		HStack {
-			RoundedImageViewStroked(systemName: Images.arrow.description)
+			if !game.showInstructions {
+				Button {
+					withAnimation {
+						game.restart()
+					}
+				} label: {
+					RoundedImageViewStroked(systemName: Images.arrow.description)
+				}
+				.transition(.offset(x: -Sizes.Transition.normalOffset))
+			}
 			Spacer()
-			RoundedImageViewFilled(systemName: Images.list.description)
 		}
 	}
 }
 
 struct BottomView: View {
-	@Binding var game: Game
-
 	var body: some View {
 		HStack {
-			NumberView(title: "Score", text: game.score.formatted())
+			NumberView(title: "Score", text: "0")
 			Spacer()
-			NumberView(title: "Level", text: game.level.formatted())
+			NumberView(title: "Level", text: "1")
 		}
 	}
 }
@@ -55,42 +59,6 @@ struct NumberView: View {
 			VStack(spacing: Sizes.Spacing.normal) {
 				LabelText(title: title)
 				RoundedRectTextView(text: text)
-			}
-		}
-	}
-}
-
-struct SquaresView: View {
-	@Environment(\.colorScheme) var colorScheme
-
-	var body: some View {
-		ZStack {
-			Color(Theme.backgroundColor)
-				.ignoresSafeArea()
-			ForEach(1..<5) { square in
-				let size = CGFloat(square * Sizes.Background.initialSquareSize)
-				let opacity = colorScheme == .dark ? 0.1 : 0.3
-				RoundedRectangle(cornerRadius: Sizes.Background.roundedRectRadius)
-					.stroke(lineWidth: Sizes.Background.strokeWidth)
-					.fill(
-						RadialGradient(
-							gradient: Gradient(
-									colors: [
-										Color(Theme.squaresColor)
-											.opacity(opacity * 0.8),
-										Color(Theme.squaresColor)
-											.opacity(0)
-									]
-								),
-							center: .center,
-							startRadius: 100,
-							endRadius: 270
-						)
-					)
-					.frame(
-						width: size,
-						height: size
-					)
 			}
 		}
 	}

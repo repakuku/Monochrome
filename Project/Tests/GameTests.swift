@@ -23,22 +23,48 @@ final class GameTests: XCTestCase {
 	}
 
 	func testColorToggle() {
-		game.field = [
-			[0, 1, 0, 0],
-			[1, 0, 1, 1],
-			[0, 1, 0, 1],
-			[1, 1, 0, 0]
-		]
+		game.field = Field(
+			cells: [
+				[0, 1, 0, 0],
+				[1, 0, 1, 1],
+				[0, 1, 0, 1],
+				[1, 1, 0, 0]
+			]
+		)
 
-		let expectedField = [
-			[1, 0, 1, 1],
-			[0, 0, 1, 1],
-			[1, 1, 0, 1],
-			[0, 1, 0, 0]
-		]
+		let expectedField = Field(
+			cells: [
+				[1, 0, 1, 1],
+				[0, 0, 1, 1],
+				[1, 1, 0, 1],
+				[0, 1, 0, 0]
+			]
+		)
 
 		game.toggleColors(atX: 0, atY: 0)
 
-		XCTAssertEqual(game.field, expectedField, "The colors should toggle correctly based on the operation.")
+		XCTAssertEqual(game.field.cells, expectedField.cells, "The colors should toggle correctly based on the operation.")
+	}
+
+	func testGameRestart() {
+		let expectedField = game.field
+
+		game.toggleColors(
+			atX: Int.random(in: 0..<game.fieldSize), 
+			atY: Int.random(in: 0..<game.fieldSize)
+		)
+		game.toggleColors(
+			atX: Int.random(in: 0..<game.fieldSize),
+			atY: Int.random(in: 0..<game.fieldSize)
+		)
+		game.toggleColors(
+			atX: Int.random(in: 0..<game.fieldSize),
+			atY: Int.random(in: 0..<game.fieldSize)
+		)
+
+		game.restart()
+		
+		XCTAssertEqual(game.showInstructions, true)
+		XCTAssertEqual(game.field.cells, expectedField.cells)
 	}
 }

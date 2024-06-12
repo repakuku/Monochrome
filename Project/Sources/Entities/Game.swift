@@ -8,19 +8,30 @@
 
 import Foundation
 
-struct Game {
-	var field = [
-		[0, 1, 0, 0],
-		[1, 0, 1, 1],
-		[0, 1, 0, 1],
-		[1, 1, 0, 0]
-	]
+struct Field {
+	var cells: [[Int]]
+}
 
-	var score = 0
+struct Game {
+	var field = Field(
+		cells: [
+			[0, 0],
+			[1, 0]
+		]
+	)
+
 	var level = 1
 
+	var fields: [Field]
+
+	var showInstructions = true
+
 	var fieldSize: Int {
-		field.count
+		field.cells.count
+	}
+
+	init() {
+		fields = [field]
 	}
 
 	mutating func toggleColors(atX x: Int, atY y: Int) {
@@ -29,10 +40,15 @@ struct Game {
 		}
 
 		for index in 0..<fieldSize {
-			field[x][index] = 1 - field[x][index]
+			field.cells[x][index] = 1 - field.cells[x][index]
 			if index != x {
-				field[index][y] = 1 - field[index][y]
+				field.cells[index][y] = 1 - field.cells[index][y]
 			}
 		}
+	}
+
+	mutating func restart() {
+		showInstructions = true
+		field = fields[level - 1]
 	}
 }

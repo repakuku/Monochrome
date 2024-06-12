@@ -20,14 +20,57 @@ struct LabelText: View {
 	}
 }
 
+struct InstructionText: View {
+	let text: String
+
+	var body: some View {
+		Text(text)
+			.kerning(Sizes.Kerning.normal)
+			.font(.title3)
+			.foregroundStyle(Color(Theme.textColor))
+	}
+}
+
+struct BodyText: View {
+	let text: String
+
+	var body: some View {
+		Text(text)
+			.font(.subheadline)
+			.fontWeight(.semibold)
+			.multilineTextAlignment(.center)
+			.lineSpacing(12)
+	}
+}
+
+struct ButtonText: View {
+	let text: String
+
+	var body: some View {
+		Text(text)
+			.bold()
+			.padding()
+			.frame(maxWidth: .infinity)
+			.background(
+				Color(Theme.accentCellColor)
+			)
+			.foregroundColor(.white)
+			.cornerRadius(12)
+	}
+}
+
 struct TextViewsPreviews: View {
 	var body: some View {
 		VStack {
 			LabelText(title: "Score")
+			InstructionText(text: "Tap on any cell")
+			BodyText(text: "Message")
+			ButtonText(text: "Next Level")
 		}
 	}
 }
 
 #Preview {
 	TextViewsPreviews()
+		.padding()
 }

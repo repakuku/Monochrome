@@ -7,7 +7,6 @@
 
 import Foundation
 
-// swiftlint:disable type_name
 enum Sizes {
 	enum General {
 		static let roundedViewLength: CGFloat = 56
@@ -15,6 +14,16 @@ enum Sizes {
 
 		static let roundedRectViewWidth: CGFloat = 68
 		static let roundedRectViewHeight: CGFloat = 56
+	}
+
+	enum Field {
+		static let roundedRectRadius: CGFloat = 25
+	}
+
+	enum Background {
+		static let initialSquareSize = 100
+		static let strokeWidth: CGFloat = 20
+		static let roundedRectRadius: CGFloat = 25
 	}
 
 	enum Stroke {
@@ -30,10 +39,12 @@ enum Sizes {
 		static let normal: CGFloat = 1.5
 	}
 
-	enum Background {
-		static let initialSquareSize = 100
-		static let strokeWidth: CGFloat = 20
-		static let roundedRectRadius: CGFloat = 25
+	enum Padding {
+		static let large: CGFloat = 300
+	}
+
+	enum Transition {
+		static let normalOffset: CGFloat = 100
+		static let largeOffset: CGFloat = 300
 	}
 }
-// swiftlint:enable type_name

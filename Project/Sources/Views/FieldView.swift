@@ -18,18 +18,31 @@ struct FieldView: View {
 					ForEach(0..<game.fieldSize, id: \.self) { y in
 						Button {
 							withAnimation {
+								game.showInstructions = false
 								game.toggleColors(atX: x, atY: y)
 							}
 						} label: {
-							RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
-								.frame(
-									width: Sizes.General.roundedViewLength,
-									height: Sizes.General.roundedViewLength
-								)
-								.foregroundStyle(
-									game.field[x][y] == 0 ? Color(Theme.mainCellColor) : Color(Theme.accentCellColor)
-								)
-								.transition(.slide)
+							if game.field.cells[x][y] == 0 {
+								RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+									.stroke(lineWidth: Sizes.Stroke.width)
+									.frame(
+										width: Sizes.General.roundedViewLength,
+										height: Sizes.General.roundedViewLength
+									)
+									.foregroundStyle(
+										Color(Theme.accentCellColor)
+									)
+							} else {
+								RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+									.frame(
+										width: Sizes.General.roundedViewLength,
+										height: Sizes.General.roundedViewLength
+									)
+									.foregroundStyle(
+										Color(Theme.accentCellColor)
+									)
+									.transition(.scale)
+							}
 						}
 					}
 				}
