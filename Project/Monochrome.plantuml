@@ -1,0 +1,191 @@
+@startuml Monochrome Game Architectural
+ 
+!include https://raw.githubusercontent.com/patrik-csak/one-dark-plantuml-theme/v1.0.1/theme.puml
+skinparam backgroundcolor #1E2021
+skinparam linetype ortho
+
+title Monochrome
+
+package App {
+
+package GameModel {
+
+    enum CellSide {
+        front 
+        back
+
+        + value: Int
+    }
+
+    struct Cell {
+        + side: CellSide
+    }
+
+    struct Game {
+        + field: [[Cell]]
+    }
+
+    Cell *-- CellSide
+    Game *-- Cell
+}
+
+package UserModel {
+    struct GameProgress {
+        + games: [Game]
+    }
+
+    struct User {
+        + id: UUID
+        + name: String
+        + email: String
+        + gameProgress: GameProgress
+        + isRegistered: Bool
+    }
+
+    User *-- GameProgress
+
+    GameProgress o-R- Game
+}
+
+package NetworkLayer {
+    protocol INetworkService {
+        perform(request: Request, completion: (Result<Response, Error>) -> Void)
+    }
+
+    protocol IAuthService {
+        + login(user: User, completion: (Result<Void, Error>) -> Void)
+    }
+
+    class AuthService {
+        - networkService: INetworkService
+
+        + login(user: User, completion: (Result<Void, Error>) -> Void)
+    }
+
+    AuthService .U.> IAuthService
+    AuthService o-R- User
+    AuthService *-D- INetworkService
+
+    INetworkService o-- Networking
+}
+
+package UserService {
+    protocol IUserRepository {
+        + save(user: User)
+        + get(id: UUID) -> User
+        + update(user: User) -> Bool
+        + delete(user: User) -> Bool
+    }
+
+    class UserRepository {
+        + save(user: User) -> Bool
+        + get(id: UUID) -> User
+        + update(user: User) -> Bool
+        + delete(user: User) -> Bool
+    }
+
+    class UserManager {
+        - user: User
+
+        - authService: IAuthService
+        - userRepository: IUserRepository
+
+        +isLogged: Bool
+        
+        +login(user: User, completion: (Result<Void, Error>) -> Void)
+        +logout(completion: (Result<Void, Error>) -> Void)
+    }
+
+    UserRepository .U.> IUserRepository
+    UserRepository o-- User
+
+    UserManager *-- User
+    UserManager *-- IUserRepository
+
+    UserManager *-L- IAuthService
+}
+
+package GaneService {
+    protocol IGameRepository {
+        + getGame(id: UUID) -> Game
+        + save(game: Game) -> Bool
+    }
+
+    class GameRepository {
+        + getGame(id: UUID) -> Game
+        + save(game: Game) -> Bool
+    }
+
+    class GameManager {
+        - game: IGame
+
+        + startGame() -> Game
+        + saveGame(game: Game) -> Bool
+    }
+
+    GameRepository .U.> IGameRepository
+    GameRepository o-- Game
+    GameRepository o-- User
+
+    GameManager *-- IGameRepository
+    GameManager *-- Game
+}
+
+package ViewModel {
+
+    class GameViewModel {
+        - gameManager: GameManager
+        - userManager: UserManager
+
+        + logout(completion: (Result<Void, Error>) -> Void)
+        + startNewGame() -> Game
+        + saveGame() -> Bool
+        + getColorForCellAt(x: Int, y: Int) -> UIColor
+        + changeCellColorAt(x: Int, y: Int) -> Bool
+    }
+
+    class LoginViewModel {
+        - userManager: UserManager
+
+        + login(email: String, password: String, completion: (Result<Void, Error>) -> Void)
+    }
+
+    GameViewModel *-- GameManager
+    GameViewModel o-- UserManager
+
+    LoginViewModel o-- UserManager
+}
+
+package View {
+
+    struct GameView {
+        - viewModel: GameViewModel
+    }
+
+    struct LoginView {
+        - viewModel: LoginViewModel
+    }
+
+    struct RootView {
+        userManager: UserManager
+    }
+
+    GameView *-D- GameViewModel
+
+    LoginView *-- LoginViewModel
+
+    RootView *-L- LoginView
+    RootView *-R- GameView
+    RootView o-- UserManager
+}
+
+struct MonochromeApp {
+    userManager: UserManager
+}
+
+MonochromeApp *-D- RootView
+MonochromeApp *-- UserManager
+
+}
+
+@enduml
