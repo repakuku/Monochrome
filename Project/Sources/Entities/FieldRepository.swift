@@ -15,7 +15,11 @@ final class FieldRepository {
 	}
 
 	private var fields: [Int: Field] = [
-		0: Field(cells: [[0]]),
+		0: Field(
+			cells: [
+				[0]
+			]
+		),
 		1: Field(
 			cells: [
 				[0, 0],

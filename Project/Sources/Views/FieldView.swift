@@ -18,7 +18,6 @@ struct FieldView: View {
 					ForEach(0..<game.fieldSize, id: \.self) { y in
 						Button {
 							withAnimation {
-								game.showInstructions = false
 								game.toggleColors(atX: x, atY: y)
 							}
 						} label: {

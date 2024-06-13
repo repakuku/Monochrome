@@ -13,10 +13,10 @@ struct ContentView: View {
 
 	var body: some View {
 		ZStack {
-			BackgroundView(game: $game)
 			if game.showInstructions {
 				InstructionView()
-					.transition(.offset(x: Sizes.Transition.largeOffset))
+			} else {
+				BackgroundView(game: $game)
 			}
 
 			if game.gameCompleted {

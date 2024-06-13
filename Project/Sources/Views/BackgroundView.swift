@@ -26,17 +26,18 @@ struct TopView: View {
 
 	var body: some View {
 		HStack {
-			if !game.showInstructions {
-				Button {
-					withAnimation {
-						game.restart()
-					}
-				} label: {
-					RoundedImageViewStroked(systemName: Images.arrow.description)
+			Button {
+				withAnimation {
+					game.restart()
 				}
-				.transition(.offset(x: -Sizes.Transition.normalOffset))
+			} label: {
+				RoundedImageViewStroked(systemName: Images.arrow.description)
 			}
 			Spacer()
+			Button {
+			} label: {
+				RoundedImageViewStroked(systemName: Images.questionmark.description)
+			}
 		}
 	}
 }
@@ -46,6 +47,8 @@ struct BottomView: View {
 
 	var body: some View {
 		HStack {
+			NumberView(title: "Target\nSteps", text: String(game.targetSteps))
+			Spacer()
 			NumberView(title: "Steps", text: String(game.steps))
 			Spacer()
 			NumberView(title: "Level", text: String(game.level))

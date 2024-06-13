@@ -11,6 +11,7 @@ import Foundation
 enum Images {
 	case arrow
 	case list
+	case questionmark
 
 	var description: String {
 		switch self {
@@ -18,6 +19,8 @@ enum Images {
 			return "arrow.counterclockwise"
 		case .list:
 			return "list.dash"
+		case .questionmark:
+			return "questionmark"
 		}
 	}
 }

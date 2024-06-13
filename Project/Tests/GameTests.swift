@@ -45,6 +45,7 @@ final class GameTests: XCTestCase {
 
 		XCTAssertEqual(game.field.cells, expectedField.cells, "The colors should toggle correctly based on the operation.")
 		XCTAssertEqual(game.steps, 1)
+		XCTAssertEqual(game.showInstructions, false)
 	}
 
 	func testColorToggleInvalidCoordinates() {
@@ -57,16 +58,16 @@ final class GameTests: XCTestCase {
 
 		let initialField = game.field
 
-		game.toggleColors(atX: -1, atY: 1)  // Invalid X
+		game.toggleColors(atX: -1, atY: 1)
 		XCTAssertEqual(game.field.cells, initialField.cells, "The field should remain unchanged for out-of-bounds X coordinate.")
 
-		game.toggleColors(atX: 1, atY: -1)  // Invalid Y
+		game.toggleColors(atX: 1, atY: -1)
 		XCTAssertEqual(game.field.cells, initialField.cells, "The field should remain unchanged for out-of-bounds Y coordinate.")
 
-		game.toggleColors(atX: 2, atY: 1)  // X coordinate out of bounds
+		game.toggleColors(atX: 2, atY: 1)
 		XCTAssertEqual(game.field.cells, initialField.cells, "The field should remain unchanged for out-of-bounds X coordinate.")
 
-		game.toggleColors(atX: 1, atY: 2)  // Y coordinate out of bounds
+		game.toggleColors(atX: 1, atY: 2)
 		XCTAssertEqual(game.field.cells, initialField.cells, "The field should remain unchanged for out-of-bounds Y coordinate.")
 	}
 
@@ -88,7 +89,7 @@ final class GameTests: XCTestCase {
 
 		game.restart()
 		
-		XCTAssertTrue(game.showInstructions, "The showInstructions flag should be true after restart.")
+		XCTAssertFalse(game.showInstructions, "The showInstructions flag should be false after restart.")
 		XCTAssertEqual(game.field.cells, expectedField.cells, "The field should be reset to its initial state after restart.")
 		XCTAssertEqual(game.steps, 0)
 	}
@@ -107,6 +108,9 @@ final class GameTests: XCTestCase {
 	}
 
 	func testGameNext() {
+
+		XCTAssertEqual(game.targetSteps, 1)
+
 		game.nextGame()
 
 		var expectedField = Field(
@@ -119,6 +123,7 @@ final class GameTests: XCTestCase {
 		XCTAssertEqual(game.level, 1)
 		XCTAssertEqual(game.steps, 0)
 		XCTAssertEqual(game.field.cells, expectedField.cells)
+		XCTAssertEqual(game.targetSteps, 1)
 
 		game.nextGame()
 
@@ -131,6 +136,7 @@ final class GameTests: XCTestCase {
 
 		XCTAssertEqual(game.level, 2)
 		XCTAssertEqual(game.field.cells, expectedField.cells)
+		XCTAssertEqual(game.targetSteps, 2)
 	}
 
 	func testGameMaximumLevel() {
@@ -144,5 +150,49 @@ final class GameTests: XCTestCase {
 		game.nextGame()
 
 		XCTAssertEqual(game.field.cells, expectedField.cells)
+	}
+
+	func testGameHint() {
+		var hint = game.getHint()
+		var expectedHint = (0, 0)
+
+		XCTAssertEqual(hint.0, expectedHint.0)
+		XCTAssertEqual(hint.1, expectedHint.1)
+
+		game.nextGame()
+
+		hint = game.getHint()
+		expectedHint = (0, 1)
+
+		XCTAssertEqual(hint.0, expectedHint.0)
+		XCTAssertEqual(hint.1, expectedHint.1)
+
+		game.nextGame()
+
+		hint = game.getHint()
+		expectedHint = (1, 0)
+
+		XCTAssertEqual(hint.0, expectedHint.0)
+		XCTAssertEqual(hint.1, expectedHint.1)
+
+		hint = game.getHint()
+		expectedHint = (1, 1)
+
+		XCTAssertEqual(hint.0, expectedHint.0)
+		XCTAssertEqual(hint.1, expectedHint.1)
+
+		game.restart()
+
+		hint = game.getHint()
+		expectedHint = (1, 0)
+
+		XCTAssertEqual(hint.0, expectedHint.0)
+		XCTAssertEqual(hint.1, expectedHint.1)
+
+		hint = game.getHint()
+		expectedHint = (1, 1)
+
+		XCTAssertEqual(hint.0, expectedHint.0)
+		XCTAssertEqual(hint.1, expectedHint.1)
 	}
 }
