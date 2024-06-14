@@ -22,12 +22,21 @@ struct ResultView: View {
 				BodyText(text: "You solved the game for \(game.steps) step.")
 					.padding(.bottom)
 			}
-			Button {
-				withAnimation {
-					game.nextGame()
+			HStack {
+				Button {
+					withAnimation {
+						game.restart()
+					}
+				} label: {
+					ButtonTextStroked(text: "Replay")
 				}
-			} label: {
-				ButtonText(text: "Start Next Level")
+				Button {
+					withAnimation {
+						game.nextGame()
+					}
+				} label: {
+					ButtonTextFilled(text: "Next Level")
+				}
 			}
 		}
 		.padding()

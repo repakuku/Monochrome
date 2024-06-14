@@ -44,7 +44,7 @@ struct BodyText: View {
 	}
 }
 
-struct ButtonText: View {
+struct ButtonTextStroked: View {
 	let text: String
 
 	var body: some View {
@@ -53,10 +53,40 @@ struct ButtonText: View {
 			.padding()
 			.frame(maxWidth: .infinity)
 			.background(
-				Color(Theme.accentCellColor)
+				Color(Theme.backgroundColor)
 			)
-			.foregroundColor(.white)
+			.foregroundColor(
+				Color(Theme.textColor)
+			)
 			.cornerRadius(12)
+			.overlay(
+				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+					.stroke(lineWidth: Sizes.Stroke.width)
+					.foregroundStyle(Color(Theme.buttonStrokeColor))
+			)
+	}
+}
+
+struct ButtonTextFilled: View {
+	let text: String
+
+	var body: some View {
+		Text(text)
+			.bold()
+			.padding()
+			.frame(maxWidth: .infinity)
+			.background(
+				Color(Theme.hintColor)
+			)
+			.foregroundColor(
+				Color(Theme.textColor)
+			)
+			.cornerRadius(Sizes.General.roundedRectRadius)
+			.overlay(
+				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+					.stroke(lineWidth: Sizes.Stroke.width)
+					.foregroundStyle(Color(Theme.buttonStrokeColor))
+			)
 	}
 }
 
@@ -66,7 +96,7 @@ struct TextViewsPreviews: View {
 			LabelText(title: "Score")
 			InstructionText(text: "Tap on any cell")
 			BodyText(text: "Message")
-			ButtonText(text: "Next Level")
+			ButtonTextFilled(text: "Next Level")
 		}
 	}
 }

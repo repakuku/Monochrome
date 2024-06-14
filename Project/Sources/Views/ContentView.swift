@@ -18,11 +18,8 @@ struct ContentView: View {
 				InstructionView()
 			} else {
 				BackgroundView(game: $game, showMenu: $showMenu)
-					.onTapGesture {
-						withAnimation {
-							showMenu.toggle()
-						}
-					}
+					.opacity(game.gameCompleted ? 0.3 : 1)
+					.disabled(game.gameCompleted)
 			}
 
 			if game.gameCompleted {
@@ -32,6 +29,11 @@ struct ContentView: View {
 				FieldView(game: $game)
 					.zIndex(1)
 					.transition(.scale)
+			}
+		}
+		.onTapGesture {
+			withAnimation {
+				showMenu = false
 			}
 		}
 	}

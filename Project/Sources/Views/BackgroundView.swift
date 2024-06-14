@@ -32,7 +32,7 @@ struct TopView: View {
 				Button {
 					withAnimation {
 						game.restart()
-						showMenu.toggle()
+						showMenu = false
 					}
 				} label: {
 					RoundedImageViewStroked(systemName: Images.arrow.description)
@@ -75,7 +75,7 @@ struct BottomView: View {
 		HStack {
 			NumberView(title: "Target", text: String(game.targetSteps))
 			Spacer()
-			NumberView(title: "Steps", text: String(game.steps))
+			NumberView(title: "Taps", text: String(game.steps))
 			Spacer()
 			NumberView(title: "Level", text: String(game.level))
 		}
