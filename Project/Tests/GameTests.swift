@@ -140,7 +140,7 @@ final class GameTests: XCTestCase {
 	}
 
 	func testGameMaximumLevel() {
-		for _ in 0...game.maxLevel {
+		for _ in 0...6 {
 			game.nextGame()
 		}
 
@@ -153,46 +153,68 @@ final class GameTests: XCTestCase {
 	}
 
 	func testGameHint() {
-		var hint = game.getHint()
-		var expectedHint = (0, 0)
-
-		XCTAssertEqual(hint.0, expectedHint.0)
-		XCTAssertEqual(hint.1, expectedHint.1)
 
 		game.nextGame()
 
-		hint = game.getHint()
-		expectedHint = (0, 1)
+		game.getFieldHint()
 
-		XCTAssertEqual(hint.0, expectedHint.0)
-		XCTAssertEqual(hint.1, expectedHint.1)
+		var expectedField = Field(
+			cells: [
+				[0, 2],
+				[1, 0]
+			]
+		)
 
-		game.nextGame()
+		XCTAssertEqual(game.field.cells, expectedField.cells)
 
-		hint = game.getHint()
-		expectedHint = (1, 0)
+		game.toggleColors(atX: 0, atY: 0)
+		game.getFieldHint()
 
-		XCTAssertEqual(hint.0, expectedHint.0)
-		XCTAssertEqual(hint.1, expectedHint.1)
+		expectedField = Field(
+			cells: [
+				[3, 1],
+				[0, 0]
+			]
+		)
 
-		hint = game.getHint()
-		expectedHint = (1, 1)
+		XCTAssertEqual(game.field.cells, expectedField.cells)
 
-		XCTAssertEqual(hint.0, expectedHint.0)
-		XCTAssertEqual(hint.1, expectedHint.1)
+		game.toggleColors(atX: 1, atY: 0)
+		game.getFieldHint()
+
+		expectedField = Field(
+			cells: [
+				[2, 1],
+				[1, 1]
+			]
+		)
+
+		XCTAssertEqual(game.field.cells, expectedField.cells)
 
 		game.restart()
 
-		hint = game.getHint()
-		expectedHint = (1, 0)
+		game.getFieldHint()
 
-		XCTAssertEqual(hint.0, expectedHint.0)
-		XCTAssertEqual(hint.1, expectedHint.1)
+		expectedField = Field(
+			cells: [
+				[0, 2],
+				[1, 0]
+			]
+		)
 
-		hint = game.getHint()
-		expectedHint = (1, 1)
+		XCTAssertEqual(game.field.cells, expectedField.cells)
 
-		XCTAssertEqual(hint.0, expectedHint.0)
-		XCTAssertEqual(hint.1, expectedHint.1)
+		game.restart()
+		game.getFieldHint()
+		game.getFieldHint()
+
+		expectedField = Field(
+			cells: [
+				[0, 2],
+				[1, 0]
+			]
+		)
+
+		XCTAssertEqual(game.field.cells, expectedField.cells)
 	}
 }

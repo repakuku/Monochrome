@@ -9,14 +9,17 @@
 import SwiftUI
 
 struct ContentView: View {
-	@State private var game = Game()
+	@State private var game = Game(forTesting: true)
+	@State private var showMenu = false
 
 	var body: some View {
 		ZStack {
 			if game.showInstructions {
 				InstructionView()
 			} else {
-				BackgroundView(game: $game)
+				BackgroundView(game: $game, showMenu: $showMenu)
+					.opacity(game.gameCompleted ? 0.3 : 1)
+					.disabled(game.gameCompleted)
 			}
 
 			if game.gameCompleted {
@@ -28,15 +31,19 @@ struct ContentView: View {
 					.transition(.scale)
 			}
 		}
+		.onTapGesture {
+			withAnimation {
+				showMenu = false
+			}
+		}
 	}
 }
 
 struct InstructionView: View {
 	var body: some View {
 		VStack {
-			InstructionText(text: "Tap on the cell...")
+			InstructionText(text: "Tap on the cell")
 				.padding(.bottom, Sizes.Padding.large)
-			InstructionText(text: "Target: Fill all the cells.")
 		}
 	}
 }

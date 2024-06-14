@@ -31,7 +31,7 @@ struct FieldView: View {
 									.foregroundStyle(
 										Color(Theme.accentCellColor)
 									)
-							} else {
+							} else if game.field.cells[x][y] == 1 {
 								RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
 									.frame(
 										width: Sizes.General.roundedViewLength,
@@ -39,6 +39,26 @@ struct FieldView: View {
 									)
 									.foregroundStyle(
 										Color(Theme.accentCellColor)
+									)
+									.transition(.scale)
+							} else if game.field.cells[x][y] == 2 {
+								RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+									.stroke(lineWidth: Sizes.Stroke.width)
+									.frame(
+										width: Sizes.General.roundedViewLength,
+										height: Sizes.General.roundedViewLength
+									)
+									.foregroundStyle(
+										Color(Theme.hintColor)
+									)
+							} else {
+								RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+									.frame(
+										width: Sizes.General.roundedViewLength,
+										height: Sizes.General.roundedViewLength
+									)
+									.foregroundStyle(
+										Color(Theme.hintColor)
 									)
 									.transition(.scale)
 							}

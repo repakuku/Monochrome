@@ -15,14 +15,28 @@ struct ResultView: View {
 		VStack {
 			InstructionText(text: "Level completed!")
 				.padding(.bottom)
-			BodyText(text: "You solved the game for \(game.steps) steps.")
-				.padding(.bottom)
-			Button {
-				withAnimation {
-					game.nextGame()
+			if game.steps > 1 {
+				BodyText(text: "You solved the game for \(game.steps) steps.")
+					.padding(.bottom)
+			} else {
+				BodyText(text: "You solved the game for \(game.steps) step.")
+					.padding(.bottom)
+			}
+			HStack {
+				Button {
+					withAnimation {
+						game.restart()
+					}
+				} label: {
+					ButtonTextStroked(text: "Replay")
 				}
-			} label: {
-				ButtonText(text: "Start Next Level")
+				Button {
+					withAnimation {
+						game.nextGame()
+					}
+				} label: {
+					ButtonTextFilled(text: "Next Level")
+				}
 			}
 		}
 		.padding()
