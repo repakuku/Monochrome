@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ContentView: View {
-	@State private var game = Game(forTesting: true)
+	@State private var game = Game()
 	@State private var showMenu = false
 
 	var body: some View {
