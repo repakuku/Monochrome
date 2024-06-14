@@ -15,6 +15,11 @@ enum Colors {
 	enum Black {
 		static let Soft = UIColor(hex: 0x191919)
 	}
+
+	enum Red {
+		static let Valencia = UIColor(hex: 0xCC4846)
+		static let Cinnabar = UIColor(hex: 0xDC5047)
+	}
 }
 
 enum Theme {
@@ -28,4 +33,6 @@ enum Theme {
 
 	static let mainCellColor = UIColor.color(light: Colors.White.Soft, dark: Colors.Black.Soft)
 	static let accentCellColor = UIColor.color(light: Colors.Black.Soft, dark: Colors.White.Soft)
+
+	static let hintColor = UIColor.color(light: Colors.Red.Cinnabar, dark: Colors.Red.Valencia)
 }

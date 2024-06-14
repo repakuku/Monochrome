@@ -27,27 +27,40 @@ struct Game {
 		field.isSolved
 	}
 
-	var maxLevel: Int {
+	private let repository = FieldRepository()
+
+	private var answerMatrix: [[Int]]
+	private var maxLevel: Int {
 		repository.count - 1
 	}
 
-	private let repository = FieldRepository()
-
-	private var answerMatrix = [[0]]
-
-	init() {
-		level = 0
-		targetSteps = 1
-		steps = 0
-		field = Field(cells: [[0]])
-		answerMatrix = [[1]]
-		showInstructions = true
+	init(forTesting: Bool = false) {
+		if !forTesting {
+			level = 0
+			targetSteps = 1
+			steps = 0
+			field = repository.getField(forLevel: level)
+			answerMatrix = [[1]]
+			showInstructions = true
+		} else {
+			level = 1
+			targetSteps = 1
+			steps = 0
+			field = repository.getField(forLevel: level)
+			answerMatrix = [
+				[0, 1],
+				[0, 0]
+			]
+			showInstructions = false
+		}
 	}
 
 	mutating func toggleColors(atX x: Int, atY y: Int) {
 		guard x >= 0 && x < fieldSize && y >= 0 && y < fieldSize else {
 			return
 		}
+
+		clearHints()
 
 		for index in 0..<fieldSize {
 			field.cells[x][index] = 1 - field.cells[x][index]
@@ -70,7 +83,7 @@ struct Game {
 	mutating func restart() {
 		steps = 0
 		field = repository.getField(forLevel: level)
-		answerMatrix = findAnswerMatrix(forField: field)
+		answerMatrix = findAnswerMatrix()
 	}
 
 	mutating func nextGame() {
@@ -83,24 +96,25 @@ struct Game {
 		steps = 0
 		field = repository.getField(forLevel: level)
 
-		answerMatrix = findAnswerMatrix(forField: field)
-		targetSteps = countSteps(forAnswerMatrix: answerMatrix)
+		answerMatrix = findAnswerMatrix()
+		targetSteps = countSteps()
 	}
 
-	mutating func getHint() -> (Int, Int) {
-		var hint = (0, 0)
+	mutating func getFieldHint() {
+		answerMatrix = findAnswerMatrix()
 
 		for row in 0..<fieldSize {
 			for col in 0..<fieldSize {
 				if answerMatrix[row][col] == 1 {
-					hint = (row, col)
-					answerMatrix[row][col] = 0
-					return hint
+					if field.cells[row][col] == 0 {
+						field.cells[row][col] = 2
+					} else {
+						field.cells[row][col] = 3
+					}
+					return
 				}
 			}
 		}
-
-		return hint
 	}
 
 	private func checkField() -> Bool {
@@ -113,7 +127,9 @@ struct Game {
 		return true
 	}
 
-	private func findAnswerMatrix(forField field: Field) -> [[Int]] {
+	private mutating func findAnswerMatrix() -> [[Int]] {
+		clearHints()
+
 		let row = Array(repeating: 0, count: fieldSize)
 		var answerMatrix = Array(repeating: row, count: fieldSize)
 
@@ -133,7 +149,7 @@ struct Game {
 		return answerMatrix
 	}
 
-	private func countSteps(forAnswerMatrix answerMatrix: [[Int]]) -> Int {
+	private func countSteps() -> Int {
 		var steps = 0
 
 		for row in 0..<fieldSize {
@@ -145,5 +161,17 @@ struct Game {
 		}
 
 		return steps
+	}
+
+	private mutating func clearHints() {
+		for row in 0..<fieldSize {
+			for con in 0..<fieldSize {
+				if field.cells[row][con] == 2 {
+					field.cells[row][con] = 0
+				} else if field.cells[row][con] == 3 {
+					field.cells[row][con] = 1
+				}
+			}
+		}
 	}
 }

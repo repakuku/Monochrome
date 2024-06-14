@@ -10,10 +10,11 @@ import SwiftUI
 
 struct BackgroundView: View {
 	@Binding var game: Game
+	@Binding var showMenu: Bool
 
 	var body: some View {
 		VStack {
-			TopView(game: $game)
+			TopView(game: $game, showMenu: $showMenu)
 			Spacer()
 			BottomView(game: $game)
 		}
@@ -23,20 +24,45 @@ struct BackgroundView: View {
 
 struct TopView: View {
 	@Binding var game: Game
+	@Binding var showMenu: Bool
 
 	var body: some View {
-		HStack {
-			Button {
-				withAnimation {
-					game.restart()
+		VStack {
+			HStack {
+				Button {
+					withAnimation {
+						game.restart()
+						showMenu.toggle()
+					}
+				} label: {
+					RoundedImageViewStroked(systemName: Images.arrow.description)
 				}
-			} label: {
-				RoundedImageViewStroked(systemName: Images.arrow.description)
+				Spacer()
+				Button {
+					withAnimation {
+						showMenu.toggle()
+					}
+				} label: {
+					if showMenu {
+						RoundedImageViewStroked(systemName: Images.list.description)
+					} else {
+						RoundedImageViewFilled(systemName: Images.list.description)
+					}
+				}
 			}
-			Spacer()
-			Button {
-			} label: {
-				RoundedImageViewStroked(systemName: Images.questionmark.description)
+			HStack {
+				Spacer()
+				Button {
+					withAnimation {
+						game.getFieldHint()
+						showMenu.toggle()
+					}
+				} label: {
+					if showMenu {
+						RoundedImageViewStroked(systemName: Images.questionmark.description)
+							.transition(.scale)
+					}
+				}
 			}
 		}
 	}
@@ -47,7 +73,7 @@ struct BottomView: View {
 
 	var body: some View {
 		HStack {
-			NumberView(title: "Target\nSteps", text: String(game.targetSteps))
+			NumberView(title: "Target", text: String(game.targetSteps))
 			Spacer()
 			NumberView(title: "Steps", text: String(game.steps))
 			Spacer()
@@ -71,5 +97,5 @@ struct NumberView: View {
 }
 
 #Preview {
-	BackgroundView(game: .constant(Game()))
+	BackgroundView(game: .constant(Game()), showMenu: .constant(true))
 }

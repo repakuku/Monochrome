@@ -15,8 +15,13 @@ struct ResultView: View {
 		VStack {
 			InstructionText(text: "Level completed!")
 				.padding(.bottom)
-			BodyText(text: "You solved the game for \(game.steps) steps.")
-				.padding(.bottom)
+			if game.steps > 1 {
+				BodyText(text: "You solved the game for \(game.steps) steps.")
+					.padding(.bottom)
+			} else {
+				BodyText(text: "You solved the game for \(game.steps) step.")
+					.padding(.bottom)
+			}
 			Button {
 				withAnimation {
 					game.nextGame()

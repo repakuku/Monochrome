@@ -17,7 +17,6 @@ struct LabelText: View {
 			.font(.caption)
 			.bold()
 			.foregroundStyle(Color(Theme.textColor))
-			.multilineTextAlignment(.center)
 			.frame(height: 40)
 	}
 }
