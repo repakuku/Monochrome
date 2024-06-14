@@ -23,12 +23,14 @@ struct ResultView: View {
 					.padding(.bottom)
 			}
 			HStack {
-				Button {
-					withAnimation {
-						game.restart()
+				if game.level > 0 {
+					Button {
+						withAnimation {
+							game.restart()
+						}
+					} label: {
+						ButtonTextStroked(text: "Replay")
 					}
-				} label: {
-					ButtonTextStroked(text: "Replay")
 				}
 				Button {
 					withAnimation {
