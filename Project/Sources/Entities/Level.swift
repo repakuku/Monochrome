@@ -12,6 +12,7 @@ struct Level {
 	let id: Int
 	var cellsMatrix: [[Int]]
 	var isCompleted = false
+	var taps: Int = 0
 
 	var levelSize: Int {
 		cellsMatrix.count
@@ -25,7 +26,7 @@ struct Level {
 		countTargetTaps()
 	}
 
-	init(id: Int, cellsMatrix: [[Int]], isCompleted: Bool = false) {
+	init(id: Int, cellsMatrix: [[Int]]) {
 
 		let isIncorrectMatrix = cellsMatrix.isEmpty || cellsMatrix.contains { $0.count != cellsMatrix.count }
 
@@ -36,8 +37,6 @@ struct Level {
 			self.id = id
 			self.cellsMatrix = cellsMatrix
 		}
-
-		self.isCompleted = isCompleted
 	}
 
 	private func getAnswerMatrix() -> [[Int]] {

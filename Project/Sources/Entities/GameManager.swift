@@ -12,17 +12,19 @@ final class GameManager: ObservableObject {
 
 	@Published var level: Level
 	@Published var isLevelComplited: Bool
-	@Published var taps: Int
+	@Published var targetTaps: Int
+	@Published var levels: [Level]
 
 	private let repository: LevelRepository
-	private let levels: [Level]
+	private let originLevels: [Level]
 
 	init() {
 		repository = LevelRepository()
-		levels = repository.getLevels()
-		level = levels[0]
+		originLevels = repository.getLevels()
+		levels = originLevels
+		level = originLevels[0]
 		isLevelComplited = false
-		taps = 0
+		targetTaps = originLevels[0].targetTaps
 	}
 
 	func toggleColors(atX x: Int, atY y: Int) {
@@ -39,17 +41,19 @@ final class GameManager: ObservableObject {
 			}
 		}
 
-		taps += 1
+		level.taps += 1
 
 		if checkMatrix() {
 			level.isCompleted = true
 			isLevelComplited = true
+			levels[level.id].isCompleted = true
+			levels[level.id].taps = level.taps
 		}
 	}
 
 	func restartLevel() {
-		taps = 0
-		level = levels[level.id]
+		level.taps = 0
+		level = originLevels[level.id]
 		isLevelComplited = false
 	}
 
@@ -60,9 +64,10 @@ final class GameManager: ObservableObject {
 			nextLevelId = levels.count - 1
 		}
 
-		level = levels[nextLevelId]
-		taps = 0
+		level = originLevels[nextLevelId]
+		level.taps = 0
 		isLevelComplited = false
+		targetTaps = level.targetTaps
 	}
 
 	func getHint() {

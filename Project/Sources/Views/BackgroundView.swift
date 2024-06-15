@@ -79,9 +79,9 @@ struct TopView: View {
 							.transition(.scale)
 					}
 				}
-//				.sheet(isPresented: $levelsViewIsShowing) {
-//					LevelsView(game: $game, levelsViewIsShowing: $levelsViewIsShowing)
-//				}
+				.sheet(isPresented: $levelsViewIsShowing) {
+					LevelsView(gameManager: gameManager, levelsViewIsShowing: $levelsViewIsShowing)
+				}
 			}
 		}
 	}
@@ -92,9 +92,9 @@ struct BottomView: View {
 
 	var body: some View {
 		HStack {
-			NumberView(title: "Target", text: String(gameManager.level.targetTaps))
+			NumberView(title: "Target", text: String(gameManager.targetTaps))
 			Spacer()
-			NumberView(title: "Taps", text: String(gameManager.taps))
+			NumberView(title: "Taps", text: String(gameManager.level.taps))
 			Spacer()
 			NumberView(title: "Level", text: String(gameManager.level.id))
 		}

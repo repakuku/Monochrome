@@ -15,11 +15,11 @@ struct ResultView: View {
 		VStack {
 			InstructionText(text: "Level completed!")
 				.padding(.bottom)
-			if gameManager.taps > 1 {
-				BodyText(text: "You solved the level in \(gameManager.taps) taps.")
+			if gameManager.level.taps > 1 {
+				BodyText(text: "You solved the level in \(gameManager.level.taps) taps.")
 					.padding(.bottom)
 			} else {
-				BodyText(text: "You solved the level in \(gameManager.taps) tap.")
+				BodyText(text: "You solved the level in \(gameManager.level.taps) tap.")
 					.padding(.bottom)
 			}
 			HStack {

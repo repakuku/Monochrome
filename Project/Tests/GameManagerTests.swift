@@ -25,6 +25,7 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertEqual(currentLevel.cellsMatrix, expectedLevel.cellsMatrix, "Expected initial cells matrix to match.")
 		XCTAssertFalse(currentLevel.isCompleted, "Expected initial level to not be completed.")
 		XCTAssertEqual(sut.taps, 0, "Expected initial taps to be 0.")
+		XCTAssertEqual(sut.targetTaps, 1, "Expected target taps to be 1.")
 	}
 
 	func test_toggleColors_withValidData_shouldToggleColorsAndIncrementTaps() {
@@ -35,6 +36,7 @@ final class GameManagerTests: XCTestCase {
 		let expectedMatrix = [[1]]
 		XCTAssertEqual(sut.level.cellsMatrix, expectedMatrix, "Expected cells matrix to toggle correctly when toggling at (0, 0).")
 		XCTAssertEqual(sut.taps, 1, "Expected taps to increment to 1 after toggling colors.")
+		XCTAssertEqual(sut.targetTaps, 1, "Expected target taps to be 1 for the given level configuration.")
 	}
 
 	func test_toggleColors_withInvalidCoordinates_shouldNotChangeState() {
@@ -42,10 +44,12 @@ final class GameManagerTests: XCTestCase {
 
 		let initialMatrix = sut.level.cellsMatrix
 		let initialTaps = sut.taps
+		let initialTargetTaps = sut.targetTaps
 
 		sut.toggleColors(atX: -1, atY: 0)
 		XCTAssertEqual(sut.level.cellsMatrix, initialMatrix, "Expected cells matrix to remain unchanged for out-of-bounds coordinates.")
 		XCTAssertEqual(sut.taps, initialTaps, "Expected taps to remain unchanged for out-of-bounds coordinates.")
+		XCTAssertEqual(sut.targetTaps, initialTargetTaps, "Expected target taps to remain unchanged for out-of-bounds coordinates.")
 	}
 
 	func test_isLevelCompleted_shouldReturnTrueAfterCorrectToggle() {
@@ -72,17 +76,18 @@ final class GameManagerTests: XCTestCase {
 
 		XCTAssertEqual(sut.level.cellsMatrix, expectedMatrix, "Expected cells matrix to reset to initial state on restart.")
 		XCTAssertEqual(sut.taps, 0, "Expected taps to reset to 0 on restart.")
+		XCTAssertEqual(sut.targetTaps, 1, "Expected target taps to remain unchanged on restart.")
 		XCTAssertFalse(sut.isLevelComplited, "Expected level to not be completed after restart.")
 	}
 
 	func test_restartLevel_withMultipleActions_shouldResetToInitialState() {
 		let sut = GameManager()
 
-		sut.nextLevel() // Move to level 1
+		sut.nextLevel()
 		sut.toggleColors(atX: 0, atY: 0)
 		sut.getHint()
 
-		sut.restartLevel() // Restart the level
+		sut.restartLevel()
 
 		let currentLevel = sut.level
 		let expectedLevel = Level(
@@ -97,6 +102,7 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertEqual(currentLevel.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to reset to initial state after restarting the level.")
 		XCTAssertFalse(sut.isLevelComplited, "Expected level to be incomplete after restarting.")
 		XCTAssertEqual(sut.taps, 0, "Expected taps to reset to 0 after restarting the level.")
+		XCTAssertEqual(sut.targetTaps, 1, "Expected target taps to remain unchanged on restart.")
 	}
 
 	func test_nextLevel_withValidState_shouldAdvanceToNextLevel() {
@@ -117,6 +123,7 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertEqual(currentLevel.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to match for level 1.")
 		XCTAssertFalse(sut.isLevelComplited, "Expected level to be incomplete after advancing to the next level.")
 		XCTAssertEqual(sut.taps, 0, "Expected taps to reset to 0 after advancing to the next level.")
+		XCTAssertEqual(sut.targetTaps, 1, "Expected target taps to be 1 for the given level configuration.")
 	}
 
 	func test_nextLevel_withLastLevel_shouldRemainAtLastLevel() {
@@ -141,6 +148,7 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertEqual(currentLevel.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to match for the last level.")
 		XCTAssertFalse(sut.isLevelComplited, "Expected level to be incomplete when remaining at the last level.")
 		XCTAssertEqual(sut.taps, 0, "Expected taps to reset to 0 when remaining at the last level.")
+		XCTAssertEqual(sut.targetTaps, 4, "Expected target taps to be 4 for the given level configuration.")
 	}
 
 	func test_getHint_shouldProvideHintInMatrix() {
