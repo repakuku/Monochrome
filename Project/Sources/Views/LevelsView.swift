@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct LevelsView: View {
-	@Binding var game: Game
 	@Binding var levelsViewIsShowing: Bool
 
 	var body: some View {
@@ -21,15 +20,14 @@ struct LevelsView: View {
 				LabelView()
 				ScrollView {
 					VStack(spacing: 10) {
-						ForEach(game.allFields.indices, id: \.self) { index in
-							RowView(
-								index: index,
-								target: game.targetSteps,
-								taps: game.steps,
-								// TODO: fix
-								isFilled: game.allFields[index].isSolved
-							)
-						}
+//						ForEach(game.allFields.indices, id: \.self) { _ in
+//							RowView(
+//								index: index,
+//								target: game.targetSteps,
+//								taps: game.steps,
+//								isFilled: game.allFields[index].isSolved
+//							)
+//						}
 					}
 				}
 			}
@@ -105,5 +103,5 @@ struct LabelView: View {
 }
 
 #Preview {
-	LevelsView(game: .constant(Game()), levelsViewIsShowing: .constant(true))
+	LevelsView(levelsViewIsShowing: .constant(true))
 }

@@ -9,24 +9,25 @@
 import SwiftUI
 
 struct ContentView: View {
-	@State private var game = Game()
+	@StateObject private var gameManager = GameManager()
 	@State private var showMenu = false
+	@State private var showInstructions = true
 
 	var body: some View {
 		ZStack {
-			if game.showInstructions {
+			if showInstructions {
 				InstructionView()
 			} else {
-				BackgroundView(game: $game, showMenu: $showMenu)
-					.opacity(game.gameCompleted ? 0.3 : 1)
-					.disabled(game.gameCompleted)
+				BackgroundView(gameManager: gameManager, showMenu: $showMenu)
+					.opacity(gameManager.isLevelComplited ? 0.3 : 1)
+					.disabled(gameManager.isLevelComplited)
 			}
 
-			if game.gameCompleted {
-				ResultView(game: $game)
+			if gameManager.isLevelComplited {
+				ResultView(gameManager: gameManager)
 					.transition(.scale)
 			} else {
-				FieldView(game: $game)
+				FieldView(gameManager: gameManager, showInstructions: $showInstructions)
 					.zIndex(1)
 					.transition(.scale)
 			}

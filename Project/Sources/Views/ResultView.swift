@@ -9,24 +9,24 @@
 import SwiftUI
 
 struct ResultView: View {
-	@Binding var game: Game
+	@ObservedObject var gameManager: GameManager
 
 	var body: some View {
 		VStack {
 			InstructionText(text: "Level completed!")
 				.padding(.bottom)
-			if game.steps > 1 {
-				BodyText(text: "You solved the level in \(game.steps) taps.")
+			if gameManager.taps > 1 {
+				BodyText(text: "You solved the level in \(gameManager.taps) taps.")
 					.padding(.bottom)
 			} else {
-				BodyText(text: "You solved the level in \(game.steps) tap.")
+				BodyText(text: "You solved the level in \(gameManager.taps) tap.")
 					.padding(.bottom)
 			}
 			HStack {
-				if game.level > 0 {
+				if gameManager.level.id > 0 {
 					Button {
 						withAnimation {
-							game.restart()
+							gameManager.restartLevel()
 						}
 					} label: {
 						ButtonTextStroked(text: "Replay")
@@ -34,7 +34,7 @@ struct ResultView: View {
 				}
 				Button {
 					withAnimation {
-						game.nextGame()
+						gameManager.nextLevel()
 					}
 				} label: {
 					ButtonTextFilled(text: "Next Level")
@@ -54,5 +54,5 @@ struct ResultView: View {
 }
 
 #Preview {
-	ResultView(game: .constant(Game()))
+	ResultView(gameManager: GameManager())
 }
