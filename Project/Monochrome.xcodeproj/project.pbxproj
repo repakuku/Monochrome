@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		02DC904331317DCAF156BF25 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 356B4C37748236D10D808E8F /* Assets.xcassets */; };
 		069E1B9410F9ACEB7E7721EF /* RoundedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD3E51752F115DCAB489A3 /* RoundedViews.swift */; };
+		07E435562C1CA0F2004B9562 /* LevelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E435552C1CA0F2004B9562 /* LevelsView.swift */; };
 		2133E6A16C94EEFE97CDDC43 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0ECBAAD4CB4AE96EF2C379 /* Game.swift */; };
 		2A1A72D302B665F508502510 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020848DCE082B517F18C0DCB /* Images.swift */; };
 		36F90E26B758B0B9CE0CA401 /* GameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067B8B5839453EE0F90F521C /* GameTests.swift */; };
@@ -65,6 +66,7 @@
 		03F12DCD18DB8907AE5113C6 /* FieldRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldRepositoryTests.swift; sourceTree = "<group>"; };
 		067B8B5839453EE0F90F521C /* GameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTests.swift; sourceTree = "<group>"; };
 		06BD3E51752F115DCAB489A3 /* RoundedViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedViews.swift; sourceTree = "<group>"; };
+		07E435552C1CA0F2004B9562 /* LevelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelsView.swift; sourceTree = "<group>"; };
 		1B33E1E14E02551A3CA0B874 /* Monochrome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Monochrome.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FC786D509133CEC3339B09A /* MonochromeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "MonochromeTests-Info.plist"; sourceTree = "<group>"; };
 		356B4C37748236D10D808E8F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				F75DDF20D233667236BBD118 /* ResultView.swift */,
 				06BD3E51752F115DCAB489A3 /* RoundedViews.swift */,
 				9B7738A2A741E8293C04A261 /* TextViews.swift */,
+				07E435552C1CA0F2004B9562 /* LevelsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -292,6 +295,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1510;
 				ORGANIZATIONNAME = repakuku;
 				TargetAttributes = {
 					D6ABC78F1C2172B93A49B041 = {
@@ -392,6 +396,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43898B605029DD681B7BBBF1 /* TuistBundle+Monochrome.swift in Sources */,
+				07E435562C1CA0F2004B9562 /* LevelsView.swift in Sources */,
 				F21B4D51C9125D283B86210A /* MonochromeApp.swift in Sources */,
 				4C6F2BF6322B69BA7B3895D5 /* FieldRepository.swift in Sources */,
 				2133E6A16C94EEFE97CDDC43 /* Game.swift in Sources */,

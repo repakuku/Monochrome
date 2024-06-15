@@ -68,12 +68,55 @@ struct RoundedRectTextView: View {
 	}
 }
 
+struct RoundedSquareTextView: View {
+	let text: String
+
+	var body: some View {
+		Text(text)
+			.kerning(Sizes.Kerning.small)
+			.bold()
+			.font(.title3)
+			.frame(
+				width: Sizes.General.roundedViewLength,
+				height: Sizes.General.roundedViewLength
+			)
+			.foregroundStyle(Color(Theme.textColor))
+			.overlay(
+				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+					.stroke(lineWidth: 2)
+					.foregroundStyle(Color(Theme.buttonStrokeColor))
+			)
+	}
+}
+
+struct RoundedSquareTextViewFilled: View {
+	let text: String
+
+	var body: some View {
+		Text(text)
+			.kerning(Sizes.Kerning.small)
+			.bold()
+			.font(.title3)
+			.frame(
+				width: Sizes.General.roundedViewLength,
+				height: Sizes.General.roundedViewLength
+			)
+			.foregroundStyle(Color(Theme.buttonFilledTextColor))
+			.background(
+				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+					.fill(Color(Theme.buttonFilledBackgroundColor))
+			)
+	}
+}
+
 struct RoundedViewsPreview: View {
 	var body: some View {
 		VStack {
 			RoundedImageViewStroked(systemName: Images.arrow.description)
 			RoundedImageViewFilled(systemName: Images.list.description)
 			RoundedRectTextView(text: "999")
+			RoundedSquareTextView(text: "1")
+			RoundedSquareTextViewFilled(text: "2")
 		}
 	}
 }

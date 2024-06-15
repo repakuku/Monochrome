@@ -27,9 +27,21 @@ struct Game {
 		field.isSolved
 	}
 
+	var allFields: [Field] {
+		var fields: [Field] = []
+
+		for level in 0..<maxLevel {
+			let field = repository.getField(forLevel: level)
+			fields.append(field)
+		}
+
+		return fields
+	}
+
 	private let repository = FieldRepository()
 
 	private var answerMatrix: [[Int]]
+
 	private var maxLevel: Int {
 		repository.count - 1
 	}

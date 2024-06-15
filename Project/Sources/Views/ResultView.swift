@@ -16,10 +16,10 @@ struct ResultView: View {
 			InstructionText(text: "Level completed!")
 				.padding(.bottom)
 			if game.steps > 1 {
-				BodyText(text: "You solved the level for \(game.steps) taps.")
+				BodyText(text: "You solved the level in \(game.steps) taps.")
 					.padding(.bottom)
 			} else {
-				BodyText(text: "You solved the level for \(game.steps) tap.")
+				BodyText(text: "You solved the level in \(game.steps) tap.")
 					.padding(.bottom)
 			}
 			HStack {

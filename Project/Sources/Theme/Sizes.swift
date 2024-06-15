@@ -20,6 +20,12 @@ enum Sizes {
 		static let roundedRectRadius: CGFloat = 25
 	}
 
+	enum Levels {
+		static let targetColumnWidth: CGFloat = 60
+		static let tapsColumnWidth: CGFloat = 170
+		static let maxRowWidth: CGFloat = 480
+	}
+
 	enum Background {
 		static let initialSquareSize = 100
 		static let strokeWidth: CGFloat = 20
@@ -37,6 +43,7 @@ enum Sizes {
 	enum Kerning {
 		static let small: CGFloat = -0.2
 		static let normal: CGFloat = 1.5
+		static let large: CGFloat = 2
 	}
 
 	enum Padding {

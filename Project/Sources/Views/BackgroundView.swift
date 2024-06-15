@@ -26,6 +26,8 @@ struct TopView: View {
 	@Binding var game: Game
 	@Binding var showMenu: Bool
 
+	@State private var levelsViewIsShowing = false
+
 	var body: some View {
 		VStack {
 			HStack {
@@ -62,6 +64,23 @@ struct TopView: View {
 						RoundedImageViewStroked(systemName: Images.questionmark.description)
 							.transition(.scale)
 					}
+				}
+			}
+			HStack {
+				Spacer()
+				Button {
+					withAnimation {
+						levelsViewIsShowing = true
+						showMenu.toggle()
+					}
+				} label: {
+					if showMenu {
+						RoundedImageViewStroked(systemName: Images.checklist.description)
+							.transition(.scale)
+					}
+				}
+				.sheet(isPresented: $levelsViewIsShowing) {
+					LevelsView(game: $game, levelsViewIsShowing: $levelsViewIsShowing)
 				}
 			}
 		}
