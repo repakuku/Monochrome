@@ -9,29 +9,31 @@
 import SwiftUI
 
 struct BackgroundView: View {
-	@Binding var game: Game
+	@ObservedObject var gameManager: GameManager
 	@Binding var showMenu: Bool
 
 	var body: some View {
 		VStack {
-			TopView(game: $game, showMenu: $showMenu)
+			TopView(gameManager: gameManager, showMenu: $showMenu)
 			Spacer()
-			BottomView(game: $game)
+			BottomView(gameManager: gameManager)
 		}
 		.padding()
 	}
 }
 
 struct TopView: View {
-	@Binding var game: Game
+	@ObservedObject var gameManager: GameManager
 	@Binding var showMenu: Bool
+
+	@State private var levelsViewIsShowing = false
 
 	var body: some View {
 		VStack {
 			HStack {
 				Button {
 					withAnimation {
-						game.restart()
+						gameManager.restartLevel()
 						showMenu = false
 					}
 				} label: {
@@ -54,7 +56,7 @@ struct TopView: View {
 				Spacer()
 				Button {
 					withAnimation {
-						game.getFieldHint()
+						gameManager.getHint()
 						showMenu.toggle()
 					}
 				} label: {
@@ -64,20 +66,37 @@ struct TopView: View {
 					}
 				}
 			}
+			HStack {
+				Spacer()
+				Button {
+					withAnimation {
+						levelsViewIsShowing = true
+						showMenu.toggle()
+					}
+				} label: {
+					if showMenu {
+						RoundedImageViewStroked(systemName: Images.checklist.description)
+							.transition(.scale)
+					}
+				}
+				.sheet(isPresented: $levelsViewIsShowing) {
+					LevelsView(gameManager: gameManager, levelsViewIsShowing: $levelsViewIsShowing)
+				}
+			}
 		}
 	}
 }
 
 struct BottomView: View {
-	@Binding var game: Game
+	@ObservedObject var gameManager: GameManager
 
 	var body: some View {
 		HStack {
-			NumberView(title: "Target", text: String(game.targetSteps))
+			NumberView(title: "Target", text: String(gameManager.targetTaps))
 			Spacer()
-			NumberView(title: "Taps", text: String(game.steps))
+			NumberView(title: "Taps", text: String(gameManager.level.taps))
 			Spacer()
-			NumberView(title: "Level", text: String(game.level))
+			NumberView(title: "Level", text: String(gameManager.level.id))
 		}
 	}
 }
@@ -97,5 +116,5 @@ struct NumberView: View {
 }
 
 #Preview {
-	BackgroundView(game: .constant(Game()), showMenu: .constant(true))
+	BackgroundView(gameManager: GameManager(), showMenu: .constant(true))
 }

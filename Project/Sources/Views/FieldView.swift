@@ -9,19 +9,21 @@
 import SwiftUI
 
 struct FieldView: View {
-	@Binding var game: Game
+	@ObservedObject var gameManager: GameManager
+	@Binding var showInstructions: Bool
 
 	var body: some View {
 		VStack {
-			ForEach(0..<game.fieldSize, id: \.self) { x in
+			ForEach(0..<gameManager.level.levelSize, id: \.self) { x in
 				HStack {
-					ForEach(0..<game.fieldSize, id: \.self) { y in
+					ForEach(0..<gameManager.level.levelSize, id: \.self) { y in
 						Button {
 							withAnimation {
-								game.toggleColors(atX: x, atY: y)
+								gameManager.toggleColors(atX: x, atY: y)
+								showInstructions = false
 							}
 						} label: {
-							if game.field.cells[x][y] == 0 {
+							if gameManager.level.cellsMatrix[x][y] == 0 {
 								RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
 									.stroke(lineWidth: Sizes.Stroke.width)
 									.frame(
@@ -31,7 +33,7 @@ struct FieldView: View {
 									.foregroundStyle(
 										Color(Theme.accentCellColor)
 									)
-							} else if game.field.cells[x][y] == 1 {
+							} else if gameManager.level.cellsMatrix[x][y] == 1 {
 								RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
 									.frame(
 										width: Sizes.General.roundedViewLength,
@@ -41,7 +43,7 @@ struct FieldView: View {
 										Color(Theme.accentCellColor)
 									)
 									.transition(.scale)
-							} else if game.field.cells[x][y] == 2 {
+							} else if gameManager.level.cellsMatrix[x][y] == 2 {
 								RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
 									.stroke(lineWidth: Sizes.Stroke.width)
 									.frame(
@@ -71,5 +73,5 @@ struct FieldView: View {
 }
 
 #Preview {
-	FieldView(game: .constant(Game()))
+	FieldView(gameManager: GameManager(), showInstructions: .constant(true))
 }

@@ -17,7 +17,6 @@ struct LabelText: View {
 			.font(.caption)
 			.bold()
 			.foregroundStyle(Color(Theme.textColor))
-			.frame(height: 40)
 	}
 }
 
@@ -76,10 +75,10 @@ struct ButtonTextFilled: View {
 			.padding()
 			.frame(maxWidth: .infinity)
 			.background(
-				Color(Theme.hintColor)
+				Color(Theme.buttonFilledBackgroundColor)
 			)
 			.foregroundColor(
-				Color(Theme.textColor)
+				Color(Theme.buttonFilledTextColor)
 			)
 			.cornerRadius(Sizes.General.roundedRectRadius)
 			.overlay(
@@ -90,6 +89,29 @@ struct ButtonTextFilled: View {
 	}
 }
 
+struct BigBoldText: View {
+	let text: String
+
+	var body: some View {
+		Text(text.uppercased())
+			.kerning(Sizes.Kerning.large)
+			.foregroundStyle(Color(Theme.textColor))
+			.font(.largeTitle)
+	}
+}
+
+struct TapsText: View {
+	let value: Int
+
+	var body: some View {
+		Text(String(value))
+			.bold()
+			.kerning(-0.2)
+			.foregroundColor(Color(Theme.textColor))
+			.font(.title3)
+	}
+}
+
 struct TextViewsPreviews: View {
 	var body: some View {
 		VStack {
@@ -97,6 +119,8 @@ struct TextViewsPreviews: View {
 			InstructionText(text: "Tap on any cell")
 			BodyText(text: "Message")
 			ButtonTextFilled(text: "Next Level")
+			BigBoldText(text: "Levels")
+			TapsText(value: 3)
 		}
 	}
 }
