@@ -230,8 +230,12 @@ final class GameManagerTests: XCTestCase {
 	func test_getTapsForLevel_withIncorrectId_shouldReturnCorrectTapsForCompletedlevel() {
 		let sut = makeSut()
 
-		let taps = sut.getTapsForLevel(id: -1)
+		var taps = sut.getTapsForLevel(id: -1)
 		let expectedTaps = 0
+
+		XCTAssertEqual(taps, expectedTaps, "Expected taps to be \(expectedTaps) for invalid level ID.")
+
+		taps = sut.getTapsForLevel(id: Int.max)
 
 		XCTAssertEqual(taps, expectedTaps, "Expected taps to be \(expectedTaps) for invalid level ID.")
 	}
@@ -309,7 +313,11 @@ final class GameManagerTests: XCTestCase {
 	func test_getStatusForLevel_withInvalidId_shouldReturnFalse() {
 		let sut = makeSut()
 
-		let status = sut.getStatusForLevel(id: -1)
+		var status = sut.getStatusForLevel(id: -1)
+
+		XCTAssertFalse(status, "Expected level status to be false for an invalid level ID.")
+
+		status = sut.getStatusForLevel(id: Int.max)
 
 		XCTAssertFalse(status, "Expected level status to be false for an invalid level ID.")
 	}

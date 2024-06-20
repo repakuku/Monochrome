@@ -12,7 +12,6 @@ final class GameManager: ObservableObject {
 
 	@Published var level: Level
 	@Published var taps: Int
-	@Published var levels: [Level]
 
 	var isLevelCompleted: Bool {
 		switch level.status {
@@ -26,6 +25,7 @@ final class GameManager: ObservableObject {
 	private let levelRepository: ILevelRepository
 	private let levelService: ILevelService
 
+	private var levels: [Level]
 	private let originLevels: [Level]
 
 	init(levelRepository: ILevelRepository, levelService: ILevelService) {
@@ -68,7 +68,7 @@ final class GameManager: ObservableObject {
 	}
 
 	func getTapsForLevel(id: Int) -> Int {
-		guard id >= 0 else {
+		guard id >= 0 && id < levels.count else {
 			return .zero
 		}
 
@@ -80,7 +80,7 @@ final class GameManager: ObservableObject {
 	}
 
 	func getStatusForLevel(id: Int) -> Bool {
-		guard id >= 0 else {
+		guard id >= 0 && id < levels.count else {
 			return false
 		}
 
