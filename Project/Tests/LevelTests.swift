@@ -46,8 +46,7 @@ final class LevelTests: XCTestCase {
 			cellsMatrix: [
 				[0, 0],
 				[1, 0]
-			],
-			isCompleted: false
+			]
 		)
 
 		let expectedMatrix = [
@@ -65,36 +64,6 @@ final class LevelTests: XCTestCase {
 			expectedId: 1,
 			expectedMatrix: expectedMatrix,
 			expectedCompletedState: false,
-			expectedAnswerMatrix: expectedAnswerMatrix,
-			expectedTargetTaps: 1
-		)
-	}
-
-	func test_init_completedLevel_shouldImplementCorrectInstance() {
-		let sut = Level(
-			id: 1,
-			cellsMatrix: [
-				[0, 0],
-				[1, 0]
-			],
-			isCompleted: true
-		)
-
-		let expectedMatrix = [
-			[0, 0],
-			[1, 0]
-		]
-
-		let expectedAnswerMatrix = [
-			[0, 1],
-			[0, 0]
-		]
-
-		assertLevelProperties(
-			sut,
-			expectedId: 1,
-			expectedMatrix: expectedMatrix,
-			expectedCompletedState: true,
 			expectedAnswerMatrix: expectedAnswerMatrix,
 			expectedTargetTaps: 1
 		)

@@ -12,18 +12,39 @@ struct ResultView: View {
 	@ObservedObject var gameManager: GameManager
 
 	var body: some View {
+		if gameManager.level.id == 0 {
+			AlertView(
+				gameManager: gameManager,
+				title: "Great Start! Tutorial Completed!",
+				message: "Well done! You’ve completed the tutorial. In Monochrome, your goal is to make all cells the same color by tapping to flip their colors. Each tap affects the selected cell and its row and column. Solve each puzzle with the fewest taps. Good luck!",
+				showReplayButton: false
+			)
+		} else {
+			AlertView(
+				gameManager: gameManager,
+				title: "Well Played! Level Done!",
+				message: "Level \(gameManager.level.id) mastered in \(gameManager.level.taps) taps!",
+				showReplayButton: true
+			)
+		}
+	}
+}
+
+struct AlertView: View {
+	@ObservedObject var gameManager: GameManager
+
+	let title: String
+	let message: String
+	let showReplayButton: Bool
+
+	var body: some View {
 		VStack {
-			InstructionText(text: "Level completed!")
+			InstructionText(text: title)
 				.padding(.bottom)
-			if gameManager.level.taps > 1 {
-				BodyText(text: "You solved the level in \(gameManager.level.taps) taps.")
-					.padding(.bottom)
-			} else {
-				BodyText(text: "You solved the level in \(gameManager.level.taps) tap.")
-					.padding(.bottom)
-			}
+			BodyText(text: message)
+				.padding(.bottom)
 			HStack {
-				if gameManager.level.id > 0 {
+				if showReplayButton {
 					Button {
 						withAnimation {
 							gameManager.restartLevel()

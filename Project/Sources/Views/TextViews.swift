@@ -28,6 +28,7 @@ struct InstructionText: View {
 			.kerning(Sizes.Kerning.normal)
 			.font(.title3)
 			.foregroundStyle(Color(Theme.textColor))
+			.multilineTextAlignment(.center)
 	}
 }
 
