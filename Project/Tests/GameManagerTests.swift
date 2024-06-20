@@ -321,6 +321,72 @@ final class GameManagerTests: XCTestCase {
 
 		XCTAssertFalse(status, "Expected level status to be false for an invalid level ID.")
 	}
+
+	func test_getStarsForLevel_ShouldReturnStarsDependOnTaps() {
+		let sut = makeSut()
+
+		// Move to level 5 to test star calculation with a more complex level
+		for _ in 0..<5 {
+			sut.nextLevel()
+		}
+
+		// Initial state for level 5
+		var stars = sut.getStarsForLevel(id: 5)
+		var expectedStars = 0
+		var status = sut.getStatusForLevel(id: 5)
+
+		XCTAssertFalse(status, "Level should be incompleted initially.")
+		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 initially.")
+
+		// Test scenario 1: High number of taps, expecting 1 star
+		performToggles(sut: sut, toggles: [(0, 0), (0, 0), (0, 0), (0, 0), (1, 1), (1, 2), (2, 1), (2, 2)])
+		stars = sut.getStarsForLevel(id: 5)
+		expectedStars = 1
+		status = sut.getStatusForLevel(id: 5)
+
+		XCTAssertTrue(status, "Level should be completed.")
+		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 with high number of taps.")
+
+		sut.restartLevel()
+
+		// Test scenario 2: Moderate number of taps, expecting 2 stars
+		performToggles(sut: sut, toggles: [(0, 0), (0, 0), (1, 1), (1, 2), (2, 1), (2, 2)])
+		stars = sut.getStarsForLevel(id: 5)
+		expectedStars = 2
+		status = sut.getStatusForLevel(id: 5)
+
+		XCTAssertTrue(status, "Level should be completed.")
+		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 with moderate number of taps.")
+
+		sut.restartLevel()
+
+		// Test scenario 3: Minimal number of taps, expecting 3 stars
+		sut.restartLevel() // Restart the level to test the optimal path
+		performToggles(sut: sut, toggles: [(1, 1), (1, 2), (2, 1), (2, 2)])
+		stars = sut.getStarsForLevel(id: 5)
+		expectedStars = 3
+		status = sut.getStatusForLevel(id: 5)
+
+		XCTAssertTrue(status, "Level should be completed.")
+		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 with minimal number of taps.")
+
+		sut.restartLevel()
+
+		// Test scenario 4: Replay with high number of taps again, expecting to retain 3 stars
+		performToggles(sut: sut, toggles: [(0, 0), (0, 0), (0, 0), (0, 0), (1, 1), (1, 2), (2, 1), (2, 2)])
+		stars = sut.getStarsForLevel(id: 5)
+		expectedStars = 3
+		status = sut.getStatusForLevel(id: 5)
+
+		XCTAssertTrue(status, "Level should be completed again with high number of taps.")
+		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for level 5 after replaying with high number of taps.")
+	}
+
+	private func performToggles(sut: GameManager, toggles: [(Int, Int)]) {
+		for (x, y) in toggles {
+			sut.toggleColors(atX: x, atY: y)
+		}
+	}
 }
 
 extension GameManagerTests {

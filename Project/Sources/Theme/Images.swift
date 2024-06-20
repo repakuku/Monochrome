@@ -14,6 +14,8 @@ enum Images {
 	case questionmark
 	case checklist
 	case xmark
+	case star
+	case starFilled
 
 	var description: String {
 		switch self {
@@ -27,6 +29,10 @@ enum Images {
 			return "checklist"
 		case .xmark:
 			return "xmark"
+		case .star:
+			return "star"
+		case .starFilled:
+			return "star.fill"
 		}
 	}
 }

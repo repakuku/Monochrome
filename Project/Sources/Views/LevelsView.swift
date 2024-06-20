@@ -21,12 +21,17 @@ struct LevelsView: View {
 				LabelView()
 				ScrollView {
 					VStack(spacing: 10) {
-						ForEach(0..<5, id: \.self) { index in
-							RowView(
-								index: index,
-								taps: gameManager.getTapsForLevel(id: index),
-								isFilled: gameManager.getStatusForLevel(id: index)
-							)
+						ForEach(1..<gameManager.numberOfLevels, id: \.self) { index in
+							Button {
+								gameManager.selectLevel(id: index)
+							} label: {
+								RowView(
+									index: index,
+									stars: gameManager.getStarsForLevel(id: index),
+									taps: gameManager.getTapsForLevel(id: index),
+									isFilled: gameManager.getStatusForLevel(id: index)
+								)
+							}
 						}
 					}
 				}
@@ -37,6 +42,7 @@ struct LevelsView: View {
 
 struct RowView: View {
 	let index: Int
+	let stars: Int
 	let taps: Int
 	let isFilled: Bool
 
@@ -48,8 +54,7 @@ struct RowView: View {
 				RoundedSquareTextView(text: String(index))
 			}
 			Spacer()
-			// TODO: Stars
-			StarsView(stars: 0)
+			StarsView(stars: stars)
 				.frame(width: Sizes.Levels.targetColumnWidth)
 			Spacer()
 			TapsText(value: taps)
@@ -61,6 +66,7 @@ struct RowView: View {
 					Color(Theme.buttonStrokeColor),
 					lineWidth: Sizes.Stroke.width
 				)
+				.frame(height: Sizes.General.roundedViewLength + 2)
 		)
 		.padding(.horizontal)
 		.frame(maxWidth: Sizes.Levels.maxRowWidth)
@@ -106,11 +112,25 @@ struct StarsView: View {
 	let stars: Int
 
 	var body: some View {
-		// TODO: Stars
 		HStack {
-			Image(systemName: "star.fill")
-			Image(systemName: "star.fill")
-			Image(systemName: "star")
+			switch stars {
+			case 0:
+				Image(systemName: Images.star.description)
+				Image(systemName: Images.star.description)
+				Image(systemName: Images.star.description)
+			case 1:
+				Image(systemName: Images.starFilled.description)
+				Image(systemName: Images.star.description)
+				Image(systemName: Images.star.description)
+			case 2:
+				Image(systemName: Images.starFilled.description)
+				Image(systemName: Images.starFilled.description)
+				Image(systemName: Images.star.description)
+			default:
+				Image(systemName: Images.starFilled.description)
+				Image(systemName: Images.starFilled.description)
+				Image(systemName: Images.starFilled.description)
+			}
 		}
 		.foregroundColor(Color(Theme.textColor))
 	}

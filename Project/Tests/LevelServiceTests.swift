@@ -118,7 +118,7 @@ final class LevelServiceTests: XCTestCase {
 	}
 
 	func test_checkMatrix_shouldReturnTrueForAllToggled() {
-		var testLevel = Level(
+		let testLevel = Level(
 			id: 1,
 			cellsMatrix: [
 				[1, 1],
@@ -132,7 +132,7 @@ final class LevelServiceTests: XCTestCase {
 	}
 
 	func test_checkMatrix_shouldReturnFalseForUntoggledCells() {
-		var testLevel = Level(
+		let testLevel = Level(
 			id: 1,
 			cellsMatrix: [
 				[1, 0],
@@ -157,5 +157,20 @@ final class LevelServiceTests: XCTestCase {
 		sut.getHint(level: &testLevel)
 
 		XCTAssertEqual(testLevel.cellsMatrix[0][0], 2, "Expected cell at (0, 1) to be marked as a hint.")
+	}
+
+	func test_countTargetTaps_shouldReturnCorrectTapsCount() {
+		let testLevel = Level(
+			id: 1,
+			cellsMatrix: [
+				[0, 1],
+				[1, 0]
+			]
+		)
+
+		let targetTaps = sut.countTargetTaps(for: testLevel)
+		let expectedTargetTaps = 2
+
+		XCTAssertEqual(targetTaps, expectedTargetTaps, "Expected target taps count to be \(expectedTargetTaps) for solving the level.")
 	}
 }

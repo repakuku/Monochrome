@@ -22,6 +22,10 @@ final class GameManager: ObservableObject {
 		}
 	}
 
+	var numberOfLevels: Int {
+		levels.count
+	}
+
 	private let levelRepository: ILevelRepository
 	private let levelService: ILevelService
 
@@ -63,6 +67,9 @@ final class GameManager: ObservableObject {
 		taps = 0
 	}
 
+	func selectLevel(id: Int) {
+	}
+
 	func getHint() {
 		levelService.getHint(level: &level)
 	}
@@ -89,6 +96,27 @@ final class GameManager: ObservableObject {
 		}
 
 		return false
+	}
+
+	func getStarsForLevel(id: Int) -> Int {
+		let targetTaps = levelService.countTargetTaps(for: levels[id])
+		var actualTaps = Int.max
+
+		if case let .completed(levelTaps) = levels[id].status {
+			actualTaps = levelTaps
+		} else {
+			return 0
+		}
+
+		if actualTaps == targetTaps {
+			return 3
+		} else if actualTaps <= targetTaps * 2 {
+			return 2
+		} else {
+			return 1
+		}
+
+		return 0
 	}
 
 	private func completeLevel() {

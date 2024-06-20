@@ -12,6 +12,7 @@ protocol ILevelService {
 	func toggleColors(level: inout Level, atX: Int, atY: Int)
 	func checkMatrix(level: Level) -> Bool
 	func getHint(level: inout Level)
+	func countTargetTaps(for level: Level) -> Int
 }
 
 final class LevelService: ILevelService {
@@ -53,6 +54,21 @@ final class LevelService: ILevelService {
 		}
 	}
 
+	func countTargetTaps(for level: Level) -> Int {
+		let answerMatrix = getAnswerMatrix(for: level)
+		var taps = 0
+
+		for row in 0..<level.levelSize {
+			for col in 0..<level.levelSize {
+				if answerMatrix[row][col] == 1 {
+					taps += 1
+				}
+			}
+		}
+
+		return taps
+	}
+
 	private func clearHint(level: inout Level) {
 		for row in 0..<level.levelSize {
 			for con in 0..<level.levelSize {
@@ -83,20 +99,5 @@ final class LevelService: ILevelService {
 		}
 
 		return answerMatrix
-	}
-
-	private func countTargetTaps(for level: Level) -> Int {
-		let answerMatrix = getAnswerMatrix(for: level)
-		var taps = 0
-
-		for row in 0..<level.levelSize {
-			for col in 0..<level.levelSize {
-				if answerMatrix[row][col] == 1 {
-					taps += 1
-				}
-			}
-		}
-
-		return taps
 	}
 }
