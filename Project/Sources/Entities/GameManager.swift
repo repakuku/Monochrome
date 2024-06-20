@@ -11,41 +11,32 @@ import Foundation
 final class GameManager: ObservableObject {
 
 	@Published var level: Level
-	@Published var isLevelComplited: Bool
+	@Published var isLevelCompleted: Bool
 	@Published var targetTaps: Int
 	@Published var levels: [Level]
 
-	private let repository: LevelRepository
+	private let levelRepository: ILevelRepository
+	private let levelService: ILevelService
+
 	private let originLevels: [Level]
 
-	init() {
-		repository = LevelRepository()
-		originLevels = repository.getLevels()
+	init(levelRepository: ILevelRepository, levelService: ILevelService) {
+		self.levelRepository = levelRepository
+		self.levelService = levelService
+
+		originLevels = levelRepository.getLevels()
 		levels = originLevels
 		level = originLevels[0]
-		isLevelComplited = false
+		isLevelCompleted = false
 		targetTaps = originLevels[0].targetTaps
 	}
 
 	func toggleColors(atX x: Int, atY y: Int) {
-		guard x >= 0 && x < level.levelSize && y >= 0 && y < level.levelSize else {
-			return
-		}
+		levelService.toggleColors(level: &level, atX: x, atY: y)
 
-		clearHint()
-
-		for index in 0..<level.levelSize {
-			level.cellsMatrix[x][index] = 1 - level.cellsMatrix[x][index]
-			if index != x {
-				level.cellsMatrix[index][y] = 1 - level.cellsMatrix[index][y]
-			}
-		}
-
-		level.taps += 1
-
-		if checkMatrix() {
+		if levelService.checkMatrix(level: level) {
 			level.isCompleted = true
-			isLevelComplited = true
+			isLevelCompleted = true
 			levels[level.id].isCompleted = true
 			levels[level.id].taps = level.taps
 		}
@@ -54,7 +45,7 @@ final class GameManager: ObservableObject {
 	func restartLevel() {
 		level.taps = 0
 		level = originLevels[level.id]
-		isLevelComplited = false
+		isLevelCompleted = false
 	}
 
 	func nextLevel() {
@@ -66,46 +57,11 @@ final class GameManager: ObservableObject {
 
 		level = originLevels[nextLevelId]
 		level.taps = 0
-		isLevelComplited = false
+		isLevelCompleted = false
 		targetTaps = level.targetTaps
 	}
 
 	func getHint() {
-		let answerMatrix = level.answerMatrix
-
-		for row in 0..<level.levelSize {
-			for col in 0..<level.levelSize {
-				if answerMatrix[row][col] == 1 {
-					if level.cellsMatrix[row][col] == 0 {
-						level.cellsMatrix[row][col] = 2
-					} else {
-						level.cellsMatrix[row][col] = 3
-					}
-					return
-				}
-			}
-		}
-	}
-
-	private func checkMatrix() -> Bool {
-		for row in level.cellsMatrix {
-			for cell in row where cell == 0 {
-				return false
-			}
-		}
-
-		return true
-	}
-
-	private func clearHint() {
-		for row in 0..<level.levelSize {
-			for con in 0..<level.levelSize {
-				if level.cellsMatrix[row][con] == 2 {
-					level.cellsMatrix[row][con] = 0
-				} else if level.cellsMatrix[row][con] == 3 {
-					level.cellsMatrix[row][con] = 1
-				}
-			}
-		}
+		levelService.getHint(level: &level)
 	}
 }

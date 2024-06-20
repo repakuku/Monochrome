@@ -114,5 +114,11 @@ struct NumberView: View {
 }
 
 #Preview {
-	BackgroundView(gameManager: GameManager(), showMenu: .constant(true))
+	BackgroundView(
+		gameManager: GameManager(
+			levelRepository: LevelRepository(),
+			levelService: LevelService()
+		),
+		showMenu: .constant(true)
+	)
 }

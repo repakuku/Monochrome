@@ -16,7 +16,7 @@ struct ResultView: View {
 			AlertView(
 				gameManager: gameManager,
 				title: "Great Start! Tutorial Completed!",
-				message: "Well done! You’ve completed the tutorial. In Monochrome, your goal is to make all cells the same color by tapping to flip their colors. Each tap affects the selected cell and its row and column. Solve each puzzle with the fewest taps. Good luck!",
+				message: "Well done! You’ve completed the tutorial. In Monochrome, your goal is to make all cells the same color by tapping to flip their colors. Each tap affects the selected cell and its row and column. Solve each puzzle with the fewest taps. Good luck!", // swiftlint:disable:this line_length
 				showReplayButton: false
 			)
 		} else {
@@ -75,5 +75,10 @@ struct AlertView: View {
 }
 
 #Preview {
-	ResultView(gameManager: GameManager())
+	ResultView(
+		gameManager: GameManager(
+			levelRepository: LevelRepository(),
+			levelService: LevelService()
+		)
+	)
 }

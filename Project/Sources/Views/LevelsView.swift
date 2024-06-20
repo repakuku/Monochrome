@@ -104,5 +104,11 @@ struct LabelView: View {
 }
 
 #Preview {
-	LevelsView(gameManager: GameManager(), levelsViewIsShowing: .constant(true))
+	LevelsView(
+		gameManager: GameManager(
+			levelRepository: LevelRepository(),
+			levelService: LevelService()
+		),
+		levelsViewIsShowing: .constant(true)
+	)
 }

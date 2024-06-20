@@ -9,7 +9,10 @@
 import SwiftUI
 
 struct ContentView: View {
-	@StateObject private var gameManager = GameManager()
+	@StateObject private var gameManager = GameManager(
+		levelRepository: LevelRepository(),
+		levelService: LevelService()
+	)
 	@State private var showMenu = false
 	@State private var showInstructions = true
 
@@ -19,11 +22,11 @@ struct ContentView: View {
 				InstructionView()
 			} else {
 				BackgroundView(gameManager: gameManager, showMenu: $showMenu)
-					.opacity(gameManager.isLevelComplited ? 0.3 : 1)
-					.disabled(gameManager.isLevelComplited)
+					.opacity(gameManager.isLevelCompleted ? 0.3 : 1)
+					.disabled(gameManager.isLevelCompleted)
 			}
 
-			if gameManager.isLevelComplited {
+			if gameManager.isLevelCompleted {
 				ResultView(gameManager: gameManager)
 					.transition(.scale)
 			} else {

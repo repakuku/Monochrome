@@ -73,5 +73,11 @@ struct FieldView: View {
 }
 
 #Preview {
-	FieldView(gameManager: GameManager(), showInstructions: .constant(true))
+	FieldView(
+		gameManager: GameManager(
+			levelRepository: LevelRepository(),
+			levelService: LevelService()
+		),
+		showInstructions: .constant(true)
+	)
 }

@@ -12,7 +12,7 @@ import XCTest
 final class GameManagerTests: XCTestCase {
 
 	func test_init_shouldImplementCorrectInstance() {
-		let sut = GameManager()
+		let sut = makeSut()
 
 		let currentLevel = sut.level
 
@@ -29,7 +29,7 @@ final class GameManagerTests: XCTestCase {
 	}
 
 	func test_toggleColors_withValidData_shouldToggleColorsAndIncrementTaps() {
-		let sut = GameManager()
+		let sut = makeSut()
 
 		sut.toggleColors(atX: 0, atY: 0)
 
@@ -40,7 +40,7 @@ final class GameManagerTests: XCTestCase {
 	}
 
 	func test_toggleColors_withInvalidCoordinates_shouldNotChangeState() {
-		let sut = GameManager()
+		let sut = makeSut()
 
 		let initialMatrix = sut.level.cellsMatrix
 		let initialTaps = sut.level.taps
@@ -53,21 +53,21 @@ final class GameManagerTests: XCTestCase {
 	}
 
 	func test_isLevelCompleted_shouldReturnTrueAfterCorrectToggle() {
-		let sut = GameManager()
+		let sut = makeSut()
 
-		XCTAssertFalse(sut.isLevelComplited, "Expected level to be incomplete initially.")
+		XCTAssertFalse(sut.isLevelCompleted, "Expected level to be incomplete initially.")
 
 		sut.toggleColors(atX: 0, atY: 0)
 
-		XCTAssertTrue(sut.isLevelComplited, "Expected level to be completed after toggling the correct cell.")
+		XCTAssertTrue(sut.isLevelCompleted, "Expected level to be completed after toggling the correct cell.")
 
 		sut.nextLevel()
 
-		XCTAssertFalse(sut.isLevelComplited, "Expected new level to be incomplete after advancing.")
+		XCTAssertFalse(sut.isLevelCompleted, "Expected new level to be incomplete after advancing.")
 	}
 
 	func test_restartLevel_shouldResetStateToInitial() {
-		let sut = GameManager()
+		let sut = makeSut()
 
 		sut.toggleColors(atX: 0, atY: 0)
 		sut.restartLevel()
@@ -77,11 +77,11 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertEqual(sut.level.cellsMatrix, expectedMatrix, "Expected cells matrix to reset to initial state on restart.")
 		XCTAssertEqual(sut.level.taps, 0, "Expected taps to reset to 0 on restart.")
 		XCTAssertEqual(sut.targetTaps, 1, "Expected target taps to remain unchanged on restart.")
-		XCTAssertFalse(sut.isLevelComplited, "Expected level to not be completed after restart.")
+		XCTAssertFalse(sut.isLevelCompleted, "Expected level to not be completed after restart.")
 	}
 
 	func test_restartLevel_withMultipleActions_shouldResetToInitialState() {
-		let sut = GameManager()
+		let sut = makeSut()
 
 		sut.nextLevel()
 		sut.toggleColors(atX: 0, atY: 0)
@@ -100,13 +100,13 @@ final class GameManagerTests: XCTestCase {
 
 		XCTAssertEqual(currentLevel.id, expectedLevel.id, "Expected to remain at the same level (ID 1) after restarting the level.")
 		XCTAssertEqual(currentLevel.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to reset to initial state after restarting the level.")
-		XCTAssertFalse(sut.isLevelComplited, "Expected level to be incomplete after restarting.")
+		XCTAssertFalse(sut.isLevelCompleted, "Expected level to be incomplete after restarting.")
 		XCTAssertEqual(sut.level.taps, 0, "Expected taps to reset to 0 after restarting the level.")
 		XCTAssertEqual(sut.targetTaps, 1, "Expected target taps to remain unchanged on restart.")
 	}
 
 	func test_nextLevel_withValidState_shouldAdvanceToNextLevel() {
-		let sut = GameManager()
+		let sut = makeSut()
 
 		sut.nextLevel()
 
@@ -121,13 +121,13 @@ final class GameManagerTests: XCTestCase {
 
 		XCTAssertEqual(currentLevel.id, expectedLevel.id, "Expected to advance to level ID 1 after calling nextLevel.")
 		XCTAssertEqual(currentLevel.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to match for level 1.")
-		XCTAssertFalse(sut.isLevelComplited, "Expected level to be incomplete after advancing to the next level.")
+		XCTAssertFalse(sut.isLevelCompleted, "Expected level to be incomplete after advancing to the next level.")
 		XCTAssertEqual(sut.level.taps, 0, "Expected taps to reset to 0 after advancing to the next level.")
 		XCTAssertEqual(sut.targetTaps, 1, "Expected target taps to be 1 for the given level configuration.")
 	}
 
 	func test_nextLevel_withLastLevel_shouldRemainAtLastLevel() {
-		let sut = GameManager()
+		let sut = makeSut()
 
 		for _ in 0...6 {
 			sut.nextLevel()
@@ -146,13 +146,13 @@ final class GameManagerTests: XCTestCase {
 
 		XCTAssertEqual(currentLevel.id, expectedLevel.id, "Expected to remain at the last level (ID 2) after calling nextLevel at the last level.")
 		XCTAssertEqual(currentLevel.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to match for the last level.")
-		XCTAssertFalse(sut.isLevelComplited, "Expected level to be incomplete when remaining at the last level.")
+		XCTAssertFalse(sut.isLevelCompleted, "Expected level to be incomplete when remaining at the last level.")
 		XCTAssertEqual(sut.level.taps, 0, "Expected taps to reset to 0 when remaining at the last level.")
 		XCTAssertEqual(sut.targetTaps, 4, "Expected target taps to be 4 for the given level configuration.")
 	}
 
 	func test_getHint_shouldProvideHintInMatrix() {
-		let sut = GameManager()
+		let sut = makeSut()
 
 		sut.nextLevel()
 		sut.getHint()
@@ -202,5 +202,14 @@ final class GameManagerTests: XCTestCase {
 		]
 
 		XCTAssertEqual(sut.level.cellsMatrix, expectedMatrix, "Expected cells matrix to match after toggling hinted cell again.")
+	}
+}
+
+extension GameManagerTests {
+	func makeSut() -> GameManager {
+		GameManager(
+			levelRepository: LevelRepository(),
+			levelService: LevelService()
+		)
 	}
 }
