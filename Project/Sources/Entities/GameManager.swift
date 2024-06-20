@@ -99,6 +99,20 @@ final class GameManager: ObservableObject {
 	}
 
 	func getStatusForLevel(id: Int) -> Bool {
-		false
+		guard id >= 0 else {
+			return false
+		}
+
+		let level = levels[id]
+		var status = false
+
+		switch level.status {
+		case .completed:
+			status = true
+		case .incompleted:
+			status = false
+		}
+
+		return status
 	}
 }

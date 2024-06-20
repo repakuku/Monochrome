@@ -196,7 +196,7 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertEqual(sut.level.cellsMatrix, expectedMatrix, "Expected cells matrix to match after toggling hinted cell again.")
 	}
 
-	func test_getTapsForLevel_withCorrectId_ShouldReturnCorrectTapsForCompletedlevel() {
+	func test_getTapsForLevel_withCorrectId_shouldReturnCorrectTapsForCompletedlevel() {
 		let sut = makeSut()
 
 		// Initial state check for level 0
@@ -227,36 +227,40 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertEqual(taps, expectedTaps, "Expected taps to be \(expectedTaps) after one toggle at (0, 0) on level 1.")
 	}
 
-	func test_getTapsForLevel_withIncorrectId_ShouldReturnCorrectTapsForCompletedlevel() {
+	func test_getTapsForLevel_withIncorrectId_shouldReturnCorrectTapsForCompletedlevel() {
 		let sut = makeSut()
 
-		var taps = sut.getTapsForLevel(id: -1)
-		var expectedTaps = 0
+		let taps = sut.getTapsForLevel(id: -1)
+		let expectedTaps = 0
 
 		XCTAssertEqual(taps, expectedTaps, "Expected taps to be \(expectedTaps) for invalid level ID.")
 	}
 
-	func test_getTapsForLevel_afterReplay_ShouldReturnTheMinimumTaps() {
+	func test_getTapsForLevel_afterReplay_shouldReturnBestResult() {
 		let sut = makeSut()
 		var taps = 0
 		var expectedTaps = 0
 
 		sut.nextLevel()
+
+		// Perform toggle actions resulting in 3 taps
 		sut.toggleColors(atX: 0, atY: 0)
 		sut.toggleColors(atX: 0, atY: 0)
 		sut.toggleColors(atX: 0, atY: 1)
 		taps = sut.getTapsForLevel(id: 1)
 		expectedTaps = 3
 
-		XCTAssertEqual(taps, expectedTaps)
+		XCTAssertEqual(taps, expectedTaps, "Expected taps to be \(expectedTaps) after 3 toggles at (0,0), (0,0), and (0,1) on level 1.")
 
+		// Restart level and complete with fewer taps (1 tap)
 		sut.restartLevel()
 		sut.toggleColors(atX: 0, atY: 1)
 		taps = sut.getTapsForLevel(id: 1)
 		expectedTaps = 1
 
-		XCTAssertEqual(taps, expectedTaps)
+		XCTAssertEqual(taps, expectedTaps, "Expected taps to be \(expectedTaps) after 1 toggle at (0,1) on restarted level 1.")
 
+		// Restart again and perform the same previous 3 toggles
 		sut.restartLevel()
 		sut.toggleColors(atX: 0, atY: 0)
 		sut.toggleColors(atX: 0, atY: 0)
@@ -264,7 +268,50 @@ final class GameManagerTests: XCTestCase {
 		taps = sut.getTapsForLevel(id: 1)
 		expectedTaps = 1
 
-		XCTAssertEqual(taps, expectedTaps)
+		XCTAssertEqual(taps, expectedTaps, "Expected taps to be \(expectedTaps) after 3 toggles at (0,0), (0,0), and (0,1) on level 1.")
+
+		// After replaying, the best result should still be 1
+		sut.restartLevel()
+		sut.toggleColors(atX: 0, atY: 1)
+		taps = sut.getTapsForLevel(id: 1)
+		expectedTaps = 1
+		XCTAssertEqual(taps, expectedTaps, "Expected best taps to be \(expectedTaps) after 1 toggle at (0,1) on restarted level 1, reflecting the best result.")
+	}
+
+	func test_getStatusForLevel_withValidId_shouldReturnCorrectStatus() {
+		let sut = makeSut()
+		
+		// Move to level 1
+		sut.nextLevel()
+
+		// Initially, the level should not be completed
+		var status = sut.getStatusForLevel(id: 1)
+
+		XCTAssertFalse(status, "Expected level 1 to be incompleted initially.")
+
+		// Complete the level by toggling the necessary cells
+		sut.toggleColors(atX: 0, atY: 1)
+
+		// Now, the level should be completed
+		status = sut.getStatusForLevel(id: 1)
+
+		XCTAssertTrue(status, "Expected level 1 to be completed after toggling at (0,1).")
+
+		// Restart the level to check if it resets the completion status
+		sut.restartLevel()
+
+		// The status should reflect the level's state (completed or incompleted) after restart
+		status = sut.getStatusForLevel(id: 1)
+
+		XCTAssertTrue(status, "Expected level 1 to be incompleted after restarting the level.")
+	}
+
+	func test_getStatusForLevel_withInvalidId_shouldReturnFalse() {
+		let sut = makeSut()
+
+		let status = sut.getStatusForLevel(id: -1)
+
+		XCTAssertFalse(status, "Expected level status to be false for an invalid level ID.")
 	}
 }
 
