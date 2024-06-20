@@ -11,7 +11,7 @@ import SwiftUI
 struct MonochromeApp: App {
 	var body: some Scene {
 		WindowGroup {
-			ContentView()
+			GameView()
 		}
 	}
 }

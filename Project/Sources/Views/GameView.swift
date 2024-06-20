@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  GameView.swift
 //  Monochrome
 //
 //  Created by Alexey Turulin on 6/11/24.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct GameView: View {
 	@StateObject private var gameManager = GameManager(
 		levelRepository: LevelRepository(),
 		levelService: LevelService()
@@ -53,5 +53,5 @@ struct InstructionView: View {
 }
 
 #Preview {
-	ContentView()
+	GameView()
 }

@@ -25,7 +25,7 @@
 		7DDA1DA1BFDC6D3C4C3B64CA /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F51DF9D8499573FBE6A7C3 /* Colors.swift */; };
 		8AF1DCDD2455CC84836A3A09 /* Sizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F686E1909C8E1D6D6DB4C03 /* Sizes.swift */; };
 		B2EA8803937F3D26078758BC /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75DDF20D233667236BBD118 /* ResultView.swift */; };
-		C2B014582F13F833AA0B544D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66ADEFD6BCB721D9D0BD5F23 /* ContentView.swift */; };
+		C2B014582F13F833AA0B544D /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66ADEFD6BCB721D9D0BD5F23 /* GameView.swift */; };
 		F21B4D51C9125D283B86210A /* MonochromeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E0D157B65165DA148CF2EB /* MonochromeApp.swift */; };
 		F70ACA186C2F72D54957FF68 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14293AE42766CA0985A5CCB /* UIColor+Hex.swift */; };
 		FC74C0684185B8E6E3D362E0 /* TextViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7738A2A741E8293C04A261 /* TextViews.swift */; };
@@ -78,7 +78,7 @@
 		1B33E1E14E02551A3CA0B874 /* Monochrome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Monochrome.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FC786D509133CEC3339B09A /* MonochromeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "MonochromeTests-Info.plist"; sourceTree = "<group>"; };
 		356B4C37748236D10D808E8F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		66ADEFD6BCB721D9D0BD5F23 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		66ADEFD6BCB721D9D0BD5F23 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		72DEDF05D88B22498293CDD2 /* Monochrome-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Monochrome-Info.plist"; sourceTree = "<group>"; };
 		771EF85CE9731D4F4557B73D /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		7F686E1909C8E1D6D6DB4C03 /* Sizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sizes.swift; sourceTree = "<group>"; };
@@ -181,7 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				771EF85CE9731D4F4557B73D /* BackgroundView.swift */,
-				66ADEFD6BCB721D9D0BD5F23 /* ContentView.swift */,
+				66ADEFD6BCB721D9D0BD5F23 /* GameView.swift */,
 				B4B334CD7B983AB3A448CA13 /* FieldView.swift */,
 				F75DDF20D233667236BBD118 /* ResultView.swift */,
 				06BD3E51752F115DCAB489A3 /* RoundedViews.swift */,
@@ -416,7 +416,7 @@
 				2A1A72D302B665F508502510 /* Images.swift in Sources */,
 				8AF1DCDD2455CC84836A3A09 /* Sizes.swift in Sources */,
 				54C0E08621709F0C56AD6137 /* BackgroundView.swift in Sources */,
-				C2B014582F13F833AA0B544D /* ContentView.swift in Sources */,
+				C2B014582F13F833AA0B544D /* GameView.swift in Sources */,
 				6DC23DD50BA9772C8D33AA02 /* FieldView.swift in Sources */,
 				B2EA8803937F3D26078758BC /* ResultView.swift in Sources */,
 				069E1B9410F9ACEB7E7721EF /* RoundedViews.swift in Sources */,
