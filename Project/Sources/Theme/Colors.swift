@@ -9,7 +9,7 @@ import UIKit
 
 enum Colors {
 	enum White {
-		static let Soft = UIColor(hex: 0xF3F8FD)
+		static let Soft = UIColor(hex: 0xEFEFEF)
 	}
 
 	enum Black {

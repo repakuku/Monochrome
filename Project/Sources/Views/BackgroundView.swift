@@ -13,12 +13,16 @@ struct BackgroundView: View {
 	@Binding var showMenu: Bool
 
 	var body: some View {
-		VStack {
-			TopView(gameManager: gameManager, showMenu: $showMenu)
-			Spacer()
-			BottomView(gameManager: gameManager)
+		ZStack {
+			Color(Theme.backgroundColor)
+				.ignoresSafeArea()
+			VStack {
+				TopView(gameManager: gameManager, showMenu: $showMenu)
+				Spacer()
+				BottomView(gameManager: gameManager)
+			}
+			.padding()
 		}
-		.padding()
 	}
 }
 

@@ -11,9 +11,6 @@ enum Sizes {
 	enum General {
 		static let roundedViewLength: CGFloat = 56
 		static let roundedRectRadius: CGFloat = 15
-
-		static let roundedRectViewWidth: CGFloat = 68
-		static let roundedRectViewHeight: CGFloat = 56
 	}
 
 	enum Field {

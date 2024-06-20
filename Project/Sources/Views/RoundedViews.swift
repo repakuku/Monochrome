@@ -56,8 +56,8 @@ struct RoundedRectTextView: View {
 			.bold()
 			.font(.title3)
 			.frame(
-				width: Sizes.General.roundedRectViewWidth,
-				height: Sizes.General.roundedRectViewHeight
+				width: Sizes.General.roundedViewLength,
+				height: Sizes.General.roundedViewLength
 			)
 			.foregroundStyle(Color(Theme.textColor))
 			.overlay(
