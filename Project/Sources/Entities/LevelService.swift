@@ -16,10 +16,6 @@ protocol ILevelService {
 
 final class LevelService: ILevelService {
 	func toggleColors(level: inout Level, atX x: Int, atY y: Int) {
-		guard x >= 0 && x < level.levelSize && y >= 0 && y < level.levelSize else {
-			return
-		}
-
 		clearHint(level: &level)
 
 		for index in 0..<level.levelSize {
@@ -28,8 +24,6 @@ final class LevelService: ILevelService {
 				level.cellsMatrix[index][y] = 1 - level.cellsMatrix[index][y]
 			}
 		}
-
-		level.taps += 1
 	}
 
 	func checkMatrix(level: Level) -> Bool {
@@ -43,7 +37,7 @@ final class LevelService: ILevelService {
 	}
 
 	func getHint(level: inout Level) {
-		let answerMatrix = level.answerMatrix
+		let answerMatrix = getAnswerMatrix(for: level)
 
 		for row in 0..<level.levelSize {
 			for col in 0..<level.levelSize {
@@ -69,5 +63,40 @@ final class LevelService: ILevelService {
 				}
 			}
 		}
+	}
+
+	private func getAnswerMatrix(for level: Level) -> [[Int]] {
+		let row = Array(repeating: 0, count: level.levelSize)
+		var answerMatrix = Array(repeating: row, count: level.levelSize)
+
+		for row in 0..<level.levelSize {
+			for col in 0..<level.levelSize {
+				if level.cellsMatrix[row][col] == 0 {
+					for index in 0..<level.levelSize {
+						answerMatrix[row][index] = 1 - answerMatrix[row][index]
+						if index != row {
+							answerMatrix[index][col] = 1 - answerMatrix[index][col]
+						}
+					}
+				}
+			}
+		}
+
+		return answerMatrix
+	}
+
+	private func countTargetTaps(for level: Level) -> Int {
+		let answerMatrix = getAnswerMatrix(for: level)
+		var taps = 0
+
+		for row in 0..<level.levelSize {
+			for col in 0..<level.levelSize {
+				if answerMatrix[row][col] == 1 {
+					taps += 1
+				}
+			}
+		}
+
+		return taps
 	}
 }

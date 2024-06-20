@@ -92,8 +92,9 @@ struct BottomView: View {
 
 	var body: some View {
 		HStack {
-			NumberView(title: "Taps", text: String(gameManager.level.taps))
+			NumberView(title: "Taps", text: String(gameManager.taps))
 			Spacer()
+			// TODO: gameManager.level.id -> gameManager.id
 			NumberView(title: "Level", text: String(gameManager.level.id))
 		}
 	}

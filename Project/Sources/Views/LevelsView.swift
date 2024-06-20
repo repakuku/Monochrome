@@ -24,9 +24,8 @@ struct LevelsView: View {
 						ForEach(0..<5, id: \.self) { index in
 							RowView(
 								index: index,
-								target: gameManager.levels[index].targetTaps,
-								taps: gameManager.levels[index].taps,
-								isFilled: gameManager.levels[index].isCompleted
+								taps: gameManager.getTapsForLevel(id: index),
+								isFilled: gameManager.getStatusForLevel(id: index)
 							)
 						}
 					}
@@ -38,7 +37,6 @@ struct LevelsView: View {
 
 struct RowView: View {
 	let index: Int
-	let target: Int
 	let taps: Int
 	let isFilled: Bool
 
@@ -50,7 +48,8 @@ struct RowView: View {
 				RoundedSquareTextView(text: String(index))
 			}
 			Spacer()
-			TapsText(value: target)
+			// TODO: Stars
+			StarsView(stars: 0)
 				.frame(width: Sizes.Levels.targetColumnWidth)
 			Spacer()
 			TapsText(value: taps)
@@ -92,14 +91,28 @@ struct LabelView: View {
 			LabelText(title: "Level")
 				.frame(width: Sizes.General.roundedViewLength)
 			Spacer()
-			LabelText(title: "Target")
+			LabelText(title: "Stars")
 				.frame(width: Sizes.Levels.targetColumnWidth)
 			Spacer()
-			LabelText(title: "Taps")
+			LabelText(title: "Best")
 				.frame(width: Sizes.Levels.tapsColumnWidth)
 		}
 		.padding(.horizontal)
 		.frame(maxWidth: Sizes.Levels.maxRowWidth)
+	}
+}
+
+struct StarsView: View {
+	let stars: Int
+
+	var body: some View {
+		// TODO: Stars
+		HStack {
+			Image(systemName: "star.fill")
+			Image(systemName: "star.fill")
+			Image(systemName: "star")
+		}
+		.foregroundColor(Color(Theme.textColor))
 	}
 }
 
