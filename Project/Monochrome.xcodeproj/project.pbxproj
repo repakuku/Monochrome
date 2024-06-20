@@ -17,6 +17,7 @@
 		07E435602C1DE53F004B9562 /* LevelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E4355F2C1DE53F004B9562 /* LevelTests.swift */; };
 		07E435622C1DF42A004B9562 /* LevelRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E435612C1DF42A004B9562 /* LevelRepositoryTests.swift */; };
 		07E435642C247EC9004B9562 /* LevelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E435632C247EC9004B9562 /* LevelService.swift */; };
+		07E435692C24CFE8004B9562 /* LevelServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E435682C24CFE8004B9562 /* LevelServiceTests.swift */; };
 		2A1A72D302B665F508502510 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020848DCE082B517F18C0DCB /* Images.swift */; };
 		371D8FA659B012D24F677DBD /* UIKit+Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1B649FF04E3095FEEE7FBA /* UIKit+Dynamic.swift */; };
 		43898B605029DD681B7BBBF1 /* TuistBundle+Monochrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A0A3591073D4351D81A32B /* TuistBundle+Monochrome.swift */; };
@@ -75,6 +76,7 @@
 		07E4355F2C1DE53F004B9562 /* LevelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelTests.swift; sourceTree = "<group>"; };
 		07E435612C1DF42A004B9562 /* LevelRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelRepositoryTests.swift; sourceTree = "<group>"; };
 		07E435632C247EC9004B9562 /* LevelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelService.swift; sourceTree = "<group>"; };
+		07E435682C24CFE8004B9562 /* LevelServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelServiceTests.swift; sourceTree = "<group>"; };
 		1B33E1E14E02551A3CA0B874 /* Monochrome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Monochrome.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FC786D509133CEC3339B09A /* MonochromeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "MonochromeTests-Info.plist"; sourceTree = "<group>"; };
 		356B4C37748236D10D808E8F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				07E435572C1D1B73004B9562 /* GameManagerTests.swift */,
 				07E4355F2C1DE53F004B9562 /* LevelTests.swift */,
 				07E435612C1DF42A004B9562 /* LevelRepositoryTests.swift */,
+				07E435682C24CFE8004B9562 /* LevelServiceTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -397,6 +400,7 @@
 			files = (
 				07E435622C1DF42A004B9562 /* LevelRepositoryTests.swift in Sources */,
 				07E435582C1D1B73004B9562 /* GameManagerTests.swift in Sources */,
+				07E435692C24CFE8004B9562 /* LevelServiceTests.swift in Sources */,
 				07E435602C1DE53F004B9562 /* LevelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
