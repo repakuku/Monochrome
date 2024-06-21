@@ -16,18 +16,23 @@ struct LevelsView: View {
 		ZStack {
 			Color(Theme.backgroundColor)
 				.ignoresSafeArea()
-			VStack(spacing: 10) {
-				HeaderView(levelsViewIsShowing: $levelsViewIsShowing)
+			VStack(spacing: Sizes.Spacing.normal) {
+				HeaderView(viewIsShowing: $levelsViewIsShowing)
 				LabelView()
 				ScrollView {
-					VStack(spacing: 10) {
-						ForEach(0..<5, id: \.self) { index in
-							RowView(
-								index: index,
-								target: gameManager.levels[index].targetTaps,
-								taps: gameManager.levels[index].taps,
-								isFilled: gameManager.levels[index].isCompleted
-							)
+					VStack(spacing: Sizes.Spacing.normal) {
+						ForEach(1..<gameManager.numberOfLevels, id: \.self) { index in
+							Button {
+								gameManager.selectLevel(id: index)
+								levelsViewIsShowing = false
+							} label: {
+								RowView(
+									index: index,
+									stars: gameManager.getStarsForLevel(id: index),
+									taps: gameManager.getTapsForLevel(id: index),
+									isFilled: gameManager.getStatusForLevel(id: index)
+								)
+							}
 						}
 					}
 				}
@@ -38,47 +43,43 @@ struct LevelsView: View {
 
 struct RowView: View {
 	let index: Int
-	let target: Int
+	let stars: Int
 	let taps: Int
 	let isFilled: Bool
 
 	var body: some View {
 		HStack {
-			if isFilled {
-				RoundedSquareTextViewFilled(text: String(index))
-			} else {
-				RoundedSquareTextView(text: String(index))
-			}
+			RoundedTextView(text: String(index), isFilled: isFilled)
 			Spacer()
-			TapsText(value: target)
-				.frame(width: Sizes.Levels.targetColumnWidth)
+			StarsView(stars: stars)
+				.frame(width: Sizes.Levels.starsColumnWidth)
 			Spacer()
 			TapsText(value: taps)
 				.frame(width: Sizes.Levels.tapsColumnWidth)
 		}
 		.background(
-			RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
-				.strokeBorder(
+			RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+				.stroke(
 					Color(Theme.buttonStrokeColor),
 					lineWidth: Sizes.Stroke.width
 				)
 		)
 		.padding(.horizontal)
-		.frame(maxWidth: Sizes.Levels.maxRowWidth)
+		.frame(maxWidth: Sizes.Levels.maxRowWidth, minHeight: Sizes.Levels.minRowHeight)
 	}
 }
 
 struct HeaderView: View {
-	@Binding var levelsViewIsShowing: Bool
+	@Binding var viewIsShowing: Bool
 
 	var body: some View {
 		ZStack {
 			HStack {
 				Spacer()
 				Button {
-					levelsViewIsShowing = false
+					viewIsShowing = false
 				} label: {
-					RoundedImageViewFilled(systemName: Images.xmark.description)
+					RoundedImageView(systemName: Images.xmark.rawValue, isFilled: true)
 				}
 			}
 		}
@@ -92,10 +93,10 @@ struct LabelView: View {
 			LabelText(title: "Level")
 				.frame(width: Sizes.General.roundedViewLength)
 			Spacer()
-			LabelText(title: "Target")
-				.frame(width: Sizes.Levels.targetColumnWidth)
+			LabelText(title: "Stars")
+				.frame(width: Sizes.Levels.starsColumnWidth)
 			Spacer()
-			LabelText(title: "Taps")
+			LabelText(title: "Best")
 				.frame(width: Sizes.Levels.tapsColumnWidth)
 		}
 		.padding(.horizontal)
@@ -103,6 +104,25 @@ struct LabelView: View {
 	}
 }
 
+struct StarsView: View {
+	let stars: Int
+
+	var body: some View {
+		HStack {
+			ForEach(0..<3, id: \.self) { index in
+				Image(systemName: index < stars ? Images.starFilled.rawValue : Images.star.rawValue)
+			}
+		}
+		.foregroundColor(Color(Theme.textColor))
+	}
+}
+
 #Preview {
-	LevelsView(gameManager: GameManager(), levelsViewIsShowing: .constant(true))
+	LevelsView(
+		gameManager: GameManager(
+			levelRepository: LevelRepository(),
+			levelService: LevelService()
+		),
+		levelsViewIsShowing: .constant(true)
+	)
 }

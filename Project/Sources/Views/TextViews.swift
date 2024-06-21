@@ -28,6 +28,7 @@ struct InstructionText: View {
 			.kerning(Sizes.Kerning.normal)
 			.font(.title3)
 			.foregroundStyle(Color(Theme.textColor))
+			.multilineTextAlignment(.center)
 	}
 }
 
@@ -36,10 +37,9 @@ struct BodyText: View {
 
 	var body: some View {
 		Text(text)
-			.font(.subheadline)
-			.fontWeight(.semibold)
+			.kerning(Sizes.Kerning.normal)
+			.foregroundStyle(Color(Theme.textColor))
 			.multilineTextAlignment(.center)
-			.lineSpacing(12)
 	}
 }
 
@@ -51,15 +51,10 @@ struct ButtonTextStroked: View {
 			.bold()
 			.padding()
 			.frame(maxWidth: .infinity)
-			.background(
-				Color(Theme.backgroundColor)
-			)
-			.foregroundColor(
-				Color(Theme.textColor)
-			)
-			.cornerRadius(12)
+			.background(Color(Theme.backgroundColor))
+			.foregroundColor(Color(Theme.textColor))
 			.overlay(
-				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.stroke(lineWidth: Sizes.Stroke.width)
 					.foregroundStyle(Color(Theme.buttonStrokeColor))
 			)
@@ -74,15 +69,11 @@ struct ButtonTextFilled: View {
 			.bold()
 			.padding()
 			.frame(maxWidth: .infinity)
-			.background(
-				Color(Theme.buttonFilledBackgroundColor)
-			)
-			.foregroundColor(
-				Color(Theme.buttonFilledTextColor)
-			)
-			.cornerRadius(Sizes.General.roundedRectRadius)
+			.background(Color(Theme.buttonFilledBackgroundColor))
+			.foregroundColor(Color(Theme.buttonFilledTextColor))
+			.cornerRadius(Sizes.General.cornerRadius)
 			.overlay(
-				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.stroke(lineWidth: Sizes.Stroke.width)
 					.foregroundStyle(Color(Theme.buttonStrokeColor))
 			)
@@ -93,10 +84,11 @@ struct BigBoldText: View {
 	let text: String
 
 	var body: some View {
-		Text(text.uppercased())
+		Text(text)
 			.kerning(Sizes.Kerning.large)
 			.foregroundStyle(Color(Theme.textColor))
 			.font(.largeTitle)
+			.frame(height: Sizes.General.roundedViewLength)
 	}
 }
 
@@ -106,7 +98,6 @@ struct TapsText: View {
 	var body: some View {
 		Text(String(value))
 			.bold()
-			.kerning(-0.2)
 			.foregroundColor(Color(Theme.textColor))
 			.font(.title3)
 	}
@@ -118,9 +109,10 @@ struct TextViewsPreviews: View {
 			LabelText(title: "Score")
 			InstructionText(text: "Tap on any cell")
 			BodyText(text: "Message")
+			ButtonTextStroked(text: "Replay")
 			ButtonTextFilled(text: "Next Level")
 			BigBoldText(text: "Levels")
-			TapsText(value: 3)
+			TapsText(value: 33)
 		}
 	}
 }

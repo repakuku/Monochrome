@@ -8,7 +8,11 @@
 
 import Foundation
 
-final class LevelRepository {
+protocol ILevelRepository {
+	func getLevels() -> [Level]
+}
+
+final class LevelRepository: ILevelRepository {
 
 	typealias LevelMatrix = [[Int]]
 

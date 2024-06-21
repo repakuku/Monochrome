@@ -8,25 +8,13 @@
 
 import Foundation
 
-enum Images {
-	case arrow
-	case list
-	case questionmark
-	case checklist
-	case xmark
-
-	var description: String {
-		switch self {
-		case .arrow:
-			return "arrow.counterclockwise"
-		case .list:
-			return "list.dash"
-		case .questionmark:
-			return "questionmark"
-		case .checklist:
-			return "checklist"
-		case .xmark:
-			return "xmark"
-		}
-	}
+enum Images: String {
+	case arrow = "arrow.counterclockwise"
+	case list = "list.dash"
+	case questionmark = "questionmark"
+	case checklist = "checklist"
+	case xmark = "xmark"
+	case star = "star"
+	case starFilled = "star.fill"
+	case book = "book"
 }

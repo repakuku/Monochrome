@@ -13,20 +13,24 @@ struct BackgroundView: View {
 	@Binding var showMenu: Bool
 
 	var body: some View {
-		VStack {
-			TopView(gameManager: gameManager, showMenu: $showMenu)
-			Spacer()
-			BottomView(gameManager: gameManager)
+		ZStack {
+			Color(Theme.backgroundColor)
+				.ignoresSafeArea()
+
+			VStack {
+				TopView(gameManager: gameManager, showMenu: $showMenu)
+				Spacer()
+				BottomView(gameManager: gameManager, showMenu: $showMenu)
+			}
+			.padding()
 		}
-		.padding()
 	}
 }
 
-struct TopView: View {
+ struct TopView: View {
 	@ObservedObject var gameManager: GameManager
 	@Binding var showMenu: Bool
-
-	@State private var levelsViewIsShowing = false
+	@State private var guideViewIsShowing = false
 
 	var body: some View {
 		VStack {
@@ -37,19 +41,17 @@ struct TopView: View {
 						showMenu = false
 					}
 				} label: {
-					RoundedImageViewStroked(systemName: Images.arrow.description)
+					RoundedImageView(systemName: Images.arrow.rawValue, isFilled: false)
 				}
+				Spacer()
+				BigBoldText(text: "Level \(gameManager.levelId)")
 				Spacer()
 				Button {
 					withAnimation {
 						showMenu.toggle()
 					}
 				} label: {
-					if showMenu {
-						RoundedImageViewStroked(systemName: Images.list.description)
-					} else {
-						RoundedImageViewFilled(systemName: Images.list.description)
-					}
+					RoundedImageView(systemName: Images.list.rawValue, isFilled: !showMenu)
 				}
 			}
 			HStack {
@@ -61,7 +63,7 @@ struct TopView: View {
 					}
 				} label: {
 					if showMenu {
-						RoundedImageViewStroked(systemName: Images.questionmark.description)
+						RoundedImageView(systemName: Images.questionmark.rawValue, isFilled: false)
 							.transition(.scale)
 					}
 				}
@@ -70,51 +72,55 @@ struct TopView: View {
 				Spacer()
 				Button {
 					withAnimation {
-						levelsViewIsShowing = true
+						guideViewIsShowing = true
 						showMenu.toggle()
 					}
 				} label: {
 					if showMenu {
-						RoundedImageViewStroked(systemName: Images.checklist.description)
+						RoundedImageView(systemName: Images.book.rawValue, isFilled: false)
 							.transition(.scale)
 					}
 				}
-				.sheet(isPresented: $levelsViewIsShowing) {
-					LevelsView(gameManager: gameManager, levelsViewIsShowing: $levelsViewIsShowing)
-				}
 			}
 		}
+		.sheet(isPresented: $guideViewIsShowing) {
+			GuideView(viewisShowing: $guideViewIsShowing)
+		}
 	}
-}
+ }
 
 struct BottomView: View {
 	@ObservedObject var gameManager: GameManager
 
-	var body: some View {
-		HStack {
-			NumberView(title: "Target", text: String(gameManager.targetTaps))
-			Spacer()
-			NumberView(title: "Taps", text: String(gameManager.level.taps))
-			Spacer()
-			NumberView(title: "Level", text: String(gameManager.level.id))
-		}
-	}
-}
+	@State private var levelsViewIsShowing = false
 
-struct NumberView: View {
-	let title: String
-	let text: String
+	@Binding var showMenu: Bool
 
 	var body: some View {
 		HStack {
-			VStack(spacing: Sizes.Spacing.normal) {
-				LabelText(title: title)
-				RoundedRectTextView(text: text)
+			RoundedTextView(text: String(gameManager.taps), isFilled: false)
+			Spacer()
+			Button {
+				withAnimation {
+					levelsViewIsShowing = true
+					showMenu = false
+				}
+			} label: {
+				RoundedImageView(systemName: Images.checklist.rawValue, isFilled: false)
 			}
+		}
+		.sheet(isPresented: $levelsViewIsShowing) {
+			LevelsView(gameManager: gameManager, levelsViewIsShowing: $levelsViewIsShowing)
 		}
 	}
 }
 
 #Preview {
-	BackgroundView(gameManager: GameManager(), showMenu: .constant(true))
+	BackgroundView(
+		gameManager: GameManager(
+			levelRepository: LevelRepository(),
+			levelService: LevelService()
+		),
+		showMenu: .constant(true)
+	)
 }

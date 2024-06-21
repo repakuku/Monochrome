@@ -8,36 +8,18 @@
 import Foundation
 
 enum Sizes {
+
 	enum General {
 		static let roundedViewLength: CGFloat = 56
-		static let roundedRectRadius: CGFloat = 15
-
-		static let roundedRectViewWidth: CGFloat = 68
-		static let roundedRectViewHeight: CGFloat = 56
-	}
-
-	enum Field {
-		static let roundedRectRadius: CGFloat = 25
+		static let alertViewLength: CGFloat = 300
+		static let cornerRadius: CGFloat = 15
 	}
 
 	enum Levels {
-		static let targetColumnWidth: CGFloat = 60
+		static let starsColumnWidth: CGFloat = 60
 		static let tapsColumnWidth: CGFloat = 170
 		static let maxRowWidth: CGFloat = 480
-	}
-
-	enum Background {
-		static let initialSquareSize = 100
-		static let strokeWidth: CGFloat = 20
-		static let roundedRectRadius: CGFloat = 25
-	}
-
-	enum Stroke {
-		static let width: CGFloat = 2
-	}
-
-	enum Spacing {
-		static let normal: CGFloat = 5
+		static let minRowHeight: CGFloat = 60
 	}
 
 	enum Kerning {
@@ -46,12 +28,27 @@ enum Sizes {
 		static let large: CGFloat = 2
 	}
 
+	enum Blur {
+		static let min: CGFloat = 0
+		static let max: CGFloat = 5
+	}
+
 	enum Padding {
 		static let large: CGFloat = 300
 	}
 
-	enum Transition {
-		static let normalOffset: CGFloat = 100
-		static let largeOffset: CGFloat = 300
+	enum Shadow {
+		static let radius: CGFloat = 10
+		static let xOffset: CGFloat = 5
+		static let yOffset: CGFloat = 5
+	}
+
+	enum Spacing {
+		static let small: CGFloat = 5
+		static let normal: CGFloat = 10
+	}
+
+	enum Stroke {
+		static let width: CGFloat = 2
 	}
 }

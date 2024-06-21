@@ -12,18 +12,46 @@ struct ResultView: View {
 	@ObservedObject var gameManager: GameManager
 
 	var body: some View {
+		if gameManager.levelId == 0 {
+			AlertView(
+				gameManager: gameManager,
+				title: "Great Start!",
+				stars: 0,
+				message: "In Monochrome, your goal is to make all cells the same color by tapping to flip their colors. Each tap affects the selected cell and its row and column. Solve each puzzle with the fewest taps. \n\nGood luck!", // swiftlint:disable:this line_length
+				showReplayButton: false
+			)
+		} else {
+			AlertView(
+				gameManager: gameManager,
+				title: "Level Done!",
+				stars: gameManager.getStarsForLevel(id: gameManager.levelId),
+				message: "Level \(gameManager.levelId) mastered in \(gameManager.taps) taps!",
+				showReplayButton: true
+			)
+		}
+	}
+}
+
+struct AlertView: View {
+	@ObservedObject var gameManager: GameManager
+
+	let title: String
+	let stars: Int
+	let message: String
+	let showReplayButton: Bool
+
+	var body: some View {
 		VStack {
-			InstructionText(text: "Level completed!")
+			InstructionText(text: title)
 				.padding(.bottom)
-			if gameManager.level.taps > 1 {
-				BodyText(text: "You solved the level in \(gameManager.level.taps) taps.")
-					.padding(.bottom)
-			} else {
-				BodyText(text: "You solved the level in \(gameManager.level.taps) tap.")
+			if showReplayButton {
+				StarsView(stars: stars)
 					.padding(.bottom)
 			}
+			BodyText(text: message)
+				.padding(.bottom)
 			HStack {
-				if gameManager.level.id > 0 {
+				if showReplayButton {
 					Button {
 						withAnimation {
 							gameManager.restartLevel()
@@ -42,17 +70,22 @@ struct ResultView: View {
 			}
 		}
 		.padding()
-		.frame(width: 300)
+		.frame(width: Sizes.General.alertViewLength)
 		.background(
 			Color(Theme.backgroundColor)
 		)
 		.clipShape(
-			RoundedRectangle(cornerRadius: 20)
+			RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 		)
-		.shadow(radius: 10, x: 5, y: 5)
+		.shadow(radius: Sizes.Shadow.radius, x: Sizes.Shadow.xOffset, y: Sizes.Shadow.yOffset)
 	}
 }
 
 #Preview {
-	ResultView(gameManager: GameManager())
+	ResultView(
+		gameManager: GameManager(
+			levelRepository: LevelRepository(),
+			levelService: LevelService()
+		)
+	)
 }

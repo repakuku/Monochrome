@@ -35,7 +35,7 @@ final class LevelRepositoryTests: XCTestCase {
 		for (index, level) in levels.enumerated() {
 			XCTAssertEqual(level.id, expectedLevels[index].id, "Expected level ID to be \(expectedLevels[index].id) at index \(index).")
 			XCTAssertEqual(level.cellsMatrix, expectedLevels[index].cellsMatrix, "Expected cells matrix to match for level at index \(index).")
-			XCTAssertFalse(level.isCompleted, "Expected new levels to be not completed by default.")
+			XCTAssertEqual(level.status, .incompleted, "Expected new levels to be not completed by default.")
 		}
 	}
 }

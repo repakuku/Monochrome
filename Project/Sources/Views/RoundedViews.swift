@@ -8,103 +8,54 @@
 
 import SwiftUI
 
-struct RoundedImageViewStroked: View {
+struct RoundedImageView: View {
 	let systemName: String
+	let isFilled: Bool
 
 	var body: some View {
 		Image(systemName: systemName)
 			.font(.title)
-			.foregroundStyle(Color(Theme.textColor))
+			.foregroundStyle(isFilled ? Color(Theme.buttonFilledTextColor) : Color(Theme.textColor))
 			.frame(
 				width: Sizes.General.roundedViewLength,
 				height: Sizes.General.roundedViewLength
 			)
+			.background(
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+					.fill(isFilled ? Color(Theme.buttonFilledBackgroundColor) : Color.clear)
+			)
 			.overlay(
-				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.strokeBorder(
 						Color(Theme.buttonStrokeColor),
-						lineWidth: Sizes.Stroke.width
+						lineWidth: isFilled ? 0 : Sizes.Stroke.width
 					)
 			)
 	}
 }
 
-struct RoundedImageViewFilled: View {
-	let systemName: String
+struct RoundedTextView: View {
+	let text: String
+	let isFilled: Bool
 
 	var body: some View {
-		Image(systemName: systemName)
-			.font(.title)
-			.foregroundStyle(Color(Theme.buttonFilledTextColor))
+		Text(text)
+			.kerning(Sizes.Kerning.small)
+			.bold()
+			.font(.title3)
 			.frame(
 				width: Sizes.General.roundedViewLength,
 				height: Sizes.General.roundedViewLength
 			)
+			.foregroundStyle(isFilled ? Color(Theme.buttonFilledTextColor) : Color(Theme.textColor))
 			.background(
-				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
-					.fill(Color(Theme.buttonFilledBackgroundColor))
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+					.fill(isFilled ? Color(Theme.buttonFilledBackgroundColor) : Color.clear)
 			)
-	}
-}
-
-struct RoundedRectTextView: View {
-	let text: String
-
-	var body: some View {
-		Text(text)
-			.kerning(Sizes.Kerning.small)
-			.bold()
-			.font(.title3)
-			.frame(
-				width: Sizes.General.roundedRectViewWidth,
-				height: Sizes.General.roundedRectViewHeight
-			)
-			.foregroundStyle(Color(Theme.textColor))
 			.overlay(
-				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
-					.stroke(lineWidth: Sizes.Stroke.width)
-					.foregroundStyle(Color(Theme.buttonStrokeColor))
-			)
-	}
-}
-
-struct RoundedSquareTextView: View {
-	let text: String
-
-	var body: some View {
-		Text(text)
-			.kerning(Sizes.Kerning.small)
-			.bold()
-			.font(.title3)
-			.frame(
-				width: Sizes.General.roundedViewLength,
-				height: Sizes.General.roundedViewLength
-			)
-			.foregroundStyle(Color(Theme.textColor))
-			.overlay(
-				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
-					.stroke(lineWidth: 2)
-					.foregroundStyle(Color(Theme.buttonStrokeColor))
-			)
-	}
-}
-
-struct RoundedSquareTextViewFilled: View {
-	let text: String
-
-	var body: some View {
-		Text(text)
-			.kerning(Sizes.Kerning.small)
-			.bold()
-			.font(.title3)
-			.frame(
-				width: Sizes.General.roundedViewLength,
-				height: Sizes.General.roundedViewLength
-			)
-			.foregroundStyle(Color(Theme.buttonFilledTextColor))
-			.background(
-				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
-					.fill(Color(Theme.buttonFilledBackgroundColor))
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+					.stroke(lineWidth: isFilled ? 0 : Sizes.Stroke.width)
+					.foregroundStyle(isFilled ? Color.clear : Color(Theme.buttonStrokeColor))
 			)
 	}
 }
@@ -112,11 +63,10 @@ struct RoundedSquareTextViewFilled: View {
 struct RoundedViewsPreview: View {
 	var body: some View {
 		VStack {
-			RoundedImageViewStroked(systemName: Images.arrow.description)
-			RoundedImageViewFilled(systemName: Images.list.description)
-			RoundedRectTextView(text: "999")
-			RoundedSquareTextView(text: "1")
-			RoundedSquareTextViewFilled(text: "2")
+			RoundedImageView(systemName: Images.questionmark.rawValue, isFilled: false)
+			RoundedImageView(systemName: Images.checklist.rawValue, isFilled: true)
+			RoundedTextView(text: "1", isFilled: false)
+			RoundedTextView(text: "2", isFilled: true)
 		}
 	}
 }

@@ -11,20 +11,36 @@ import Foundation
 final class GameManager: ObservableObject {
 
 	@Published var level: Level
-	@Published var isLevelComplited: Bool
-	@Published var targetTaps: Int
-	@Published var levels: [Level]
+	@Published var taps: Int
+	@Published var isLevelCompleted: Bool
 
-	private let repository: LevelRepository
+	var levelId: Int {
+		level.id
+	}
+
+	var levelSize: Int {
+		level.cellsMatrix.count
+	}
+
+	var numberOfLevels: Int {
+		levels.count
+	}
+
+	private let levelRepository: ILevelRepository
+	private let levelService: ILevelService
+
+	private var levels: [Level]
 	private let originLevels: [Level]
 
-	init() {
-		repository = LevelRepository()
-		originLevels = repository.getLevels()
+	init(levelRepository: ILevelRepository, levelService: ILevelService) {
+		self.levelRepository = levelRepository
+		self.levelService = levelService
+
+		originLevels = levelRepository.getLevels()
 		levels = originLevels
 		level = originLevels[0]
-		isLevelComplited = false
-		targetTaps = originLevels[0].targetTaps
+		taps = 0
+		isLevelCompleted = false
 	}
 
 	func toggleColors(atX x: Int, atY y: Int) {
@@ -32,80 +48,103 @@ final class GameManager: ObservableObject {
 			return
 		}
 
-		clearHint()
+		levelService.toggleColors(level: &level, atX: x, atY: y)
 
-		for index in 0..<level.levelSize {
-			level.cellsMatrix[x][index] = 1 - level.cellsMatrix[x][index]
-			if index != x {
-				level.cellsMatrix[index][y] = 1 - level.cellsMatrix[index][y]
-			}
-		}
+		taps += 1
 
-		level.taps += 1
-
-		if checkMatrix() {
-			level.isCompleted = true
-			isLevelComplited = true
-			levels[level.id].isCompleted = true
-			levels[level.id].taps = level.taps
+		if levelService.checkMatrix(level: level) {
+			completeLevel()
 		}
 	}
 
 	func restartLevel() {
-		level.taps = 0
+		taps = 0
 		level = originLevels[level.id]
-		isLevelComplited = false
+		isLevelCompleted = false
 	}
 
 	func nextLevel() {
-		var nextLevelId = level.id + 1
+		let nextLevelId = min(levels.count - 1, level.id + 1)
+		level = originLevels[nextLevelId]
+		taps = 0
+		isLevelCompleted = false
+	}
 
-		if nextLevelId > levels.count - 1 {
-			nextLevelId = levels.count - 1
+	func selectLevel(id: Int) {
+		guard id >= 0 && id < levels.count else {
+			return
 		}
 
-		level = originLevels[nextLevelId]
-		level.taps = 0
-		isLevelComplited = false
-		targetTaps = level.targetTaps
+		level = levels[id]
+		taps = 0
+		isLevelCompleted = false
 	}
 
 	func getHint() {
-		let answerMatrix = level.answerMatrix
+		levelService.getHint(level: &level)
+	}
 
-		for row in 0..<level.levelSize {
-			for col in 0..<level.levelSize {
-				if answerMatrix[row][col] == 1 {
-					if level.cellsMatrix[row][col] == 0 {
-						level.cellsMatrix[row][col] = 2
-					} else {
-						level.cellsMatrix[row][col] = 3
-					}
-					return
-				}
-			}
+	func getTapsForLevel(id: Int) -> Int {
+		guard id >= 0 && id < levels.count else {
+			return .zero
+		}
+
+		if case let .completed(taps) = levels[id].status {
+			return taps
+		}
+
+		return .zero
+	}
+
+	func getStatusForLevel(id: Int) -> Bool {
+		guard id >= 0 && id < levels.count else {
+			return false
+		}
+
+		if case .completed = levels[id].status {
+			return true
+		}
+
+		return false
+	}
+
+	func getStarsForLevel(id: Int) -> Int {
+		let perfectScoreStars = 3
+		let goodScoreStars = 2
+		let basicScoreStars = 1
+		let zeroScoreStars = 0
+
+		guard id >= 0 && id < levels.count else {
+			return zeroScoreStars
+		}
+
+		let targetTaps = levelService.countTargetTaps(for: levels[id])
+		var actualTaps = Int.max
+
+		if case let .completed(levelTaps) = levels[id].status {
+			actualTaps = levelTaps
+		} else {
+			return zeroScoreStars
+		}
+
+		if actualTaps == targetTaps {
+			return perfectScoreStars
+		} else if actualTaps <= targetTaps * 2 {
+			return goodScoreStars
+		} else {
+			return basicScoreStars
 		}
 	}
 
-	private func checkMatrix() -> Bool {
-		for row in level.cellsMatrix {
-			for cell in row where cell == 0 {
-				return false
-			}
+	private func completeLevel() {
+		level.status = .completed(taps)
+
+		if case let .completed(prevTaps) = levels[level.id].status {
+			levels[level.id].status = .completed(min(taps, prevTaps))
+		} else {
+			levels[level.id].status = .completed(taps)
 		}
 
-		return true
-	}
-
-	private func clearHint() {
-		for row in 0..<level.levelSize {
-			for con in 0..<level.levelSize {
-				if level.cellsMatrix[row][con] == 2 {
-					level.cellsMatrix[row][con] = 0
-				} else if level.cellsMatrix[row][con] == 3 {
-					level.cellsMatrix[row][con] = 1
-				}
-			}
-		}
+		isLevelCompleted = true
 	}
 }

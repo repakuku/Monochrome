@@ -8,22 +8,29 @@
 
 import Foundation
 
+enum LevelStatus: Equatable {
+	case completed(Int)
+	case incompleted
+
+	static func == (lhs: LevelStatus, rhs: LevelStatus) -> Bool {
+		switch (lhs, rhs) {
+		case (.completed(let lhsTaps), .completed(let rhsTaps)):
+			return lhsTaps == rhsTaps
+		case (.incompleted, .incompleted):
+			return true
+		default:
+			return false
+		}
+	}
+}
+
 struct Level {
 	let id: Int
 	var cellsMatrix: [[Int]]
-	var isCompleted = false
-	var taps: Int = 0
+	var status: LevelStatus
 
 	var levelSize: Int {
 		cellsMatrix.count
-	}
-
-	var answerMatrix: [[Int]] {
-		getAnswerMatrix()
-	}
-
-	var targetTaps: Int {
-		countTargetTaps()
 	}
 
 	init(id: Int, cellsMatrix: [[Int]]) {
@@ -37,39 +44,7 @@ struct Level {
 			self.id = id
 			self.cellsMatrix = cellsMatrix
 		}
-	}
 
-	private func getAnswerMatrix() -> [[Int]] {
-		let row = Array(repeating: 0, count: levelSize)
-		var answerMatrix = Array(repeating: row, count: levelSize)
-
-		for row in 0..<levelSize {
-			for col in 0..<levelSize {
-				if cellsMatrix[row][col] == 0 {
-					for index in 0..<levelSize {
-						answerMatrix[row][index] = 1 - answerMatrix[row][index]
-						if index != row {
-							answerMatrix[index][col] = 1 - answerMatrix[index][col]
-						}
-					}
-				}
-			}
-		}
-
-		return answerMatrix
-	}
-
-	private func countTargetTaps() -> Int {
-		var steps = 0
-
-		for row in 0..<levelSize {
-			for col in 0..<levelSize {
-				if answerMatrix[row][col] == 1 {
-					steps += 1
-				}
-			}
-		}
-
-		return steps
+		self.status = .incompleted
 	}
 }
