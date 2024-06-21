@@ -30,8 +30,6 @@ struct TopView: View {
 	@ObservedObject var gameManager: GameManager
 	@Binding var showMenu: Bool
 
-	@State private var levelsViewIsShowing = false
-
 	var body: some View {
 		VStack {
 			HStack {
@@ -43,6 +41,8 @@ struct TopView: View {
 				} label: {
 					RoundedImageViewStroked(systemName: Images.arrow.description)
 				}
+				Spacer()
+				BigBoldText(text: "Level \(gameManager.levelId)")
 				Spacer()
 				Button {
 					withAnimation {
@@ -74,17 +74,13 @@ struct TopView: View {
 				Spacer()
 				Button {
 					withAnimation {
-						levelsViewIsShowing = true
 						showMenu.toggle()
 					}
 				} label: {
 					if showMenu {
-						RoundedImageViewStroked(systemName: Images.checklist.description)
+						RoundedImageViewStroked(systemName: Images.book.description)
 							.transition(.scale)
 					}
-				}
-				.sheet(isPresented: $levelsViewIsShowing) {
-					LevelsView(gameManager: gameManager, levelsViewIsShowing: $levelsViewIsShowing)
 				}
 			}
 		}
@@ -94,12 +90,20 @@ struct TopView: View {
 struct BottomView: View {
 	@ObservedObject var gameManager: GameManager
 
+	@State private var levelsViewIsShowing = false
+
 	var body: some View {
 		HStack {
-			NumberView(title: "Taps", text: String(gameManager.taps))
+			RoundedSquareTextView(text: String(gameManager.taps))
 			Spacer()
-			// TODO: gameManager.level.id -> gameManager.id
-			NumberView(title: "Level", text: String(gameManager.level.id))
+			Button {
+				levelsViewIsShowing = true
+			} label: {
+				RoundedImageViewStroked(systemName: Images.checklist.description)
+			}
+		}
+		.sheet(isPresented: $levelsViewIsShowing) {
+			LevelsView(gameManager: gameManager, levelsViewIsShowing: $levelsViewIsShowing)
 		}
 	}
 }

@@ -94,10 +94,11 @@ struct BigBoldText: View {
 	let text: String
 
 	var body: some View {
-		Text(text.uppercased())
+		Text(text)
 			.kerning(Sizes.Kerning.large)
 			.foregroundStyle(Color(Theme.textColor))
 			.font(.largeTitle)
+			.frame(height: Sizes.General.roundedViewLength)
 	}
 }
 

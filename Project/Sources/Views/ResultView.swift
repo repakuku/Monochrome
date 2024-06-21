@@ -12,7 +12,7 @@ struct ResultView: View {
 	@ObservedObject var gameManager: GameManager
 
 	var body: some View {
-		if gameManager.level.id == 0 {
+		if gameManager.levelId == 0 {
 			AlertView(
 				gameManager: gameManager,
 				title: "Great Start! Tutorial Completed!",
@@ -23,7 +23,7 @@ struct ResultView: View {
 			AlertView(
 				gameManager: gameManager,
 				title: "Well Played! Level Done!",
-				message: "Level \(gameManager.level.id) mastered in \(gameManager.taps) taps!",
+				message: "Level \(gameManager.levelId) mastered in \(gameManager.taps) taps!",
 				showReplayButton: true
 			)
 		}

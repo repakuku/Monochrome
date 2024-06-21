@@ -10,8 +10,19 @@ import Foundation
 
 final class GameManager: ObservableObject {
 
-	@Published var level: Level
 	@Published var taps: Int
+
+	var levelId: Int {
+		level.id
+	}
+
+	var levelSize: Int {
+		level.cellsMatrix.count
+	}
+
+	var cells: [[Int]] {
+		level.cellsMatrix
+	}
 
 	var isLevelCompleted: Bool {
 		switch level.status {
@@ -29,6 +40,7 @@ final class GameManager: ObservableObject {
 	private let levelRepository: ILevelRepository
 	private let levelService: ILevelService
 
+	private var level: Level
 	private var levels: [Level]
 	private let originLevels: [Level]
 
