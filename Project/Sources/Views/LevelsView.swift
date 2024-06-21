@@ -17,7 +17,7 @@ struct LevelsView: View {
 			Color(Theme.backgroundColor)
 				.ignoresSafeArea()
 			VStack(spacing: Sizes.Spacing.normal) {
-				HeaderView(levelsViewIsShowing: $levelsViewIsShowing)
+				HeaderView(viewIsShowing: $levelsViewIsShowing)
 				LabelView()
 				ScrollView {
 					VStack(spacing: Sizes.Spacing.normal) {
@@ -70,14 +70,14 @@ struct RowView: View {
 }
 
 struct HeaderView: View {
-	@Binding var levelsViewIsShowing: Bool
+	@Binding var viewIsShowing: Bool
 
 	var body: some View {
 		ZStack {
 			HStack {
 				Spacer()
 				Button {
-					levelsViewIsShowing = false
+					viewIsShowing = false
 				} label: {
 					RoundedImageView(systemName: Images.xmark.rawValue, isFilled: true)
 				}

@@ -21,9 +21,11 @@ struct GameView: View {
 		ZStack {
 			if showInstructions {
 				InstructionView()
-			} else {
+			}
+
+			if gameManager.levelId > 0 {
 				BackgroundView(gameManager: gameManager, showMenu: $showMenu)
-					.opacity(gameManager.isLevelCompleted ? Sizes.Opacity.min : Sizes.Opacity.max)
+					.blur(radius: gameManager.isLevelCompleted ? Sizes.Blur.max : Sizes.Blur.min)
 					.disabled(gameManager.isLevelCompleted)
 			}
 
@@ -34,6 +36,7 @@ struct GameView: View {
 				FieldView(gameManager: gameManager, showInstructions: $showInstructions)
 					.transition(.scale)
 					.zIndex(1)
+					.disabled(gameManager.isLevelCompleted)
 			}
 		}
 		.onChange(of: gameManager.isLevelCompleted) { isCompleted in
@@ -54,6 +57,7 @@ struct GameView: View {
 				showMenu = false
 			}
 		}
+		.statusBarHidden()
 	}
 }
 

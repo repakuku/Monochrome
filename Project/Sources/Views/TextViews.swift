@@ -37,8 +37,8 @@ struct BodyText: View {
 
 	var body: some View {
 		Text(text)
-			.font(.subheadline)
-			.fontWeight(.semibold)
+			.kerning(Sizes.Kerning.normal)
+			.foregroundStyle(Color(Theme.textColor))
 			.multilineTextAlignment(.center)
 	}
 }
@@ -51,12 +51,8 @@ struct ButtonTextStroked: View {
 			.bold()
 			.padding()
 			.frame(maxWidth: .infinity)
-			.background(
-				Color(Theme.backgroundColor)
-			)
-			.foregroundColor(
-				Color(Theme.textColor)
-			)
+			.background(Color(Theme.backgroundColor))
+			.foregroundColor(Color(Theme.textColor))
 			.overlay(
 				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.stroke(lineWidth: Sizes.Stroke.width)
@@ -73,12 +69,8 @@ struct ButtonTextFilled: View {
 			.bold()
 			.padding()
 			.frame(maxWidth: .infinity)
-			.background(
-				Color(Theme.buttonFilledBackgroundColor)
-			)
-			.foregroundColor(
-				Color(Theme.buttonFilledTextColor)
-			)
+			.background(Color(Theme.buttonFilledBackgroundColor))
+			.foregroundColor(Color(Theme.buttonFilledTextColor))
 			.cornerRadius(Sizes.General.cornerRadius)
 			.overlay(
 				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)

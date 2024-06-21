@@ -28,9 +28,9 @@ enum Sizes {
 		static let large: CGFloat = 2
 	}
 
-	enum Opacity {
-		static let min: CGFloat = 0.3
-		static let max: CGFloat = 1
+	enum Blur {
+		static let min: CGFloat = 0
+		static let max: CGFloat = 5
 	}
 
 	enum Padding {

@@ -16,13 +16,15 @@ struct ResultView: View {
 			AlertView(
 				gameManager: gameManager,
 				title: "Great Start!",
-				message: "In Monochrome, your goal is to make all cells the same color by tapping to flip their colors. Each tap affects the selected cell and its row and column. Solve each puzzle with the fewest taps. Good luck!", // swiftlint:disable:this line_length
+				stars: 0,
+				message: "In Monochrome, your goal is to make all cells the same color by tapping to flip their colors. Each tap affects the selected cell and its row and column. Solve each puzzle with the fewest taps. \n\nGood luck!", // swiftlint:disable:this line_length
 				showReplayButton: false
 			)
 		} else {
 			AlertView(
 				gameManager: gameManager,
-				title: "Well Played! Level Done!",
+				title: "Level Done!",
+				stars: gameManager.getStarsForLevel(id: gameManager.levelId),
 				message: "Level \(gameManager.levelId) mastered in \(gameManager.taps) taps!",
 				showReplayButton: true
 			)
@@ -34,6 +36,7 @@ struct AlertView: View {
 	@ObservedObject var gameManager: GameManager
 
 	let title: String
+	let stars: Int
 	let message: String
 	let showReplayButton: Bool
 
@@ -41,6 +44,10 @@ struct AlertView: View {
 		VStack {
 			InstructionText(text: title)
 				.padding(.bottom)
+			if showReplayButton {
+				StarsView(stars: stars)
+					.padding(.bottom)
+			}
 			BodyText(text: message)
 				.padding(.bottom)
 			HStack {

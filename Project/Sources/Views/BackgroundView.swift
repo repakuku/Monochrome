@@ -20,7 +20,7 @@ struct BackgroundView: View {
 			VStack {
 				TopView(gameManager: gameManager, showMenu: $showMenu)
 				Spacer()
-				BottomView(gameManager: gameManager)
+				BottomView(gameManager: gameManager, showMenu: $showMenu)
 			}
 			.padding()
 		}
@@ -30,6 +30,7 @@ struct BackgroundView: View {
  struct TopView: View {
 	@ObservedObject var gameManager: GameManager
 	@Binding var showMenu: Bool
+	@State private var guideViewIsShowing = false
 
 	var body: some View {
 		VStack {
@@ -71,6 +72,7 @@ struct BackgroundView: View {
 				Spacer()
 				Button {
 					withAnimation {
+						guideViewIsShowing = true
 						showMenu.toggle()
 					}
 				} label: {
@@ -81,6 +83,9 @@ struct BackgroundView: View {
 				}
 			}
 		}
+		.sheet(isPresented: $guideViewIsShowing) {
+			GuideView(viewisShowing: $guideViewIsShowing)
+		}
 	}
  }
 
@@ -89,12 +94,17 @@ struct BottomView: View {
 
 	@State private var levelsViewIsShowing = false
 
+	@Binding var showMenu: Bool
+
 	var body: some View {
 		HStack {
 			RoundedTextView(text: String(gameManager.taps), isFilled: false)
 			Spacer()
 			Button {
-				levelsViewIsShowing = true
+				withAnimation {
+					levelsViewIsShowing = true
+					showMenu = false
+				}
 			} label: {
 				RoundedImageView(systemName: Images.checklist.rawValue, isFilled: false)
 			}
