@@ -62,14 +62,13 @@ struct RowView: View {
 		}
 		.background(
 			RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
-				.strokeBorder(
+				.stroke(
 					Color(Theme.buttonStrokeColor),
 					lineWidth: Sizes.Stroke.width
 				)
-				.frame(height: Sizes.General.roundedViewLength + 2)
 		)
 		.padding(.horizontal)
-		.frame(maxWidth: Sizes.Levels.maxRowWidth)
+		.frame(maxWidth: Sizes.Levels.maxRowWidth, minHeight: Sizes.Levels.minRowHeight)
 	}
 }
 

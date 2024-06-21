@@ -21,6 +21,7 @@ enum Sizes {
 		static let targetColumnWidth: CGFloat = 60
 		static let tapsColumnWidth: CGFloat = 170
 		static let maxRowWidth: CGFloat = 480
+		static let minRowHeight: CGFloat = 60
 	}
 
 	enum Background {
