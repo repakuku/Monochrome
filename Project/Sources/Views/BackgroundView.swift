@@ -16,6 +16,7 @@ struct BackgroundView: View {
 		ZStack {
 			Color(Theme.backgroundColor)
 				.ignoresSafeArea()
+
 			VStack {
 				TopView(gameManager: gameManager, showMenu: $showMenu)
 				Spacer()
@@ -39,7 +40,7 @@ struct TopView: View {
 						showMenu = false
 					}
 				} label: {
-					RoundedImageViewStroked(systemName: Images.arrow.description)
+					RoundedImageViewStroked(systemName: Images.arrow.rawValue)
 				}
 				Spacer()
 				BigBoldText(text: "Level \(gameManager.levelId)")
@@ -50,9 +51,9 @@ struct TopView: View {
 					}
 				} label: {
 					if showMenu {
-						RoundedImageViewStroked(systemName: Images.list.description)
+						RoundedImageViewStroked(systemName: Images.list.rawValue)
 					} else {
-						RoundedImageViewFilled(systemName: Images.list.description)
+						RoundedImageViewFilled(systemName: Images.list.rawValue)
 					}
 				}
 			}
@@ -65,7 +66,7 @@ struct TopView: View {
 					}
 				} label: {
 					if showMenu {
-						RoundedImageViewStroked(systemName: Images.questionmark.description)
+						RoundedImageViewStroked(systemName: Images.questionmark.rawValue)
 							.transition(.scale)
 					}
 				}
@@ -78,7 +79,7 @@ struct TopView: View {
 					}
 				} label: {
 					if showMenu {
-						RoundedImageViewStroked(systemName: Images.book.description)
+						RoundedImageViewStroked(systemName: Images.book.rawValue)
 							.transition(.scale)
 					}
 				}
@@ -99,7 +100,7 @@ struct BottomView: View {
 			Button {
 				levelsViewIsShowing = true
 			} label: {
-				RoundedImageViewStroked(systemName: Images.checklist.description)
+				RoundedImageViewStroked(systemName: Images.checklist.rawValue)
 			}
 		}
 		.sheet(isPresented: $levelsViewIsShowing) {
@@ -114,7 +115,7 @@ struct NumberView: View {
 
 	var body: some View {
 		HStack {
-			VStack(spacing: Sizes.Spacing.normal) {
+			VStack(spacing: Sizes.Spacing.small) {
 				LabelText(title: title)
 				RoundedRectTextView(text: text)
 			}

@@ -63,14 +63,14 @@ struct AlertView: View {
 			}
 		}
 		.padding()
-		.frame(width: 300)
+		.frame(width: Sizes.General.alertViewLength)
 		.background(
 			Color(Theme.backgroundColor)
 		)
 		.clipShape(
-			RoundedRectangle(cornerRadius: 20)
+			RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 		)
-		.shadow(radius: 10, x: 5, y: 5)
+		.shadow(radius: Sizes.Shadow.radius, x: Sizes.Shadow.xOffset, y: Sizes.Shadow.yOffset)
 	}
 }
 

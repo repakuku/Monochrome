@@ -23,8 +23,8 @@ struct FieldView: View {
 								showInstructions = false
 							}
 						} label: {
-							if gameManager.cells[x][y] == 0 {
-								RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+							if gameManager.level.cellsMatrix[x][y] == 0 {
+								RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 									.stroke(lineWidth: Sizes.Stroke.width)
 									.frame(
 										width: Sizes.General.roundedViewLength,
@@ -33,8 +33,8 @@ struct FieldView: View {
 									.foregroundStyle(
 										Color(Theme.accentCellColor)
 									)
-							} else if gameManager.cells[x][y] == 1 {
-								RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+							} else if gameManager.level.cellsMatrix[x][y] == 1 {
+								RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 									.frame(
 										width: Sizes.General.roundedViewLength,
 										height: Sizes.General.roundedViewLength
@@ -43,24 +43,24 @@ struct FieldView: View {
 										Color(Theme.accentCellColor)
 									)
 									.transition(.scale)
-							} else if gameManager.cells[x][y] == 2 {
-								RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+							} else if gameManager.level.cellsMatrix[x][y] == 2 {
+								RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 									.stroke(lineWidth: Sizes.Stroke.width)
 									.frame(
 										width: Sizes.General.roundedViewLength,
 										height: Sizes.General.roundedViewLength
 									)
 									.foregroundStyle(
-										Color(Theme.hintColor)
+										Color(Theme.hintCellColor)
 									)
 							} else {
-								RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+								RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 									.frame(
 										width: Sizes.General.roundedViewLength,
 										height: Sizes.General.roundedViewLength
 									)
 									.foregroundStyle(
-										Color(Theme.hintColor)
+										Color(Theme.hintCellColor)
 									)
 									.transition(.scale)
 							}

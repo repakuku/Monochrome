@@ -16,11 +16,11 @@ struct LevelsView: View {
 		ZStack {
 			Color(Theme.backgroundColor)
 				.ignoresSafeArea()
-			VStack(spacing: 10) {
+			VStack(spacing: Sizes.Spacing.normal) {
 				HeaderView(levelsViewIsShowing: $levelsViewIsShowing)
 				LabelView()
 				ScrollView {
-					VStack(spacing: 10) {
+					VStack(spacing: Sizes.Spacing.normal) {
 						ForEach(1..<gameManager.numberOfLevels, id: \.self) { index in
 							Button {
 								gameManager.selectLevel(id: index)
@@ -55,13 +55,13 @@ struct RowView: View {
 			}
 			Spacer()
 			StarsView(stars: stars)
-				.frame(width: Sizes.Levels.targetColumnWidth)
+				.frame(width: Sizes.Levels.starsColumnWidth)
 			Spacer()
 			TapsText(value: taps)
 				.frame(width: Sizes.Levels.tapsColumnWidth)
 		}
 		.background(
-			RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+			RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 				.stroke(
 					Color(Theme.buttonStrokeColor),
 					lineWidth: Sizes.Stroke.width
@@ -82,7 +82,7 @@ struct HeaderView: View {
 				Button {
 					levelsViewIsShowing = false
 				} label: {
-					RoundedImageViewFilled(systemName: Images.xmark.description)
+					RoundedImageViewFilled(systemName: Images.xmark.rawValue)
 				}
 			}
 		}
@@ -97,7 +97,7 @@ struct LabelView: View {
 				.frame(width: Sizes.General.roundedViewLength)
 			Spacer()
 			LabelText(title: "Stars")
-				.frame(width: Sizes.Levels.targetColumnWidth)
+				.frame(width: Sizes.Levels.starsColumnWidth)
 			Spacer()
 			LabelText(title: "Best")
 				.frame(width: Sizes.Levels.tapsColumnWidth)
@@ -114,21 +114,21 @@ struct StarsView: View {
 		HStack {
 			switch stars {
 			case 0:
-				Image(systemName: Images.star.description)
-				Image(systemName: Images.star.description)
-				Image(systemName: Images.star.description)
+				Image(systemName: Images.star.rawValue)
+				Image(systemName: Images.star.rawValue)
+				Image(systemName: Images.star.rawValue)
 			case 1:
-				Image(systemName: Images.starFilled.description)
-				Image(systemName: Images.star.description)
-				Image(systemName: Images.star.description)
+				Image(systemName: Images.starFilled.rawValue)
+				Image(systemName: Images.star.rawValue)
+				Image(systemName: Images.star.rawValue)
 			case 2:
-				Image(systemName: Images.starFilled.description)
-				Image(systemName: Images.starFilled.description)
-				Image(systemName: Images.star.description)
+				Image(systemName: Images.starFilled.rawValue)
+				Image(systemName: Images.starFilled.rawValue)
+				Image(systemName: Images.star.rawValue)
 			default:
-				Image(systemName: Images.starFilled.description)
-				Image(systemName: Images.starFilled.description)
-				Image(systemName: Images.starFilled.description)
+				Image(systemName: Images.starFilled.rawValue)
+				Image(systemName: Images.starFilled.rawValue)
+				Image(systemName: Images.starFilled.rawValue)
 			}
 		}
 		.foregroundColor(Color(Theme.textColor))

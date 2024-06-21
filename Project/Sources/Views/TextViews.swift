@@ -40,7 +40,6 @@ struct BodyText: View {
 			.font(.subheadline)
 			.fontWeight(.semibold)
 			.multilineTextAlignment(.center)
-			.lineSpacing(12)
 	}
 }
 
@@ -58,9 +57,8 @@ struct ButtonTextStroked: View {
 			.foregroundColor(
 				Color(Theme.textColor)
 			)
-			.cornerRadius(12)
 			.overlay(
-				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.stroke(lineWidth: Sizes.Stroke.width)
 					.foregroundStyle(Color(Theme.buttonStrokeColor))
 			)
@@ -81,9 +79,9 @@ struct ButtonTextFilled: View {
 			.foregroundColor(
 				Color(Theme.buttonFilledTextColor)
 			)
-			.cornerRadius(Sizes.General.roundedRectRadius)
+			.cornerRadius(Sizes.General.cornerRadius)
 			.overlay(
-				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.stroke(lineWidth: Sizes.Stroke.width)
 					.foregroundStyle(Color(Theme.buttonStrokeColor))
 			)
@@ -108,7 +106,6 @@ struct TapsText: View {
 	var body: some View {
 		Text(String(value))
 			.bold()
-			.kerning(-0.2)
 			.foregroundColor(Color(Theme.textColor))
 			.font(.title3)
 	}
@@ -120,9 +117,10 @@ struct TextViewsPreviews: View {
 			LabelText(title: "Score")
 			InstructionText(text: "Tap on any cell")
 			BodyText(text: "Message")
+			ButtonTextStroked(text: "Replay")
 			ButtonTextFilled(text: "Next Level")
 			BigBoldText(text: "Levels")
-			TapsText(value: 3)
+			TapsText(value: 33)
 		}
 	}
 }

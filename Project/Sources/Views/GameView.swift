@@ -22,7 +22,7 @@ struct GameView: View {
 				InstructionView()
 			} else {
 				BackgroundView(gameManager: gameManager, showMenu: $showMenu)
-					.opacity(gameManager.isLevelCompleted ? 0.3 : 1)
+					.opacity(gameManager.isLevelCompleted ? Sizes.Opacity.min : Sizes.Opacity.max)
 					.disabled(gameManager.isLevelCompleted)
 			}
 

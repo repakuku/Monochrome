@@ -8,13 +8,12 @@
 import UIKit
 
 enum Colors {
-	enum White {
-		static let Soft = UIColor(hex: 0xEFEFEF)
-	}
 
-	enum Black {
-		static let Soft = UIColor(hex: 0x191919)
-	}
+	// Whites
+	static let softWhite = UIColor(hex: 0xEFEFEF)
+
+	// Blacks
+	static let softBlack = UIColor(hex: 0x191919)
 
 	enum Red {
 		static let Valencia = UIColor(hex: 0xCC4846)
@@ -23,16 +22,20 @@ enum Colors {
 }
 
 enum Theme {
-	static let backgroundColor = UIColor.color(light: Colors.White.Soft, dark: Colors.Black.Soft)
 
-	static let textColor = UIColor.color(light: Colors.Black.Soft, dark: Colors.White.Soft)
+	// Background Color
+	static let backgroundColor = UIColor.color(light: Colors.softWhite, dark: Colors.softBlack)
 
-	static let buttonStrokeColor = UIColor.color(light: Colors.Black.Soft, dark: Colors.White.Soft)
-	static let buttonFilledTextColor = UIColor.color(light: Colors.White.Soft, dark: Colors.Black.Soft)
-	static let buttonFilledBackgroundColor = UIColor.color(light: Colors.Black.Soft, dark: Colors.White.Soft)
+	// Text Color
+	static let textColor = UIColor.color(light: Colors.softBlack, dark: Colors.softWhite)
 
-	static let mainCellColor = UIColor.color(light: Colors.White.Soft, dark: Colors.Black.Soft)
-	static let accentCellColor = UIColor.color(light: Colors.Black.Soft, dark: Colors.White.Soft)
+	// Button Colors
+	static let buttonStrokeColor = UIColor.color(light: Colors.softBlack, dark: Colors.softWhite)
+	static let buttonFilledTextColor = UIColor.color(light: Colors.softWhite, dark: Colors.softBlack)
+	static let buttonFilledBackgroundColor = UIColor.color(light: Colors.softBlack, dark: Colors.softWhite)
 
-	static let hintColor = UIColor.color(light: Colors.Red.Cinnabar, dark: Colors.Red.Valencia)
+	// Cell Colors
+	static let mainCellColor = UIColor.color(light: Colors.softWhite, dark: Colors.softBlack)
+	static let accentCellColor = UIColor.color(light: Colors.softBlack, dark: Colors.softWhite)
+	static let hintCellColor = UIColor.color(light: Colors.Red.Cinnabar, dark: Colors.Red.Valencia)
 }

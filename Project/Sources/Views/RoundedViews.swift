@@ -20,7 +20,7 @@ struct RoundedImageViewStroked: View {
 				height: Sizes.General.roundedViewLength
 			)
 			.overlay(
-				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.strokeBorder(
 						Color(Theme.buttonStrokeColor),
 						lineWidth: Sizes.Stroke.width
@@ -41,7 +41,7 @@ struct RoundedImageViewFilled: View {
 				height: Sizes.General.roundedViewLength
 			)
 			.background(
-				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.fill(Color(Theme.buttonFilledBackgroundColor))
 			)
 	}
@@ -61,7 +61,7 @@ struct RoundedRectTextView: View {
 			)
 			.foregroundStyle(Color(Theme.textColor))
 			.overlay(
-				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.stroke(lineWidth: Sizes.Stroke.width)
 					.foregroundStyle(Color(Theme.buttonStrokeColor))
 			)
@@ -82,7 +82,7 @@ struct RoundedSquareTextView: View {
 			)
 			.foregroundStyle(Color(Theme.textColor))
 			.overlay(
-				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.stroke(lineWidth: 2)
 					.foregroundStyle(Color(Theme.buttonStrokeColor))
 			)
@@ -103,7 +103,7 @@ struct RoundedSquareTextViewFilled: View {
 			)
 			.foregroundStyle(Color(Theme.buttonFilledTextColor))
 			.background(
-				RoundedRectangle(cornerRadius: Sizes.General.roundedRectRadius)
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.fill(Color(Theme.buttonFilledBackgroundColor))
 			)
 	}
@@ -112,8 +112,8 @@ struct RoundedSquareTextViewFilled: View {
 struct RoundedViewsPreview: View {
 	var body: some View {
 		VStack {
-			RoundedImageViewStroked(systemName: Images.arrow.description)
-			RoundedImageViewFilled(systemName: Images.list.description)
+			RoundedImageViewStroked(systemName: Images.arrow.rawValue)
+			RoundedImageViewFilled(systemName: Images.list.rawValue)
 			RoundedRectTextView(text: "999")
 			RoundedSquareTextView(text: "1")
 			RoundedSquareTextViewFilled(text: "2")
