@@ -1,0 +1,68 @@
+[
+	{
+		"id": 0,
+		"cellsMatrix": [
+			[0]
+		],
+		"status": {
+			"type": "incompleted"
+		}
+	},
+	{
+		"id": 1,
+		"cellsMatrix": [
+			[0, 0],
+			[1, 0]
+		],
+		"status": {
+			"type": "completed",
+			"taps": 3
+		}
+	},
+	{
+		"id": 2,
+		"cellsMatrix": [
+			[0, 0],
+			[1, 1]
+		],
+		"status": {
+			"type": "incompleted"
+		}
+	},
+	{
+		"id": 3,
+		"cellsMatrix": [
+			[1, 0],
+			[1, 1]
+		],
+		"status": {
+			"type": "completed",
+			"taps": 5
+		}
+	},
+	{
+		"id": 4,
+		"cellsMatrix": [
+			[1, 0, 0, 0],
+			[0, 1, 1, 0],
+			[0, 1, 1, 0],
+			[0, 0, 0, 1]
+		],
+		"status": {
+			"type": "incompleted"
+		}
+	},
+	{
+		"id": 5,
+		"cellsMatrix": [
+			[1, 1, 1, 1],
+			[1, 0, 0, 1],
+			[1, 0, 0, 1],
+			[1, 1, 1, 1]
+		],
+		"status": {
+			"type": "completed",
+			"taps": 4
+		}
+	}
+]

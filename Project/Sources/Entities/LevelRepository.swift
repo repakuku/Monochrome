@@ -14,51 +14,26 @@ protocol ILevelRepository {
 
 final class LevelRepository: ILevelRepository {
 
-	typealias LevelMatrix = [[Int]]
-
-	var count: Int {
-		matrices.count
-	}
-
-	private var matrices: [LevelMatrix] = [
-		[
-			[0]
-		],
-		[
-			[0, 0],
-			[1, 0]
-		],
-		[
-			[0, 0],
-			[1, 1]
-		],
-		[
-			[1, 0],
-			[1, 1]
-		],
-		[
-			[1, 0, 0, 0],
-			[0, 1, 1, 0],
-			[0, 1, 1, 0],
-			[0, 0, 0, 1]
-		],
-		[
-			[1, 1, 1, 1],
-			[1, 0, 0, 1],
-			[1, 0, 0, 1],
-			[1, 1, 1, 1]
-		]
-	]
+	private var levels: [Level] = []
 
 	func getLevels() -> [Level] {
+		levels = loadJsonLevels()
+		return levels
+	}
+
+	private func loadJsonLevels() -> [Level] {
+		guard let levelsJsonUrl = Bundle.main.url(forResource: "Levels", withExtension: "json") else {
+			return []
+		}
+
 		var levels = [Level]()
 
-		for index in 0..<count {
-			let level = Level(
-				id: index,
-				cellsMatrix: matrices[index]
-			)
-			levels.append(level)
+		do {
+			let levelsData = try Data(contentsOf: levelsJsonUrl)
+			levels = try JSONDecoder().decode([Level].self, from: levelsData)
+		} catch {
+			// TODO: log error
+			print(error)
 		}
 
 		return levels
