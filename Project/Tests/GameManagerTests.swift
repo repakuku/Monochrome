@@ -25,6 +25,7 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertEqual(currentLevel.cellsMatrix, expectedLevel.cellsMatrix, "Expected initial cells matrix to match.")
 		XCTAssertEqual(currentLevel.status, .incompleted, "Expected initial level to not be completed.")
 		XCTAssertEqual(sut.taps, 0, "Expected initial taps to be 0.")
+		XCTAssertFalse(sut.isLevelCompleted, "Expected initial level to not be completed.")
 	}
 
 	func test_toggleColors_withValidData_shouldToggleColorsAndIncrementTaps() {
@@ -339,7 +340,7 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 initially.")
 
 		// Test scenario 1: High number of taps, expecting 1 star
-		performToggles(sut: sut, toggles: [(0, 0), (0, 0), (0, 0), (0, 0), (1, 1), (1, 2), (2, 1), (2, 2)])
+		performToggles(sut: sut, toggles: [(0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (1, 1), (1, 2), (2, 1), (2, 2)])
 		stars = sut.getStarsForLevel(id: 5)
 		expectedStars = 1
 		status = sut.getStatusForLevel(id: 5)
@@ -380,6 +381,64 @@ final class GameManagerTests: XCTestCase {
 
 		XCTAssertTrue(status, "Level should be completed again with high number of taps.")
 		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for level 5 after replaying with high number of taps.")
+	}
+
+	func test_getStarsForLevel_withInvalidId_ShouldReturnZeroStars() {
+		let sut = makeSut()
+
+		var stars = sut.getStarsForLevel(id: -1)
+		let expectedStars = 0
+
+		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for an invalid level ID.")
+
+		stars = sut.getStarsForLevel(id: Int.max)
+
+		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for an invalid level ID.")
+	}
+
+	func test_selectLevel_ShouldReturnSelectedLevel() {
+		let sut = makeSut()
+
+		sut.nextLevel()
+		sut.toggleColors(atX: 0, atY: 1)
+
+		sut.selectLevel(id: 5)
+
+		let level = sut.level
+		let expectedLevel = Level(
+			id: 5,
+			cellsMatrix: [
+				[1, 1, 1, 1],
+				[1, 0, 0, 1],
+				[1, 0, 0, 1],
+				[1, 1, 1, 1]
+			]
+		)
+
+		XCTAssertEqual(level.id, expectedLevel.id, "Expected level ID to be \(expectedLevel.id).")
+		XCTAssertEqual(level.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to match.")
+		XCTAssertEqual(sut.taps, 0, "Expected taps to be reset to 0 after selecting a new level.")
+		XCTAssertFalse(sut.isLevelCompleted)
+	}
+
+	func test_selectLevel_withInvalidId_ShouldReturnCurrentLevel() {
+		let sut = makeSut()
+
+		let expectedLevel = sut.level
+
+		sut.selectLevel(id: -1)
+
+		var level = sut.level
+
+		XCTAssertEqual(level.id, expectedLevel.id)
+		XCTAssertEqual(level.cellsMatrix, expectedLevel.cellsMatrix)
+
+		sut.selectLevel(id: Int.max)
+
+		level = sut.level
+
+		XCTAssertEqual(level.id, expectedLevel.id)
+		XCTAssertEqual(level.cellsMatrix, expectedLevel.cellsMatrix)
 	}
 
 	private func performToggles(sut: GameManager, toggles: [(Int, Int)]) {

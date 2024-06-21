@@ -12,6 +12,7 @@ final class GameManager: ObservableObject {
 
 	@Published var level: Level
 	@Published var taps: Int
+	@Published var isLevelCompleted: Bool
 
 	var levelId: Int {
 		level.id
@@ -19,15 +20,6 @@ final class GameManager: ObservableObject {
 
 	var levelSize: Int {
 		level.cellsMatrix.count
-	}
-
-	var isLevelCompleted: Bool {
-		switch level.status {
-		case .completed:
-			true
-		case .incompleted:
-			false
-		}
 	}
 
 	var numberOfLevels: Int {
@@ -48,6 +40,7 @@ final class GameManager: ObservableObject {
 		levels = originLevels
 		level = originLevels[0]
 		taps = 0
+		isLevelCompleted = false
 	}
 
 	func toggleColors(atX x: Int, atY y: Int) {
@@ -67,15 +60,24 @@ final class GameManager: ObservableObject {
 	func restartLevel() {
 		taps = 0
 		level = originLevels[level.id]
+		isLevelCompleted = false
 	}
 
 	func nextLevel() {
 		let nextLevelId = min(levels.count - 1, level.id + 1)
 		level = originLevels[nextLevelId]
 		taps = 0
+		isLevelCompleted = false
 	}
 
 	func selectLevel(id: Int) {
+		guard id >= 0 && id < levels.count else {
+			return
+		}
+
+		level = levels[id]
+		taps = 0
+		isLevelCompleted = false
 	}
 
 	func getHint() {
@@ -107,24 +109,31 @@ final class GameManager: ObservableObject {
 	}
 
 	func getStarsForLevel(id: Int) -> Int {
+		let perfectScoreStars = 3
+		let goodScoreStars = 2
+		let basicScoreStars = 1
+		let zeroScoreStars = 0
+
+		guard id >= 0 && id < levels.count else {
+			return zeroScoreStars
+		}
+
 		let targetTaps = levelService.countTargetTaps(for: levels[id])
 		var actualTaps = Int.max
 
 		if case let .completed(levelTaps) = levels[id].status {
 			actualTaps = levelTaps
 		} else {
-			return 0
+			return zeroScoreStars
 		}
 
 		if actualTaps == targetTaps {
-			return 3
+			return perfectScoreStars
 		} else if actualTaps <= targetTaps * 2 {
-			return 2
+			return goodScoreStars
 		} else {
-			return 1
+			return basicScoreStars
 		}
-
-		return 0
 	}
 
 	private func completeLevel() {
@@ -135,5 +144,7 @@ final class GameManager: ObservableObject {
 		} else {
 			levels[level.id].status = .completed(taps)
 		}
+
+		isLevelCompleted = true
 	}
 }

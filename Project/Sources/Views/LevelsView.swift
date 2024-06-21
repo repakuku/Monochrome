@@ -24,6 +24,7 @@ struct LevelsView: View {
 						ForEach(1..<gameManager.numberOfLevels, id: \.self) { index in
 							Button {
 								gameManager.selectLevel(id: index)
+								levelsViewIsShowing = false
 							} label: {
 								RowView(
 									index: index,
@@ -48,11 +49,7 @@ struct RowView: View {
 
 	var body: some View {
 		HStack {
-			if isFilled {
-				RoundedSquareTextViewFilled(text: String(index))
-			} else {
-				RoundedSquareTextView(text: String(index))
-			}
+			RoundedTextView(text: String(index), isFilled: isFilled)
 			Spacer()
 			StarsView(stars: stars)
 				.frame(width: Sizes.Levels.starsColumnWidth)
@@ -82,7 +79,7 @@ struct HeaderView: View {
 				Button {
 					levelsViewIsShowing = false
 				} label: {
-					RoundedImageViewFilled(systemName: Images.xmark.rawValue)
+					RoundedImageView(systemName: Images.xmark.rawValue, isFilled: true)
 				}
 			}
 		}
@@ -112,23 +109,8 @@ struct StarsView: View {
 
 	var body: some View {
 		HStack {
-			switch stars {
-			case 0:
-				Image(systemName: Images.star.rawValue)
-				Image(systemName: Images.star.rawValue)
-				Image(systemName: Images.star.rawValue)
-			case 1:
-				Image(systemName: Images.starFilled.rawValue)
-				Image(systemName: Images.star.rawValue)
-				Image(systemName: Images.star.rawValue)
-			case 2:
-				Image(systemName: Images.starFilled.rawValue)
-				Image(systemName: Images.starFilled.rawValue)
-				Image(systemName: Images.star.rawValue)
-			default:
-				Image(systemName: Images.starFilled.rawValue)
-				Image(systemName: Images.starFilled.rawValue)
-				Image(systemName: Images.starFilled.rawValue)
+			ForEach(0..<3, id: \.self) { index in
+				Image(systemName: index < stars ? Images.starFilled.rawValue : Images.star.rawValue)
 			}
 		}
 		.foregroundColor(Color(Theme.textColor))

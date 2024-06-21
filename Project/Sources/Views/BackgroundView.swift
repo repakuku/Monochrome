@@ -27,7 +27,7 @@ struct BackgroundView: View {
 	}
 }
 
-struct TopView: View {
+ struct TopView: View {
 	@ObservedObject var gameManager: GameManager
 	@Binding var showMenu: Bool
 
@@ -40,7 +40,7 @@ struct TopView: View {
 						showMenu = false
 					}
 				} label: {
-					RoundedImageViewStroked(systemName: Images.arrow.rawValue)
+					RoundedImageView(systemName: Images.arrow.rawValue, isFilled: false)
 				}
 				Spacer()
 				BigBoldText(text: "Level \(gameManager.levelId)")
@@ -50,11 +50,7 @@ struct TopView: View {
 						showMenu.toggle()
 					}
 				} label: {
-					if showMenu {
-						RoundedImageViewStroked(systemName: Images.list.rawValue)
-					} else {
-						RoundedImageViewFilled(systemName: Images.list.rawValue)
-					}
+					RoundedImageView(systemName: Images.list.rawValue, isFilled: !showMenu)
 				}
 			}
 			HStack {
@@ -66,7 +62,7 @@ struct TopView: View {
 					}
 				} label: {
 					if showMenu {
-						RoundedImageViewStroked(systemName: Images.questionmark.rawValue)
+						RoundedImageView(systemName: Images.questionmark.rawValue, isFilled: false)
 							.transition(.scale)
 					}
 				}
@@ -79,14 +75,14 @@ struct TopView: View {
 					}
 				} label: {
 					if showMenu {
-						RoundedImageViewStroked(systemName: Images.book.rawValue)
+						RoundedImageView(systemName: Images.book.rawValue, isFilled: false)
 							.transition(.scale)
 					}
 				}
 			}
 		}
 	}
-}
+ }
 
 struct BottomView: View {
 	@ObservedObject var gameManager: GameManager
@@ -95,30 +91,16 @@ struct BottomView: View {
 
 	var body: some View {
 		HStack {
-			RoundedSquareTextView(text: String(gameManager.taps))
+			RoundedTextView(text: String(gameManager.taps), isFilled: false)
 			Spacer()
 			Button {
 				levelsViewIsShowing = true
 			} label: {
-				RoundedImageViewStroked(systemName: Images.checklist.rawValue)
+				RoundedImageView(systemName: Images.checklist.rawValue, isFilled: false)
 			}
 		}
 		.sheet(isPresented: $levelsViewIsShowing) {
 			LevelsView(gameManager: gameManager, levelsViewIsShowing: $levelsViewIsShowing)
-		}
-	}
-}
-
-struct NumberView: View {
-	let title: String
-	let text: String
-
-	var body: some View {
-		HStack {
-			VStack(spacing: Sizes.Spacing.small) {
-				LabelText(title: title)
-				RoundedRectTextView(text: text)
-			}
 		}
 	}
 }

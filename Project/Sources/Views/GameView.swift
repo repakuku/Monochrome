@@ -15,6 +15,7 @@ struct GameView: View {
 	)
 	@State private var showMenu = false
 	@State private var showInstructions = true
+	@State private var showResult = false
 
 	var body: some View {
 		ZStack {
@@ -26,13 +27,26 @@ struct GameView: View {
 					.disabled(gameManager.isLevelCompleted)
 			}
 
-			if gameManager.isLevelCompleted {
+			if showResult {
 				ResultView(gameManager: gameManager)
 					.transition(.scale)
 			} else {
 				FieldView(gameManager: gameManager, showInstructions: $showInstructions)
-					.zIndex(1)
 					.transition(.scale)
+					.zIndex(1)
+			}
+		}
+		.onChange(of: gameManager.isLevelCompleted) { isCompleted in
+			if isCompleted {
+				DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+					withAnimation {
+						showResult = true
+					}
+				}
+			} else {
+				withAnimation {
+					showResult = false
+				}
 			}
 		}
 		.onTapGesture {
