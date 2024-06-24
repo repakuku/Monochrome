@@ -24,7 +24,7 @@ struct ResultView: View {
 			AlertView(
 				gameManager: gameManager,
 				title: "Level Done!",
-				stars: gameManager.getStarsForLevel(id: gameManager.levelId),
+				stars: gameManager.getStarsForLevel(id: gameManager.levelId, forCurrentGame: true),
 				message: "Level \(gameManager.levelId) mastered in \(gameManager.taps) taps!",
 				showReplayButton: true
 			)

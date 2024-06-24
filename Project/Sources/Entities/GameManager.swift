@@ -108,7 +108,35 @@ final class GameManager: ObservableObject {
 		return false
 	}
 
-	func getStarsForLevel(id: Int) -> Int {
+//	func getStarsForLevel(id: Int) -> Int {
+//		let perfectScoreStars = 3
+//		let goodScoreStars = 2
+//		let basicScoreStars = 1
+//		let zeroScoreStars = 0
+//
+//		guard id >= 0 && id < levels.count else {
+//			return zeroScoreStars
+//		}
+//
+//		let targetTaps = levelService.countTargetTaps(for: levels[id])
+//		var actualTaps = Int.max
+//
+//		if case let .completed(levelTaps) = levels[id].status {
+//			actualTaps = levelTaps
+//		} else {
+//			return zeroScoreStars
+//		}
+//
+//		if actualTaps == targetTaps {
+//			return perfectScoreStars
+//		} else if actualTaps <= targetTaps * 2 {
+//			return goodScoreStars
+//		} else {
+//			return basicScoreStars
+//		}
+//	}
+
+	func getStarsForLevel(id: Int, forCurrentGame: Bool = false) -> Int {
 		let perfectScoreStars = 3
 		let goodScoreStars = 2
 		let basicScoreStars = 1
@@ -119,9 +147,11 @@ final class GameManager: ObservableObject {
 		}
 
 		let targetTaps = levelService.countTargetTaps(for: levels[id])
-		var actualTaps = Int.max
+		let actualTaps: Int
 
-		if case let .completed(levelTaps) = levels[id].status {
+		if forCurrentGame {
+			actualTaps = taps
+		} else if case let .completed(levelTaps) = levels[id].status {
 			actualTaps = levelTaps
 		} else {
 			return zeroScoreStars
