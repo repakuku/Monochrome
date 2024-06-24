@@ -15,8 +15,7 @@
 			[1, 0]
 		],
 		"status": {
-			"type": "completed",
-			"taps": 3
+			"type": "incompleted"
 		}
 	},
 	{
@@ -36,8 +35,7 @@
 			[1, 1]
 		],
 		"status": {
-			"type": "completed",
-			"taps": 5
+			"type": "incompleted"
 		}
 	},
 	{
@@ -61,8 +59,7 @@
 			[1, 1, 1, 1]
 		],
 		"status": {
-			"type": "completed",
-			"taps": 4
+			"type": "incompleted"
 		}
 	}
 ]

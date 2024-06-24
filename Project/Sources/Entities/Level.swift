@@ -12,18 +12,34 @@ enum LevelStatus: Equatable, Codable {
 	case completed(Int)
 	case incompleted
 
+	private enum CodingKeys: String, CodingKey {
+		case type
+		case taps
+	}
+
 	init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
-		if let taps = try? container.decode(Int.self, forKey: .completed) {
+		let type = try container.decode(String.self, forKey: .type)
+		switch type {
+		case "completed":
+			let taps = try container.decode(Int.self, forKey: .taps)
 			self = .completed(taps)
-		} else {
+		case "incompleted":
 			self = .incompleted
+		default:
+			throw DecodingError.dataCorruptedError(forKey: .type, in: container, debugDescription: "Invalid status type")
 		}
 	}
 
-	private enum CodingKeys: String, CodingKey {
-		case completed
-		case incompleted
+	func encode(to encoder: Encoder) throws {
+		var container = encoder.container(keyedBy: CodingKeys.self)
+		switch self {
+		case .completed(let taps):
+			try container.encode("completed", forKey: .type)
+			try container.encode(taps, forKey: .taps)
+		case .incompleted:
+			try container.encode("incompleted", forKey: .type)
+		}
 	}
 
 	static func == (lhs: LevelStatus, rhs: LevelStatus) -> Bool {

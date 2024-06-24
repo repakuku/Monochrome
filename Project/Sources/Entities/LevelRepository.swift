@@ -16,26 +16,25 @@ final class LevelRepository: ILevelRepository {
 
 	private var levels: [Level] = []
 
+	init() {
+		self.levels = loadJsonLevels()
+	}
+
 	func getLevels() -> [Level] {
-		levels = loadJsonLevels()
-		return levels
+		levels
 	}
 
 	private func loadJsonLevels() -> [Level] {
 		guard let levelsJsonUrl = Bundle.main.url(forResource: "Levels", withExtension: "json") else {
-			return []
+			return [Level(id: 0, cellsMatrix: [[0]])]
 		}
-
-		var levels = [Level]()
 
 		do {
-			let levelsData = try Data(contentsOf: levelsJsonUrl)
-			levels = try JSONDecoder().decode([Level].self, from: levelsData)
+			let jsonLevelsData = try Data(contentsOf: levelsJsonUrl)
+			return try JSONDecoder().decode([Level].self, from: jsonLevelsData)
 		} catch {
 			// TODO: log error
-			print(error)
+			return [Level(id: 0, cellsMatrix: [[0]])]
 		}
-
-		return levels
 	}
 }
