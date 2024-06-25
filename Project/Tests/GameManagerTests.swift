@@ -11,7 +11,7 @@ import XCTest
 
 final class GameManagerTests: XCTestCase {
 
-	// MARK: - init
+	// MARK: - Initialization
 
 	func test_init_shouldImplementCorrectInstance() {
 		let sut = makeSut()
@@ -30,7 +30,7 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertFalse(sut.isLevelCompleted, "Expected initial level to not be completed.")
 	}
 
-	// MARK: - toggleColors
+	// MARK: - Toggle Colors
 
 	func test_toggleColors_withValidData_shouldToggleColorsAndIncrementTaps() {
 		let sut = makeSut()
@@ -69,7 +69,7 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertFalse(sut.isLevelCompleted, "Expected new level to be incomplete after advancing.")
 	}
 
-	// MARK: - restartLevel
+	// MARK: - Restart Level
 
 	func test_restartLevel_shouldResetStateToInitial() {
 		let sut = makeSut()
@@ -108,7 +108,7 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertEqual(sut.taps, 0, "Expected taps to reset to 0 after restarting the level.")
 	}
 
-	// MARK: - nextlevel
+	// MARK: - Next level
 
 	func test_nextLevel_withValidState_shouldAdvanceToNextLevel() {
 		let sut = makeSut()
@@ -154,7 +154,19 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertEqual(sut.taps, 0, "Expected taps to reset to 0 when remaining at the last level.")
 	}
 
-	// MARK: - getHint
+	// MARK: - Save Game
+
+	func test_saveGame_afterLevelCompletion_shouldSaveGame() {
+		var sut = makeSut()
+
+		sut.toggleColors(atX: 0, atY: 0)
+
+		sut = makeSut()
+
+		XCTAssertTrue(sut.getStatusForLevel(id: 0))
+	}
+
+	// MARK: - Get Hint
 
 	func test_getHint_shouldProvideHintInMatrix() {
 		let sut = makeSut()
@@ -209,7 +221,7 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertEqual(sut.level.cellsMatrix, expectedMatrix, "Expected cells matrix to match after toggling hinted cell again.")
 	}
 
-	// MARK: - getTapsForLevel
+	// MARK: - Get Taps For Level
 
 	func test_getTapsForLevel_withCorrectId_shouldReturnCorrectTapsForCompletedlevel() {
 		let sut = makeSut()
@@ -289,7 +301,7 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertEqual(taps, expectedTaps, "Expected best taps to be \(expectedTaps) after 1 toggle at (0,1) on restarted level 1, reflecting the best result.")
 	}
 
-	// MARK: - getStatusForLevel
+	// MARK: - Get Status For Level
 
 	func test_getStatusForLevel_withValidId_shouldReturnCorrectStatus() {
 		let sut = makeSut()
@@ -324,7 +336,7 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertFalse(status, "Expected level status to be false for an invalid level ID.")
 	}
 
-	// MARK: - getStarsForLevel
+	// MARK: - Get Stars For Level
 
 	func test_getStarsForLevel_forInitialLevel_shouldReturnZeroStars() {
 		let sut = makeSut()
@@ -512,7 +524,7 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for an invalid level ID.")
 	}
 
-	// MARK: - selectLevel
+	// MARK: - Select Level
 
 	func test_selectLevel_ShouldReturnSelectedLevel() {
 		let sut = makeSut()

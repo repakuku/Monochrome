@@ -38,9 +38,12 @@ final class GameManager: ObservableObject {
 
 		originLevels = levelRepository.getLevels()
 		levels = originLevels
+
 		level = originLevels[0]
 		taps = 0
 		isLevelCompleted = false
+
+		loadGame()
 	}
 
 	func toggleColors(atX x: Int, atY y: Int) {
@@ -55,12 +58,16 @@ final class GameManager: ObservableObject {
 		if levelService.checkMatrix(level: level) {
 			completeLevel()
 		}
+
+		saveGame()
 	}
 
 	func restartLevel() {
 		taps = 0
 		level = originLevels[level.id]
 		isLevelCompleted = false
+
+		saveGame()
 	}
 
 	func nextLevel() {
@@ -68,6 +75,8 @@ final class GameManager: ObservableObject {
 		level = originLevels[nextLevelId]
 		taps = 0
 		isLevelCompleted = false
+
+		saveGame()
 	}
 
 	func selectLevel(id: Int) {
@@ -78,6 +87,8 @@ final class GameManager: ObservableObject {
 		level = levels[id]
 		taps = 0
 		isLevelCompleted = false
+
+		saveGame()
 	}
 
 	func getHint() {
@@ -107,34 +118,6 @@ final class GameManager: ObservableObject {
 
 		return false
 	}
-
-//	func getStarsForLevel(id: Int) -> Int {
-//		let perfectScoreStars = 3
-//		let goodScoreStars = 2
-//		let basicScoreStars = 1
-//		let zeroScoreStars = 0
-//
-//		guard id >= 0 && id < levels.count else {
-//			return zeroScoreStars
-//		}
-//
-//		let targetTaps = levelService.countTargetTaps(for: levels[id])
-//		var actualTaps = Int.max
-//
-//		if case let .completed(levelTaps) = levels[id].status {
-//			actualTaps = levelTaps
-//		} else {
-//			return zeroScoreStars
-//		}
-//
-//		if actualTaps == targetTaps {
-//			return perfectScoreStars
-//		} else if actualTaps <= targetTaps * 2 {
-//			return goodScoreStars
-//		} else {
-//			return basicScoreStars
-//		}
-//	}
 
 	func getStarsForLevel(id: Int, forCurrentGame: Bool = false) -> Int {
 		let perfectScoreStars = 3
@@ -177,4 +160,38 @@ final class GameManager: ObservableObject {
 
 		isLevelCompleted = true
 	}
+
+	private func saveGame() {
+		let game = Game(
+			level: level,
+			taps: taps,
+			levels: levels
+		)
+
+		do {
+			let gameData = try JSONEncoder().encode(game)
+			try gameData.write(to: Endpoints.gameUrl, options: .atomic)
+		} catch {
+			// TODO: log error
+		}
+	}
+
+	private func loadGame() {
+		do {
+			let gameData = try Data(contentsOf: Endpoints.gameUrl)
+			let game = try JSONDecoder().decode(Game.self, from: gameData)
+
+			self.level = game.level
+			self.taps = game.taps
+			self.levels = game.levels
+		} catch {
+			// TODO: log error
+		}
+	}
+}
+
+struct Game: Codable {
+	var level: Level
+	var taps: Int
+	var levels: [Level]
 }

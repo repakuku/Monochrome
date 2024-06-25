@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		02DC904331317DCAF156BF25 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 356B4C37748236D10D808E8F /* Assets.xcassets */; };
 		069E1B9410F9ACEB7E7721EF /* RoundedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD3E51752F115DCAB489A3 /* RoundedViews.swift */; };
+		07F179782C2A40D40077DF43 /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F179772C2A40D40077DF43 /* Endpoints.swift */; };
 		0B15B73B384603FFF2CC119A /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC199E3AE72AC3B72F6EBB17 /* GameManager.swift */; };
 		276CD421AC39821AD992FA95 /* GameManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F875707066184F04FB5999 /* GameManagerTests.swift */; };
 		2A1A72D302B665F508502510 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020848DCE082B517F18C0DCB /* Images.swift */; };
@@ -71,6 +72,7 @@
 		020848DCE082B517F18C0DCB /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		0482F0341A977ABDF3BEC927 /* Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		06BD3E51752F115DCAB489A3 /* RoundedViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedViews.swift; sourceTree = "<group>"; };
+		07F179772C2A40D40077DF43 /* Endpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoints.swift; sourceTree = "<group>"; };
 		08FD17822A6AAFF0D12CD91B /* LevelServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelServiceTests.swift; sourceTree = "<group>"; };
 		1B33E1E14E02551A3CA0B874 /* Monochrome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Monochrome.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FC786D509133CEC3339B09A /* MonochromeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "MonochromeTests-Info.plist"; sourceTree = "<group>"; };
@@ -243,6 +245,7 @@
 				0482F0341A977ABDF3BEC927 /* Level.swift */,
 				3F9638C3A02B90D7704134FA /* LevelRepository.swift */,
 				DE16BDFB1DBBE2AFB26316C3 /* LevelService.swift */,
+				07F179772C2A40D40077DF43 /* Endpoints.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -313,6 +316,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1510;
 				ORGANIZATIONNAME = repakuku;
 				TargetAttributes = {
 					D6ABC78F1C2172B93A49B041 = {
@@ -425,6 +429,7 @@
 				371D8FA659B012D24F677DBD /* UIKit+Dynamic.swift in Sources */,
 				7DDA1DA1BFDC6D3C4C3B64CA /* Colors.swift in Sources */,
 				2A1A72D302B665F508502510 /* Images.swift in Sources */,
+				07F179782C2A40D40077DF43 /* Endpoints.swift in Sources */,
 				8AF1DCDD2455CC84836A3A09 /* Sizes.swift in Sources */,
 				54C0E08621709F0C56AD6137 /* BackgroundView.swift in Sources */,
 				6DC23DD50BA9772C8D33AA02 /* FieldView.swift in Sources */,
