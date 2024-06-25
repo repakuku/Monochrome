@@ -125,6 +125,7 @@ final class GameManager {
 		level.status = .completed(taps)
 
 		if case let .completed(prevTaps) = levels[level.id].status {
+			// TODO: Tests
 			levels[level.id].status = .completed(min(taps, prevTaps))
 		} else {
 			levels[level.id].status = .completed(taps)
@@ -146,7 +147,6 @@ final class GameManager {
 //			let gameData = try encoder.encode(game)
 //			try gameData.write(to: Endpoints.gameUrl, options: .atomic)
 //		} catch {
-//			// TODO: log error
 //		}
 //	}
 //
@@ -159,6 +159,5 @@ final class GameManager {
 //			self.taps = game.taps
 //			self.levels = game.levels
 //		} catch {
-//			// TODO: log error
 //		}
 //	}
