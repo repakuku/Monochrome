@@ -8,7 +8,22 @@
 
 import Foundation
 
-final class GameManager {
+protocol IGameManager {
+	var level: Level { get }
+	var taps: Int { get }
+	var levels: [Level] { get }
+
+	func toggleColors(atX x: Int, atY y: Int)
+	func nextLevel()
+	func restartLevel()
+	func selectLevel(id: Int)
+	func getHint()
+	func getTapsForLevel(id: Int) -> Int
+	func getStatusForLevel(id: Int) -> Bool
+	func getStarsForLevel(id: Int, forCurrentGame: Bool) -> Int
+}
+
+final class GameManager: IGameManager {
 
 	var level: Level
 	var taps: Int
@@ -133,31 +148,50 @@ final class GameManager {
 	}
 }
 
-//	private func saveGame() {
-//		let game = Game(
-//			level: level,
-//			taps: taps,
-//			levels: levels
-//		)
-//
-//		let encoder = JSONEncoder()
-//		encoder.outputFormatting = .prettyPrinted
-//
-//		do {
-//			let gameData = try encoder.encode(game)
-//			try gameData.write(to: Endpoints.gameUrl, options: .atomic)
-//		} catch {
-//		}
-//	}
-//
-//	private func loadGame() {
-//		do {
-//			let gameData = try Data(contentsOf: Endpoints.gameUrl)
-//			let game = try JSONDecoder().decode(Game.self, from: gameData)
-//
-//			self.level = game.level
-//			self.taps = game.taps
-//			self.levels = game.levels
-//		} catch {
-//		}
-//	}
+final class MockGameManager: IGameManager {
+	var level = Level(id: 0, cellsMatrix: [[0]])
+	var taps = 0
+	var levels: [Level] = [Level(id: 0, cellsMatrix: [[0]])]
+
+	var toggleColorsCalled = false
+	var nextLevelCalled = false
+	var restartLevelCalled = false
+	var selectLevelCalled = false
+	var getHintCalled = false
+
+	var getTapsForLevelResult = 0
+	var getStatusForLevelResult = false
+	var getStarsForLevelResult = 0
+
+	func toggleColors(atX x: Int, atY y: Int) {
+		toggleColorsCalled = true
+	}
+
+	func nextLevel() {
+		nextLevelCalled = true
+	}
+
+	func restartLevel() {
+		restartLevelCalled = true
+	}
+
+	func selectLevel(id: Int) {
+		selectLevelCalled = true
+	}
+
+	func getHint() {
+		getHintCalled = true
+	}
+
+	func getTapsForLevel(id: Int) -> Int {
+		getTapsForLevelResult
+	}
+
+	func getStatusForLevel(id: Int) -> Bool {
+		getStatusForLevelResult
+	}
+
+	func getStarsForLevel(id: Int, forCurrentGame: Bool) -> Int {
+		getStarsForLevelResult
+	}
+}

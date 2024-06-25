@@ -13,6 +13,7 @@
 		07F1797A2C2A521B0077DF43 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F179792C2A521B0077DF43 /* Game.swift */; };
 		07F1797D2C2A55C80077DF43 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F1797C2C2A55C80077DF43 /* GameViewModel.swift */; };
 		07F1797F2C2B0E560077DF43 /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F1797E2C2B0E560077DF43 /* GameViewModelTests.swift */; };
+		07F179822C2B7BEC0077DF43 /* GameRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F179812C2B7BEC0077DF43 /* GameRepository.swift */; };
 		0B15B73B384603FFF2CC119A /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC199E3AE72AC3B72F6EBB17 /* GameManager.swift */; };
 		276CD421AC39821AD992FA95 /* GameManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F875707066184F04FB5999 /* GameManagerTests.swift */; };
 		2A1A72D302B665F508502510 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020848DCE082B517F18C0DCB /* Images.swift */; };
@@ -79,6 +80,7 @@
 		07F179792C2A521B0077DF43 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		07F1797C2C2A55C80077DF43 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		07F1797E2C2B0E560077DF43 /* GameViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModelTests.swift; sourceTree = "<group>"; };
+		07F179812C2B7BEC0077DF43 /* GameRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRepository.swift; sourceTree = "<group>"; };
 		08FD17822A6AAFF0D12CD91B /* LevelServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelServiceTests.swift; sourceTree = "<group>"; };
 		1B33E1E14E02551A3CA0B874 /* Monochrome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Monochrome.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FC786D509133CEC3339B09A /* MonochromeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "MonochromeTests-Info.plist"; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 				DE16BDFB1DBBE2AFB26316C3 /* LevelService.swift */,
 				07F179772C2A40D40077DF43 /* Endpoints.swift */,
 				07F179792C2A521B0077DF43 /* Game.swift */,
+				07F179812C2B7BEC0077DF43 /* GameRepository.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -454,6 +457,7 @@
 				07F1797D2C2A55C80077DF43 /* GameViewModel.swift in Sources */,
 				6ED3D1EA18EBE688058D2B4A /* GameView.swift in Sources */,
 				FB7853959E5607558780E064 /* GuideView.swift in Sources */,
+				07F179822C2B7BEC0077DF43 /* GameRepository.swift in Sources */,
 				07F1797A2C2A521B0077DF43 /* Game.swift in Sources */,
 				3CAF6EB66706FBA689DA5B6B /* LevelsView.swift in Sources */,
 				B2EA8803937F3D26078758BC /* ResultView.swift in Sources */,

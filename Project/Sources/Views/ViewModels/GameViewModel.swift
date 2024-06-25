@@ -23,9 +23,9 @@ final class GameViewModel: ObservableObject {
 		cells.count
 	}
 
-	private let gameManager: GameManager
+	private let gameManager: IGameManager
 
-	init(gameManager: GameManager) {
+	init(gameManager: IGameManager) {
 		self.gameManager = gameManager
 
 		isTutorialLevel = gameManager.level.id == 0
@@ -41,6 +41,7 @@ final class GameViewModel: ObservableObject {
 
 		switch gameManager.level.status {
 		case .completed:
+			// TODO: tests
 			isLevelCompleted = true
 		case .incompleted:
 			isLevelCompleted = false
@@ -50,7 +51,7 @@ final class GameViewModel: ObservableObject {
 	func nextLevel() {
 		gameManager.nextLevel()
 		updateLevel()
-		isTutorialLevel = false
+		isTutorialLevel = gameManager.level.id == 0
 		isLevelCompleted = false
 	}
 
@@ -79,7 +80,7 @@ final class GameViewModel: ObservableObject {
 	}
 
 	func getStarsForLevel(id: Int, forCurrentGame: Bool = false) -> Int {
-		gameManager.getStarsForLevel(id: id)
+		gameManager.getStarsForLevel(id: id, forCurrentGame: false)
 	}
 
 	private func updateLevel() {

@@ -53,7 +53,7 @@ final class GameManagerTests: XCTestCase {
 
 	// MARK: - Toggle Colors
 
-	func test_toggleColors_withValidData_shouldToggleColorsAndIncrementTaps() {
+	func test_toggleColors_withValidData_shouldCallToggleColorsAndIncrementTaps() {
 
 		sut.toggleColors(atX: 0, atY: 0)
 
@@ -61,7 +61,7 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertEqual(sut.taps, 1)
 	}
 
-	func test_toggleColors_withInvalidCoordinates_shouldNotChangeState() {
+	func test_toggleColors_withInvalidCoordinates_shouldNotCalltoggleColors() {
 
 		sut.toggleColors(atX: -1, atY: 0)
 

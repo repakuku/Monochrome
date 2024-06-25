@@ -11,65 +11,112 @@ import XCTest
 
 final class GameViewModelTests: XCTestCase {
 
-	private var mockLevelService: MockLevelService!
-	private var stubLevelRepository: StubLevelRepository!
-	private var gameManager: GameManager!
-	private var viewModel: GameViewModel!
+	private var mockGameManager: MockGameManager!
+	private var sut: GameViewModel!
 
 	override func setUp() {
 		super.setUp()
-
-		mockLevelService = MockLevelService()
-		stubLevelRepository = StubLevelRepository()
-		gameManager = GameManager(
-			levelRepository: stubLevelRepository,
-			levelService: mockLevelService
-		)
-		viewModel = GameViewModel(gameManager: gameManager)
+		mockGameManager = MockGameManager()
+		sut = GameViewModel(gameManager: mockGameManager)
 	}
 
 	override func tearDown() {
-		mockLevelService = nil
-		stubLevelRepository = nil
-		gameManager = nil
-		viewModel = nil
-
+		mockGameManager = nil
+		sut = nil
 		super.tearDown()
 	}
 
+	// MARK: - Initialization
+
 	func test_init_shouldImplementCorrectInstance() {
-		XCTAssertEqual(viewModel.levelId, 0, "Expected initial level ID to be 0.")
-		XCTAssertEqual(viewModel.taps, 0, "Expected initial taps to be 0.")
-		XCTAssertFalse(viewModel.isLevelCompleted, "Expected initial isLevelCompleted to be false.")
-		XCTAssertEqual(viewModel.isTutorialLevel, true, "Expected initial isTutorialLevel to be true.")
-		XCTAssertEqual(viewModel.cells, [[0]], "Expected initial cells matrix to match the first level's cells matrix.")
+		XCTAssertEqual(sut.levelId, 0, "Expected initial level ID to be 0.")
+		XCTAssertEqual(sut.taps, 0, "Expected initial taps to be 0.")
+		XCTAssertFalse(sut.isLevelCompleted, "Expected initial isLevelCompleted to be false.")
+		XCTAssertEqual(sut.isTutorialLevel, true, "Expected initial isTutorialLevel to be true.")
+		XCTAssertEqual(sut.cells, [[0]], "Expected initial cells matrix to match the first level's cells matrix.")
+		XCTAssertEqual(sut.numberOfLevels, 1, "Expected number of levels to be 1.")
 	}
 
-	func test_cellTapped_shouldCallToggleColorsAndCompleteTheLevel() {
+	// MARK: - Cell Tapped
 
-		mockLevelService.checkMatrixResult = true
+	func test_cellTapped_shouldCallToggleColors() {
 
-		viewModel.cellTapped(atX: 0, atY: 0)
+		sut.cellTapped(atX: 0, atY: 0)
 
-		XCTAssertTrue(mockLevelService.toggleColorsCalled, "Expected toggleColors to be called.")
-		XCTAssertTrue(viewModel.isLevelCompleted, "Expected isLevelCompleted to be true after toggling colors.")
+		XCTAssertTrue(mockGameManager.toggleColorsCalled)
 	}
 
-	func test_cellTapped_shouldCallToggleColorsAndNotCompleteTheLevel() {
-
-		viewModel.cellTapped(atX: 0, atY: 0)
-
-		XCTAssertTrue(mockLevelService.toggleColorsCalled, "Expected toggleColors to be called.")
-		XCTAssertFalse(viewModel.isLevelCompleted, "Expected isLevelCompleted to be false after toggling colors.")
-	}
+	// MARK: - Next Level
 
 	func test_nextLevel_shouldCallNextLevel() {
 
-		XCTAssertEqual(viewModel.levelId, 0)
+		sut.nextLevel()
 
-		viewModel.nextLevel()
+		XCTAssertTrue(mockGameManager.nextLevelCalled)
+		XCTAssertFalse(sut.isLevelCompleted)
+	}
 
-		XCTAssertEqual(viewModel.levelId, 1)
+	// MARK: - Restart Level
+
+	func test_restartlevel_shouldCallRestartLevel() {
+
+		sut.restartLevel()
+
+		XCTAssertTrue(mockGameManager.restartLevelCalled)
+		XCTAssertFalse(sut.isLevelCompleted)
+	}
+
+	// MARK: - Get Hint
+
+	func test_getHint_shouldCallGetHint() {
+
+		sut.getHint()
+
+		XCTAssertTrue(mockGameManager.getHintCalled)
+	}
+
+	// MARK: - Select Level
+
+	func test_selectLevel_shouldCallSelectLevel() {
+
+		sut.selectLevel(id: 1)
+
+		XCTAssertTrue(mockGameManager.selectLevelCalled)
+	}
+
+	// MARK: - Get Taps For Level
+
+	func test_getTapsForLevel_shouldReturnCorrectTaps() {
+
+		mockGameManager.getTapsForLevelResult = 1
+
+		let taps = sut.getTapsForLevel(id: 0)
+		let expectedTaps = 1
+
+		XCTAssertEqual(taps, expectedTaps)
+	}
+
+	// MARK: - Get Status For Level
+
+	func test_getStatusForLevel_shouldReturnCorrectStatus() {
+
+		mockGameManager.getStatusForLevelResult = true
+
+		let status = sut.getStatusForLevel(id: 0)
+
+		XCTAssertTrue(status)
+	}
+
+	// MARK: - Get Stars For Level
+
+	func test_getStarsForLevel_shouldReturnCorrectStars() {
+
+		mockGameManager.getStarsForLevelResult = 3
+
+		let stars = sut.getStarsForLevel(id: 0)
+		let expectedStars = 3
+
+		XCTAssertEqual(stars, expectedStars)
 	}
 
 }
