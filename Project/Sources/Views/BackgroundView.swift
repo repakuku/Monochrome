@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct BackgroundView: View {
-	@ObservedObject var gameManager: GameManager
+	@ObservedObject var viewModel: GameViewModel
 	@Binding var showMenu: Bool
 
 	var body: some View {
@@ -18,9 +18,12 @@ struct BackgroundView: View {
 				.ignoresSafeArea()
 
 			VStack {
-				TopView(gameManager: gameManager, showMenu: $showMenu)
+				TopView(viewModel: viewModel, showMenu: $showMenu)
 				Spacer()
-				BottomView(gameManager: gameManager, showMenu: $showMenu)
+				BottomView(
+					viewModel: viewModel,
+					showMenu: $showMenu
+				)
 			}
 			.padding()
 		}
@@ -28,7 +31,8 @@ struct BackgroundView: View {
 }
 
  struct TopView: View {
-	@ObservedObject var gameManager: GameManager
+	@ObservedObject var viewModel: GameViewModel
+
 	@Binding var showMenu: Bool
 	@State private var guideViewIsShowing = false
 
@@ -37,14 +41,14 @@ struct BackgroundView: View {
 			HStack {
 				Button {
 					withAnimation {
-						gameManager.restartLevel()
+						viewModel.restartLevel()
 						showMenu = false
 					}
 				} label: {
 					RoundedImageView(systemName: Images.arrow.rawValue, isFilled: false)
 				}
 				Spacer()
-				BigBoldText(text: "Level \(gameManager.levelId)")
+				BigBoldText(text: "Level \(viewModel.levelId)")
 				Spacer()
 				Button {
 					withAnimation {
@@ -58,7 +62,7 @@ struct BackgroundView: View {
 				Spacer()
 				Button {
 					withAnimation {
-						gameManager.getHint()
+						viewModel.getHint()
 						showMenu.toggle()
 					}
 				} label: {
@@ -90,15 +94,13 @@ struct BackgroundView: View {
  }
 
 struct BottomView: View {
-	@ObservedObject var gameManager: GameManager
-
+	@ObservedObject var viewModel: GameViewModel
 	@State private var levelsViewIsShowing = false
-
 	@Binding var showMenu: Bool
 
 	var body: some View {
 		HStack {
-			RoundedTextView(text: String(gameManager.taps), isFilled: false)
+			RoundedTextView(text: String(viewModel.taps), isFilled: false)
 			Spacer()
 			Button {
 				withAnimation {
@@ -110,16 +112,18 @@ struct BottomView: View {
 			}
 		}
 		.sheet(isPresented: $levelsViewIsShowing) {
-			LevelsView(gameManager: gameManager, levelsViewIsShowing: $levelsViewIsShowing)
+			LevelsView(viewModel: viewModel, levelsViewIsShowing: $levelsViewIsShowing)
 		}
 	}
 }
 
 #Preview {
 	BackgroundView(
-		gameManager: GameManager(
-			levelRepository: LevelRepository(),
-			levelService: LevelService()
+		viewModel: GameViewModel(
+			gameManager: GameManager(
+				levelRepository: LevelRepository(),
+				levelService: LevelService()
+			)
 		),
 		showMenu: .constant(true)
 	)

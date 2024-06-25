@@ -9,12 +9,12 @@
 import SwiftUI
 
 struct ResultView: View {
-	@ObservedObject var gameManager: GameManager
+	@ObservedObject var viewModel: GameViewModel
 
 	var body: some View {
-		if gameManager.levelId == 0 {
+		if viewModel.isTutorialLevel {
 			AlertView(
-				gameManager: gameManager,
+				viewModel: viewModel,
 				title: "Great Start!",
 				stars: 0,
 				message: "In Monochrome, your goal is to make all cells the same color by tapping to flip their colors. Each tap affects the selected cell and its row and column. Solve each puzzle with the fewest taps. \n\nGood luck!", // swiftlint:disable:this line_length
@@ -22,10 +22,10 @@ struct ResultView: View {
 			)
 		} else {
 			AlertView(
-				gameManager: gameManager,
+				viewModel: viewModel,
 				title: "Level Done!",
-				stars: gameManager.getStarsForLevel(id: gameManager.levelId, forCurrentGame: true),
-				message: "Level \(gameManager.levelId) mastered in \(gameManager.taps) taps!",
+				stars: viewModel.getStarsForLevel(id: viewModel.levelId, forCurrentGame: true),
+				message: "Level \(viewModel.levelId) mastered in \(viewModel.taps) taps!",
 				showReplayButton: true
 			)
 		}
@@ -33,7 +33,7 @@ struct ResultView: View {
 }
 
 struct AlertView: View {
-	@ObservedObject var gameManager: GameManager
+	@ObservedObject var viewModel: GameViewModel
 
 	let title: String
 	let stars: Int
@@ -54,7 +54,7 @@ struct AlertView: View {
 				if showReplayButton {
 					Button {
 						withAnimation {
-							gameManager.restartLevel()
+							viewModel.restartLevel()
 						}
 					} label: {
 						ButtonTextStroked(text: "Replay")
@@ -62,7 +62,7 @@ struct AlertView: View {
 				}
 				Button {
 					withAnimation {
-						gameManager.nextLevel()
+						viewModel.nextLevel()
 					}
 				} label: {
 					ButtonTextFilled(text: "Next Level")
@@ -83,9 +83,11 @@ struct AlertView: View {
 
 #Preview {
 	ResultView(
-		gameManager: GameManager(
-			levelRepository: LevelRepository(),
-			levelService: LevelService()
+		viewModel: GameViewModel(
+			gameManager: GameManager(
+				levelRepository: LevelRepository(),
+				levelService: LevelService()
+			)
 		)
 	)
 }

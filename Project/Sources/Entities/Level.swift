@@ -44,8 +44,8 @@ enum LevelStatus: Equatable, Codable {
 
 	static func == (lhs: LevelStatus, rhs: LevelStatus) -> Bool {
 		switch (lhs, rhs) {
-		case (.completed(let lhsTaps), .completed(let rhsTaps)):
-			return lhsTaps == rhsTaps
+		case (.completed, .completed):
+			return true
 		case (.incompleted, .incompleted):
 			return true
 		default:

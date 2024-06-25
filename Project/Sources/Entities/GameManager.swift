@@ -8,28 +8,14 @@
 
 import Foundation
 
-final class GameManager: ObservableObject {
+final class GameManager {
 
-	@Published var level: Level
-	@Published var taps: Int
-	@Published var isLevelCompleted: Bool
-
-	var levelId: Int {
-		level.id
-	}
-
-	var levelSize: Int {
-		level.cellsMatrix.count
-	}
-
-	var numberOfLevels: Int {
-		levels.count
-	}
+	var level: Level
+	var taps: Int
+	var levels: [Level]
 
 	private let levelRepository: ILevelRepository
 	private let levelService: ILevelService
-
-	private var levels: [Level]
 	private let originLevels: [Level]
 
 	init(levelRepository: ILevelRepository, levelService: ILevelService) {
@@ -37,13 +23,9 @@ final class GameManager: ObservableObject {
 		self.levelService = levelService
 
 		originLevels = levelRepository.getLevels()
-		levels = originLevels
-
 		level = originLevels[0]
 		taps = 0
-		isLevelCompleted = false
-
-		loadGame()
+		levels = originLevels
 	}
 
 	func toggleColors(atX x: Int, atY y: Int) {
@@ -58,25 +40,17 @@ final class GameManager: ObservableObject {
 		if levelService.checkMatrix(level: level) {
 			completeLevel()
 		}
-
-		saveGame()
 	}
 
 	func restartLevel() {
 		taps = 0
 		level = originLevels[level.id]
-		isLevelCompleted = false
-
-		saveGame()
 	}
 
 	func nextLevel() {
 		let nextLevelId = min(levels.count - 1, level.id + 1)
 		level = originLevels[nextLevelId]
 		taps = 0
-		isLevelCompleted = false
-
-		saveGame()
 	}
 
 	func selectLevel(id: Int) {
@@ -85,10 +59,8 @@ final class GameManager: ObservableObject {
 		}
 
 		level = levels[id]
+		level.status = .incompleted
 		taps = 0
-		isLevelCompleted = false
-
-		saveGame()
 	}
 
 	func getHint() {
@@ -157,8 +129,6 @@ final class GameManager: ObservableObject {
 		} else {
 			levels[level.id].status = .completed(taps)
 		}
-
-		isLevelCompleted = true
 	}
 
 	private func saveGame() {
@@ -168,8 +138,11 @@ final class GameManager: ObservableObject {
 			levels: levels
 		)
 
+		let encoder = JSONEncoder()
+		encoder.outputFormatting = .prettyPrinted
+
 		do {
-			let gameData = try JSONEncoder().encode(game)
+			let gameData = try encoder.encode(game)
 			try gameData.write(to: Endpoints.gameUrl, options: .atomic)
 		} catch {
 			// TODO: log error
@@ -188,10 +161,4 @@ final class GameManager: ObservableObject {
 			// TODO: log error
 		}
 	}
-}
-
-struct Game: Codable {
-	var level: Level
-	var taps: Int
-	var levels: [Level]
 }
