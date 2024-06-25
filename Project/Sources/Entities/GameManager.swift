@@ -42,15 +42,15 @@ final class GameManager {
 		}
 	}
 
-	func restartLevel() {
-		taps = 0
-		level = originLevels[level.id]
-	}
-
 	func nextLevel() {
 		let nextLevelId = min(levels.count - 1, level.id + 1)
 		level = originLevels[nextLevelId]
 		taps = 0
+	}
+
+	func restartLevel() {
+		taps = 0
+		level = originLevels[level.id]
 	}
 
 	func selectLevel(id: Int) {
@@ -130,35 +130,35 @@ final class GameManager {
 			levels[level.id].status = .completed(taps)
 		}
 	}
-
-	private func saveGame() {
-		let game = Game(
-			level: level,
-			taps: taps,
-			levels: levels
-		)
-
-		let encoder = JSONEncoder()
-		encoder.outputFormatting = .prettyPrinted
-
-		do {
-			let gameData = try encoder.encode(game)
-			try gameData.write(to: Endpoints.gameUrl, options: .atomic)
-		} catch {
-			// TODO: log error
-		}
-	}
-
-	private func loadGame() {
-		do {
-			let gameData = try Data(contentsOf: Endpoints.gameUrl)
-			let game = try JSONDecoder().decode(Game.self, from: gameData)
-
-			self.level = game.level
-			self.taps = game.taps
-			self.levels = game.levels
-		} catch {
-			// TODO: log error
-		}
-	}
 }
+
+//	private func saveGame() {
+//		let game = Game(
+//			level: level,
+//			taps: taps,
+//			levels: levels
+//		)
+//
+//		let encoder = JSONEncoder()
+//		encoder.outputFormatting = .prettyPrinted
+//
+//		do {
+//			let gameData = try encoder.encode(game)
+//			try gameData.write(to: Endpoints.gameUrl, options: .atomic)
+//		} catch {
+//			// TODO: log error
+//		}
+//	}
+//
+//	private func loadGame() {
+//		do {
+//			let gameData = try Data(contentsOf: Endpoints.gameUrl)
+//			let game = try JSONDecoder().decode(Game.self, from: gameData)
+//
+//			self.level = game.level
+//			self.taps = game.taps
+//			self.levels = game.levels
+//		} catch {
+//			// TODO: log error
+//		}
+//	}

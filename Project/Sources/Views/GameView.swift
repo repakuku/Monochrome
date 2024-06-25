@@ -12,7 +12,7 @@ struct GameView: View {
 	@StateObject private var viewModel = GameViewModel(
 		gameManager:
 			GameManager(
-				levelRepository: LevelRepository(),
+				levelRepository: LevelRepository(levelsJsonUrl: Endpoints.levelsJsonUrl),
 				levelService: LevelService()
 			)
 	)

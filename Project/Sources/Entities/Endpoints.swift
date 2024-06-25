@@ -19,4 +19,8 @@ enum Endpoints {
 			relativeTo: Endpoints.documents
 		)
 	}()
+
+	static var levelsJsonUrl: URL? = {
+		Bundle.main.url(forResource: "Levels", withExtension: "json")
+	}()
 }

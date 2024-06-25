@@ -121,7 +121,7 @@ struct BottomView: View {
 	BackgroundView(
 		viewModel: GameViewModel(
 			gameManager: GameManager(
-				levelRepository: LevelRepository(),
+				levelRepository: LevelRepository(levelsJsonUrl: Endpoints.levelsJsonUrl),
 				levelService: LevelService()
 			)
 		),
