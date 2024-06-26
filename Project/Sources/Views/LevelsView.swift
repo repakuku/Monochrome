@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct LevelsView: View {
-	@ObservedObject var gameManager: GameManager
+	@ObservedObject var viewModel: GameViewModel
 	@Binding var levelsViewIsShowing: Bool
 
 	var body: some View {
@@ -21,16 +21,16 @@ struct LevelsView: View {
 				LabelView()
 				ScrollView {
 					VStack(spacing: Sizes.Spacing.normal) {
-						ForEach(1..<gameManager.numberOfLevels, id: \.self) { index in
+						ForEach(1..<viewModel.numberOfLevels, id: \.self) { index in
 							Button {
-								gameManager.selectLevel(id: index)
+								viewModel.selectLevel(id: index)
 								levelsViewIsShowing = false
 							} label: {
 								RowView(
 									index: index,
-									stars: gameManager.getStarsForLevel(id: index),
-									taps: gameManager.getTapsForLevel(id: index),
-									isFilled: gameManager.getStatusForLevel(id: index)
+									stars: viewModel.getStarsForLevel(id: index),
+									taps: viewModel.getTapsForLevel(id: index),
+									isFilled: viewModel.getStatusForLevel(id: index)
 								)
 							}
 						}
@@ -119,9 +119,18 @@ struct StarsView: View {
 
 #Preview {
 	LevelsView(
-		gameManager: GameManager(
-			levelRepository: LevelRepository(),
-			levelService: LevelService()
+		viewModel: GameViewModel(
+			gameManager: GameManager(
+				gameRepository: GameRepository(
+					levelRepository: LevelRepository(
+						levelsJsonUrl: Endpoints.levelsJsonUrl
+					)
+				),
+				levelRepository: LevelRepository(
+					levelsJsonUrl: Endpoints.levelsJsonUrl
+				),
+				levelService: LevelService()
+			)
 		),
 		levelsViewIsShowing: .constant(true)
 	)

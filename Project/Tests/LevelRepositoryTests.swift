@@ -11,31 +11,100 @@ import XCTest
 
 final class LevelRepositoryTests: XCTestCase {
 
-	func test_init_shouldReturnCorrectInstance() {
-		let sut = LevelRepository()
+	func test_getLevels_withValidUrlAndJson_shouldReturnCorrectLevels() {
+		let sut = makeSut()
 
-		XCTAssertEqual(sut.count, 6, "Expected LevelRepository to initialize with 6 levels.")
-	}
-
-	func test_getLevels_shouldReturnCorrectLevels() {
-		let sut = LevelRepository()
 		let levels = sut.getLevels()
 
-		XCTAssertEqual(levels.count, sut.count, "Expected getLevels to return the same number of levels as the repository count.")
-
-		let expectedLevels = [
-			Level(id: 0, cellsMatrix: [[0]]),
-			Level(id: 1, cellsMatrix: [[0, 0], [1, 0]]),
-			Level(id: 2, cellsMatrix: [[0, 0], [1, 1]]),
-			Level(id: 3, cellsMatrix: [[1, 0], [1, 1]]),
-			Level(id: 4, cellsMatrix: [[1, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 1]]),
-			Level(id: 5, cellsMatrix: [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]])
+		let expectedMatrix1 = [[0]]
+		let expectedMatrix2 = [
+			[0, 0],
+			[1, 0]
 		]
 
-		for (index, level) in levels.enumerated() {
-			XCTAssertEqual(level.id, expectedLevels[index].id, "Expected level ID to be \(expectedLevels[index].id) at index \(index).")
-			XCTAssertEqual(level.cellsMatrix, expectedLevels[index].cellsMatrix, "Expected cells matrix to match for level at index \(index).")
-			XCTAssertEqual(level.status, .incompleted, "Expected new levels to be not completed by default.")
-		}
+		XCTAssertEqual(levels.count, 2, "Expected 2 levels, but got \(levels.count)")
+		XCTAssertEqual(levels[0].id, 0, "Expected level 0 ID to be 0, but got \(levels[0].id)")
+		XCTAssertEqual(levels[1].id, 1, "Expected level 1 ID to be 1, but got \(levels[1].id)")
+		XCTAssertEqual(levels[0].cellsMatrix, expectedMatrix1, "Expected level 0 matrix to be \(expectedMatrix1), but got \(levels[0].cellsMatrix)")
+		XCTAssertEqual(levels[1].cellsMatrix, expectedMatrix2, "Expected level 1 matrix to be \(expectedMatrix2), but got \(levels[1].cellsMatrix)")
+		XCTAssertEqual(levels[0].status, .incompleted, "Expected level 0 status to be incompleted, but got \(levels[0].status)")
+		XCTAssertEqual(levels[1].status, .incompleted, "Expected level 1 status to be incompleted, but got \(levels[1].status)")
+	}
+
+	func test_getLevels_withInvalidUrl_shouldReturnDefaultLevels() {
+		let invalidUrl = URL(string: "")
+		let sut = LevelRepository(levelsJsonUrl: invalidUrl)
+
+		let levels = sut.getLevels()
+
+		let expectedMatrix = [[0]]
+
+		XCTAssertEqual(levels.count, 1, "Expected 1 default level, but got \(levels.count)")
+		XCTAssertEqual(levels[0].id, 0, "Expected default level ID to be 0, but got \(levels[0].id)")
+		XCTAssertEqual(levels[0].cellsMatrix, expectedMatrix, "Expected default level matrix to be \(expectedMatrix), but got \(levels[0].cellsMatrix)")
+		XCTAssertEqual(levels[0].status, .incompleted, "Expected default level status to be incompleted, but got \(levels[0].status)")
+	}
+
+	func test_getLevels_withInvalidJson_shouldReturnDefaultLevels() {
+		let invalidJson = """
+		[
+			{
+				"id": 0,
+				"cellsMatrix": "invalid data"
+			}
+		]
+		"""
+
+		let data = invalidJson.data(using: .utf8)!
+		let url = createTemporaryFile(with: data)
+		let sut = LevelRepository(levelsJsonUrl: url)
+
+		let levels = sut.getLevels()
+
+		let expectedMatrix = [[0]]
+
+		XCTAssertEqual(levels.count, 1, "Expected 1 default level, but got \(levels.count)")
+		XCTAssertEqual(levels[0].id, 0, "Expected default level ID to be 0, but got \(levels[0].id)")
+		XCTAssertEqual(levels[0].cellsMatrix, expectedMatrix, "Expected default level matrix to be \(expectedMatrix), but got \(levels[0].cellsMatrix)")
+		XCTAssertEqual(levels[0].status, .incompleted, "Expected default level status to be incompleted, but got \(levels[0].status)")
+	}
+}
+
+private extension LevelRepositoryTests {
+	func makeSut() -> LevelRepository {
+		let json = """
+		[
+			{
+				"id": 0,
+				"cellsMatrix": [
+					[0]
+				],
+				"status": {
+					"type": "incompleted"
+				}
+			},
+			{
+				"id": 1,
+				"cellsMatrix": [
+					[0, 0],
+					[1, 0]
+				],
+				"status": {
+					"type": "incompleted"
+				}
+			}
+		]
+		"""
+
+		let data = json.data(using: .utf8)!
+		let url = createTemporaryFile(with: data)
+
+		return LevelRepository(levelsJsonUrl: url)
+	}
+
+	func createTemporaryFile(with data: Data) -> URL {
+		let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+		FileManager.default.createFile(atPath: url.path, contents: data)
+		return url
 	}
 }

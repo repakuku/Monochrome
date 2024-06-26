@@ -9,21 +9,21 @@
 import SwiftUI
 
 struct FieldView: View {
-	@ObservedObject var gameManager: GameManager
+	@ObservedObject var viewModel: GameViewModel
 	@Binding var showInstructions: Bool
 
 	var body: some View {
 		VStack {
-			ForEach(0..<gameManager.levelSize, id: \.self) { x in
+			ForEach(0..<viewModel.levelSize, id: \.self) { x in
 				HStack {
-					ForEach(0..<gameManager.levelSize, id: \.self) { y in
+					ForEach(0..<viewModel.levelSize, id: \.self) { y in
 						Button {
 							withAnimation {
-								gameManager.toggleColors(atX: x, atY: y)
+								viewModel.cellTapped(atX: x, atY: y)
 								showInstructions = false
 							}
 						} label: {
-							if gameManager.level.cellsMatrix[x][y] == 0 {
+							if viewModel.cells[x][y] == 0 {
 								RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 									.stroke(lineWidth: Sizes.Stroke.width)
 									.frame(
@@ -33,7 +33,7 @@ struct FieldView: View {
 									.foregroundStyle(
 										Color(Theme.accentCellColor)
 									)
-							} else if gameManager.level.cellsMatrix[x][y] == 1 {
+							} else if viewModel.cells[x][y] == 1 {
 								RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 									.frame(
 										width: Sizes.General.roundedViewLength,
@@ -43,7 +43,7 @@ struct FieldView: View {
 										Color(Theme.accentCellColor)
 									)
 									.transition(.scale)
-							} else if gameManager.level.cellsMatrix[x][y] == 2 {
+							} else if viewModel.cells[x][y] == 2 {
 								RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 									.stroke(lineWidth: Sizes.Stroke.width)
 									.frame(
@@ -74,9 +74,18 @@ struct FieldView: View {
 
 #Preview {
 	FieldView(
-		gameManager: GameManager(
-			levelRepository: LevelRepository(),
-			levelService: LevelService()
+		viewModel: GameViewModel(
+			gameManager: GameManager(
+				gameRepository: GameRepository(
+					levelRepository: LevelRepository(
+						levelsJsonUrl: Endpoints.levelsJsonUrl
+					)
+				),
+				levelRepository: LevelRepository(
+					levelsJsonUrl: Endpoints.levelsJsonUrl
+				),
+				levelService: LevelService()
+			)
 		),
 		showInstructions: .constant(true)
 	)

@@ -10,6 +10,7 @@ import SwiftUI
 
 struct GuideView: View {
 	@Binding var viewisShowing: Bool
+
 	var body: some View {
 		ZStack {
 			Color(Theme.backgroundColor)

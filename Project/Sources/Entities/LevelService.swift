@@ -16,6 +16,7 @@ protocol ILevelService {
 }
 
 final class LevelService: ILevelService {
+
 	func toggleColors(level: inout Level, atX x: Int, atY y: Int) {
 		clearHint(level: &level)
 
@@ -99,5 +100,28 @@ final class LevelService: ILevelService {
 		}
 
 		return answerMatrix
+	}
+}
+
+final class MockLevelService: ILevelService {
+	var toggleColorsCalled = false
+	var checkMatrixResult = false
+	var getHintCalled = false
+	var countTargetTapsResult = 0
+
+	func toggleColors(level: inout Level, atX: Int, atY: Int) {
+		toggleColorsCalled = true
+	}
+
+	func checkMatrix(level: Level) -> Bool {
+		checkMatrixResult
+	}
+
+	func getHint(level: inout Level) {
+		getHintCalled = true
+	}
+
+	func countTargetTaps(for level: Level) -> Int {
+		countTargetTapsResult
 	}
 }

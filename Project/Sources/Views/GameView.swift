@@ -9,10 +9,21 @@
 import SwiftUI
 
 struct GameView: View {
-	@StateObject private var gameManager = GameManager(
-		levelRepository: LevelRepository(),
-		levelService: LevelService()
+	@StateObject private var viewModel = GameViewModel(
+		gameManager:
+			GameManager(
+				gameRepository: GameRepository(
+					levelRepository: LevelRepository(
+						levelsJsonUrl: Endpoints.levelsJsonUrl
+					)
+				),
+				levelRepository: LevelRepository(
+					levelsJsonUrl: Endpoints.levelsJsonUrl
+				),
+				levelService: LevelService()
+			)
 	)
+
 	@State private var showMenu = false
 	@State private var showInstructions = true
 	@State private var showResult = false
@@ -23,23 +34,31 @@ struct GameView: View {
 				InstructionView()
 			}
 
-			if gameManager.levelId > 0 {
-				BackgroundView(gameManager: gameManager, showMenu: $showMenu)
-					.blur(radius: gameManager.isLevelCompleted ? Sizes.Blur.max : Sizes.Blur.min)
-					.disabled(gameManager.isLevelCompleted)
+			if !viewModel.isTutorialLevel {
+				BackgroundView(
+					viewModel: viewModel,
+					showMenu: $showMenu
+				)
+					.blur(radius: viewModel.isLevelCompleted ? Sizes.Blur.max : Sizes.Blur.min)
+					.disabled(viewModel.isLevelCompleted)
 			}
 
 			if showResult {
-				ResultView(gameManager: gameManager)
+				ResultView(
+					viewModel: viewModel
+				)
 					.transition(.scale)
 			} else {
-				FieldView(gameManager: gameManager, showInstructions: $showInstructions)
+				FieldView(
+					viewModel: viewModel,
+					showInstructions: $showInstructions
+				)
 					.transition(.scale)
 					.zIndex(1)
-					.disabled(gameManager.isLevelCompleted)
+					.disabled(viewModel.isLevelCompleted)
 			}
 		}
-		.onChange(of: gameManager.isLevelCompleted) { isCompleted in
+		.onChange(of: viewModel.isLevelCompleted) { isCompleted in
 			if isCompleted {
 				DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
 					withAnimation {
