@@ -16,7 +16,7 @@ final class GameViewModel: ObservableObject {
 	@Published var isLevelCompleted: Bool
 
 	var numberOfLevels: Int {
-		gameManager.game.levels.count
+		gameManager.numberOfLevels
 	}
 
 	var levelSize: Int {
@@ -28,22 +28,22 @@ final class GameViewModel: ObservableObject {
 	init(gameManager: IGameManager) {
 		self.gameManager = gameManager
 
-		isTutorialLevel = gameManager.game.level.id == 0
-		levelId = gameManager.game.level.id
-		cells = gameManager.game.level.cellsMatrix
-		taps = gameManager.game.taps
+		isTutorialLevel = gameManager.currentLevelId == 0
+		levelId = gameManager.currentLevelId
+		cells = gameManager.currentLevelCells
+		taps = gameManager.currentTaps
 		isLevelCompleted = false
 	}
 
 	func cellTapped(atX x: Int, atY y: Int) {
-		guard x >= 0 && x < gameManager.game.level.levelSize && y >= 0 && y < gameManager.game.level.levelSize else {
+		guard x >= 0 && x < gameManager.currentLevelSize && y >= 0 && y < gameManager.currentLevelSize else {
 			return
 		}
 
 		gameManager.toggleColors(atX: x, atY: y)
 		updateLevel()
 
-		switch gameManager.game.level.status {
+		switch gameManager.currentlevelStatus {
 		case .completed:
 			isLevelCompleted = true
 		case .incompleted:
@@ -54,7 +54,7 @@ final class GameViewModel: ObservableObject {
 	func nextLevel() {
 		gameManager.nextLevel()
 		updateLevel()
-		isTutorialLevel = gameManager.game.level.id == 0
+		isTutorialLevel = gameManager.currentLevelId == 0
 		isLevelCompleted = false
 	}
 
@@ -103,8 +103,8 @@ final class GameViewModel: ObservableObject {
 	}
 
 	private func updateLevel() {
-		levelId = gameManager.game.level.id
-		cells = gameManager.game.level.cellsMatrix
-		taps = gameManager.game.taps
+		levelId = gameManager.currentLevelId
+		cells = gameManager.currentLevelCells
+		taps = gameManager.currentTaps
 	}
 }

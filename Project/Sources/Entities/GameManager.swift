@@ -9,7 +9,13 @@
 import Foundation
 
 protocol IGameManager {
-	var game: Game { get }
+
+	var numberOfLevels: Int { get }
+	var currentLevelId: Int { get }
+	var currentLevelCells: [[Int]] { get }
+	var currentTaps: Int { get }
+	var currentLevelSize: Int { get }
+	var currentlevelStatus: LevelStatus { get }
 
 	func toggleColors(atX x: Int, atY y: Int)
 	func nextLevel()
@@ -22,12 +28,37 @@ protocol IGameManager {
 }
 
 final class GameManager: IGameManager {
+
+	var numberOfLevels: Int {
+		game.levels.count
+	}
+
+	var currentLevelId: Int {
+		game.level.id
+	}
+
+	var currentLevelCells: [[Int]] {
+		game.level.cellsMatrix
+	}
+
+	var currentTaps: Int {
+		game.taps
+	}
+
+	var currentLevelSize: Int {
+		game.level.levelSize
+	}
+
+	var currentlevelStatus: LevelStatus {
+		game.level.status
+	}
+
 	private let gameRepository: IGameRepository
 	private let levelRepository: ILevelRepository
 	private let levelService: ILevelService
 	private let originLevels: [Level]
 
-	var game: Game
+	private var game: Game
 
 	init(
 		gameRepository: IGameRepository,
@@ -147,6 +178,30 @@ final class GameManager: IGameManager {
 }
 
 final class MockGameManager: IGameManager {
+
+	var numberOfLevels: Int {
+		game.levels.count
+	}
+
+	var currentLevelId: Int {
+		game.level.id
+	}
+
+	var currentLevelCells: [[Int]] {
+		game.level.cellsMatrix
+	}
+
+	var currentTaps: Int {
+		game.taps
+	}
+
+	var currentLevelSize: Int {
+		game.level.levelSize
+	}
+
+	var currentlevelStatus: LevelStatus {
+		game.level.status
+	}
 
 	var game = Game(
 		level: Level(id: 0, cellsMatrix: [[0]]),
