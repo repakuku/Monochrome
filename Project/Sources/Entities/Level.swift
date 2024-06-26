@@ -54,7 +54,7 @@ enum LevelStatus: Equatable, Codable {
 	}
 }
 
-struct Level: Codable {
+struct Level: Codable, Equatable {
 	let id: Int
 	var cellsMatrix: [[Int]]
 	var status: LevelStatus
@@ -76,5 +76,15 @@ struct Level: Codable {
 		}
 
 		self.status = .incompleted
+	}
+
+	static func == (lhs: Level, rhs: Level) -> Bool {
+		if lhs.id == rhs.id
+			&& lhs.cellsMatrix == rhs.cellsMatrix
+			&& lhs.status == rhs.status {
+			return true
+		} else {
+			return false
+		}
 	}
 }

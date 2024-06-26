@@ -76,6 +76,11 @@ struct FieldView: View {
 	FieldView(
 		viewModel: GameViewModel(
 			gameManager: GameManager(
+				gameRepository: GameRepository(
+					levelRepository: LevelRepository(
+						levelsJsonUrl: Endpoints.levelsJsonUrl
+					)
+				),
 				levelRepository: LevelRepository(
 					levelsJsonUrl: Endpoints.levelsJsonUrl
 				),

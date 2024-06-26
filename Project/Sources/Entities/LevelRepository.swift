@@ -88,6 +88,6 @@ final class StubLevelRepository: ILevelRepository {
 	]
 
 	func getLevels() -> [Level] {
-		return levels
+		levels
 	}
 }

@@ -104,7 +104,7 @@ private extension LevelRepositoryTests {
 
 	func createTemporaryFile(with data: Data) -> URL {
 		let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-		FileManager.default.createFile(atPath: url.path, contents: data, attributes: nil)
+		FileManager.default.createFile(atPath: url.path, contents: data)
 		return url
 	}
 }

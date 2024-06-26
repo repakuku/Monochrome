@@ -108,8 +108,10 @@ final class LevelTests: XCTestCase {
 			expectedStatus: .incompleted
 		)
 	}
+}
 
-	private func assertLevelProperties(
+private extension LevelTests {
+	func assertLevelProperties(
 		_ level: Level,
 		expectedId: Int,
 		expectedMatrix: [[Int]],

@@ -121,7 +121,14 @@ struct StarsView: View {
 	LevelsView(
 		viewModel: GameViewModel(
 			gameManager: GameManager(
-				levelRepository: LevelRepository(levelsJsonUrl: Endpoints.levelsJsonUrl),
+				gameRepository: GameRepository(
+					levelRepository: LevelRepository(
+						levelsJsonUrl: Endpoints.levelsJsonUrl
+					)
+				),
+				levelRepository: LevelRepository(
+					levelsJsonUrl: Endpoints.levelsJsonUrl
+				),
 				levelService: LevelService()
 			)
 		),
