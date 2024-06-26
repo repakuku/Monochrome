@@ -9,7 +9,7 @@
 import Foundation
 
 protocol IGameRepository {
-	func saveGame(_ game: Game, to gameUrl: URL?)
+	func saveGame(_ game: Game, to gameUrl: URL?) -> Bool
 	func getSavedGame(from savedGameUrl: URL?) -> Game
 }
 
@@ -21,9 +21,9 @@ final class GameRepository: IGameRepository {
 		self.levelRepository = levelRepository
 	}
 
-	func saveGame(_ game: Game, to gameUrl: URL?) {
+	func saveGame(_ game: Game, to gameUrl: URL?) -> Bool {
 		guard let gameUrl = gameUrl else {
-			return
+			return false
 		}
 
 		let encoder = JSONEncoder()
@@ -32,7 +32,9 @@ final class GameRepository: IGameRepository {
 		do {
 			let gameData = try encoder.encode(game)
 			try gameData.write(to: gameUrl, options: .atomic)
+			return true
 		} catch {
+			return false
 		}
 	}
 
@@ -123,8 +125,9 @@ final class StubGameRepository: IGameRepository {
 		]
 	)
 
-	func saveGame(_ game: Game, to gameUrl: URL?) {
+	func saveGame(_ game: Game, to gameUrl: URL?) -> Bool {
 		saveGameResult = true
+		return saveGameResult
 	}
 
 	func getSavedGame(from savedGameUrl: URL?) -> Game {

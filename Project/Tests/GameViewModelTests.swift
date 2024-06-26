@@ -46,6 +46,30 @@ final class GameViewModelTests: XCTestCase {
 		XCTAssertTrue(mockGameManager.toggleColorsCalled, "Expected toggleColors to be called, but it wasn't.")
 	}
 
+	func test_cellTapped_forCompletedLevel_isLeveleCompletedShouldBecomeTrue() {
+
+		mockGameManager.game.level.status = .completed(1)
+
+		sut.cellTapped(atX: 0, atY: 0)
+
+		XCTAssertTrue(sut.isLevelCompleted, "Expected isLevelCompleted to be true after completing the level, but it was false.")
+	}
+
+	func test_cellTapped_forIncompleteLevel_isLevelCompletedShouldRemainFalse() {
+		mockGameManager.game.level.status = .incompleted
+
+		sut.cellTapped(atX: 0, atY: 0)
+
+		XCTAssertFalse(sut.isLevelCompleted, "Expected isLevelCompleted to be false for an incomplete level, but it was true.")
+	}
+
+	func test_cellTapped_withInvalidCoordinates_shouldNotCalltoggleColors() {
+
+		sut.cellTapped(atX: -1, atY: 0)
+
+		XCTAssertFalse(mockGameManager.toggleColorsCalled, "Expected toggleColors not to be called for invalid coordinates, but it was.")
+	}
+
 	// MARK: - Next Level
 
 	func test_nextLevel_shouldCallNextLevel() {
@@ -79,9 +103,19 @@ final class GameViewModelTests: XCTestCase {
 
 	func test_selectLevel_shouldCallSelectLevel() {
 
-		sut.selectLevel(id: 1)
+		sut.selectLevel(id: 0)
 
 		XCTAssertTrue(mockGameManager.selectLevelCalled, "Expected selectLevel to be called, but it wasn't.")
+	}
+
+	func test_selectLevel_withInvalidId_shouldNotCallSelectLevel() {
+		sut.selectLevel(id: -1)
+
+		XCTAssertFalse(mockGameManager.selectLevelCalled, "Expected selectLevel to not be called for invalid ID, but it was.")
+
+		sut.selectLevel(id: Int.max)
+
+		XCTAssertFalse(mockGameManager.selectLevelCalled, "Expected selectLevel to not be called for invalid ID, but it was.")
 	}
 
 	// MARK: - Get Taps For Level
@@ -96,6 +130,17 @@ final class GameViewModelTests: XCTestCase {
 		XCTAssertEqual(taps, expectedTaps, "Expected taps to be \(expectedTaps), but got \(taps).")
 	}
 
+	func test_getTapsForLevel_withInvalidId_shouldReturnZero() {
+
+		var taps = sut.getTapsForLevel(id: -1)
+
+		XCTAssertEqual(taps, 0, "Expected taps to be 0 for invalid ID, but got \(taps).")
+
+		taps = sut.getTapsForLevel(id: Int.max)
+
+		XCTAssertEqual(taps, 0, "Expected taps to be 0 for invalid ID, but got \(taps).")
+	}
+
 	// MARK: - Get Status For Level
 
 	func test_getStatusForLevel_shouldReturnCorrectStatus() {
@@ -105,6 +150,17 @@ final class GameViewModelTests: XCTestCase {
 		let status = sut.getStatusForLevel(id: 0)
 
 		XCTAssertTrue(status, "Expected status to be true, but it was false.")
+	}
+
+	func test_getStatusForLevel_withInvalidId_shouldReturnFalse() {
+
+		var status = sut.getStatusForLevel(id: -1)
+
+		XCTAssertFalse(status, "Expected status to be false for invalid ID, but it was true.")
+
+		status = sut.getStatusForLevel(id: Int.max)
+
+		XCTAssertFalse(status, "Expected status to be false for invalid ID, but it was true.")
 	}
 
 	// MARK: - Get Stars For Level
@@ -117,6 +173,17 @@ final class GameViewModelTests: XCTestCase {
 		let expectedStars = 3
 
 		XCTAssertEqual(stars, expectedStars, "Expected stars to be \(expectedStars), but got \(stars).")
+	}
+
+	func test_getStarsForLevel_withInvalidId_shouldReturnZeroStars() {
+
+		var stars = sut.getStarsForLevel(id: -1)
+
+		XCTAssertEqual(stars, 0, "Expected stars to be 0 for invalid ID, but got \(stars).")
+
+		stars = sut.getStarsForLevel(id: Int.max)
+
+		XCTAssertEqual(stars, 0, "Expected stars to be 0 for invalid ID, but got \(stars).")
 	}
 
 }

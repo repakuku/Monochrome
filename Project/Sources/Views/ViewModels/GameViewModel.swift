@@ -36,12 +36,15 @@ final class GameViewModel: ObservableObject {
 	}
 
 	func cellTapped(atX x: Int, atY y: Int) {
+		guard x >= 0 && x < gameManager.game.level.levelSize && y >= 0 && y < gameManager.game.level.levelSize else {
+			return
+		}
+
 		gameManager.toggleColors(atX: x, atY: y)
 		updateLevel()
 
 		switch gameManager.game.level.status {
 		case .completed:
-			// TODO: tests
 			isLevelCompleted = true
 		case .incompleted:
 			isLevelCompleted = false
@@ -67,20 +70,36 @@ final class GameViewModel: ObservableObject {
 	}
 
 	func selectLevel(id: Int) {
+		guard id >= 0 && id < numberOfLevels else {
+			return
+		}
+
 		gameManager.selectLevel(id: id)
 		updateLevel()
 	}
 
 	func getTapsForLevel(id: Int) -> Int {
-		gameManager.getTapsForLevel(id: id)
+		guard id >= 0 && id < numberOfLevels else {
+			return .zero
+		}
+
+		return gameManager.getTapsForLevel(id: id)
 	}
 
 	func getStatusForLevel(id: Int) -> Bool {
-		gameManager.getStatusForLevel(id: id)
+		guard id >= 0 && id < numberOfLevels else {
+			return false
+		}
+
+		return gameManager.getStatusForLevel(id: id)
 	}
 
 	func getStarsForLevel(id: Int, forCurrentGame: Bool = false) -> Int {
-		gameManager.getStarsForLevel(id: id, forCurrentGame: false)
+		guard id >= 0 && id < numberOfLevels else {
+			return .zero
+		}
+
+		return gameManager.getStarsForLevel(id: id, forCurrentGame: false)
 	}
 
 	private func updateLevel() {

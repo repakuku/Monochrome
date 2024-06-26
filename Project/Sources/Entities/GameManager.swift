@@ -22,13 +22,12 @@ protocol IGameManager {
 }
 
 final class GameManager: IGameManager {
-
-	var game: Game
-
 	private let gameRepository: IGameRepository
 	private let levelRepository: ILevelRepository
 	private let levelService: ILevelService
 	private let originLevels: [Level]
+
+	var game: Game
 
 	init(
 		gameRepository: IGameRepository,
@@ -107,14 +106,14 @@ final class GameManager: IGameManager {
 	}
 
 	func getStarsForLevel(id: Int, forCurrentGame: Bool = false) -> Int {
+		guard id >= 0 && id < game.levels.count else {
+			return .zero
+		}
+
 		let perfectScoreStars = 3
 		let goodScoreStars = 2
 		let basicScoreStars = 1
 		let zeroScoreStars = 0
-
-		guard id >= 0 && id < game.levels.count else {
-			return zeroScoreStars
-		}
 
 		let targetTaps = levelService.countTargetTaps(for: game.levels[id])
 		let actualTaps: Int

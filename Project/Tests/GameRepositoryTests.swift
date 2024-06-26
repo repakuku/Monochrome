@@ -28,17 +28,27 @@ final class GameRepositoryTests: XCTestCase {
 		super.tearDown()
 	}
 
+	// MARK: - Get Saved Game
+
 	func test_getSavedGame_forTheFirstRun_shouldReturnNewGame() {
 		let game = sut.getSavedGame(from: Endpoints.gameUrl)
 
-		assert(game: game)
+		assertNewGame(game: game)
 	}
 
-	func test_getSavedGame_withWrongUrl_shouldReturnNewGame() {
-		let wrongUrl = URL(string: "")
-		let game = sut.getSavedGame(from: wrongUrl)
+	func test_getSavedGame_withInvalidUrl_shouldReturnNewGame() {
+		let invalidUrl = URL(string: "")
+		let game = sut.getSavedGame(from: invalidUrl)
 
-		assert(game: game)
+		assertNewGame(game: game)
+	}
+
+	func test_getSavedGame_withInvalidJson_shouldReturnNewGame() {
+		let invalidJson = "invalid json".data(using: .utf8)!
+		let invalidJsonUrl = createTemporaryFile(with: invalidJson)
+		let game = sut.getSavedGame(from: invalidJsonUrl)
+
+		assertNewGame(game: game)
 	}
 
 	func test_getSavedGame_shouldReturnSavedGame() {
@@ -52,12 +62,42 @@ final class GameRepositoryTests: XCTestCase {
 
 		let game = sut.getSavedGame(from: savedgameUrl)
 
-		XCTAssertEqual(game, savedGame)
+		XCTAssertEqual(game, savedGame, "Expected saved game to be \(savedGame), but got \(game).")
+	}
+
+	// MARK: - Save Game
+
+	func test_saveGame_shouldSavegameAndReturnTrue() {
+		let game = Game(
+			level: Level(id: 1, cellsMatrix: [[0, 1], [1, 0]]),
+			taps: 1,
+			levels: [Level(id: 1, cellsMatrix: [[0, 1], [1, 0]])]
+		)
+
+		let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+
+		let result = sut.saveGame(game, to: tempUrl)
+
+		XCTAssertTrue(result, "Expected saveGame to return true.")
+		XCTAssertTrue(FileManager.default.fileExists(atPath: tempUrl.path), "Expected file to exist at path \(tempUrl.path).")
+	}
+
+	func test_saveGame_withInvalidUrl_shouldReturnFalse() {
+		let game = Game(
+			level: Level(id: 1, cellsMatrix: [[0, 1], [1, 0]]),
+			taps: 1,
+			levels: [Level(id: 1, cellsMatrix: [[0, 1], [1, 0]])]
+		)
+
+		let invalidUrl = URL(string: "")
+		let result = sut.saveGame(game, to: invalidUrl)
+
+		XCTAssertFalse(result, "Expected saveGame to return false for invalid URL.")
 	}
 }
 
 private extension GameRepositoryTests {
-	func assert(
+	func assertNewGame(
 		game: Game,
 		file: StaticString = #file,
 		line: UInt = #line
@@ -66,55 +106,16 @@ private extension GameRepositoryTests {
 			level: Level(id: 0, cellsMatrix: [[0]]),
 			taps: 0,
 			levels: [
-				Level(
-					id: 0,
-					cellsMatrix: [
-						[0]
-					]
-				),
-				Level(
-					id: 1,
-					cellsMatrix: [
-						[0, 0],
-						[1, 0]
-					]
-				),
-				Level(
-					id: 2,
-					cellsMatrix: [
-						[0, 0],
-						[1, 1]
-					]
-				),
-				Level(
-					id: 3,
-					cellsMatrix: [
-						[1, 0],
-						[1, 1]
-					]
-				),
-				Level(
-					id: 4,
-					cellsMatrix: [
-						[1, 0, 0, 0],
-						[0, 1, 1, 0],
-						[0, 1, 1, 0],
-						[0, 0, 0, 1]
-					]
-				),
-				Level(
-					id: 5,
-					cellsMatrix: [
-						[1, 1, 1, 1],
-						[1, 0, 0, 1],
-						[1, 0, 0, 1],
-						[1, 1, 1, 1]
-					]
-				)
+				Level(id: 0, cellsMatrix: [[0]]),
+				Level(id: 1, cellsMatrix: [[0, 0], [1, 0]]),
+				Level(id: 2, cellsMatrix: [[0, 0], [1, 1]]),
+				Level(id: 3, cellsMatrix: [[1, 0], [1, 1]]),
+				Level(id: 4, cellsMatrix: [[1, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 1]]),
+				Level(id: 5, cellsMatrix: [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]])
 			]
 		)
 
-		XCTAssertEqual(game.level, expectedGame.level, file: file, line: line)
+		XCTAssertEqual(game.level, expectedGame.level, "Expected game to be \(expectedGame), but got \(game).", file: file, line: line)
 	}
 
 	func createTemporaryFile(with data: Data) -> URL {
