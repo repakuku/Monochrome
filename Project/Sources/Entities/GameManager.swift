@@ -25,6 +25,8 @@ protocol IGameManager {
 	func getTapsForLevel(id: Int) -> Int
 	func getStatusForLevel(id: Int) -> Bool
 	func getStarsForLevel(id: Int, forCurrentGame: Bool) -> Int
+
+	func resetProgress()
 }
 
 final class GameManager: IGameManager {
@@ -72,7 +74,7 @@ final class GameManager: IGameManager {
 		self.levelService = levelService
 
 		originLevels = levelRepository.getLevels()
-		game = gameRepository.getSavedGame(from: Endpoints.gameUrl)
+		game = gameRepository.getGame(from: Endpoints.gameUrl)
 		gameUrl = Endpoints.gameUrl
 	}
 
@@ -177,6 +179,11 @@ final class GameManager: IGameManager {
 		}
 	}
 
+	func resetProgress() {
+		gameRepository.deleteSavedGame(from: gameUrl)
+		game = gameRepository.getGame(from: gameUrl)
+	}
+
 	private func completeLevel() {
 		game.level.status = .completed(game.taps)
 
@@ -230,6 +237,8 @@ final class MockGameManager: IGameManager {
 	var getStatusForLevelResult = false
 	var getStarsForLevelResult = 0
 
+	var resetProgressCalled = false
+
 	func toggleColors(atX x: Int, atY y: Int) {
 		toggleColorsCalled = true
 	}
@@ -260,5 +269,10 @@ final class MockGameManager: IGameManager {
 
 	func getStarsForLevel(id: Int, forCurrentGame: Bool) -> Int {
 		getStarsForLevelResult
+	}
+
+	// TODO: Test
+	func resetProgress() {
+		resetProgressCalled = true
 	}
 }

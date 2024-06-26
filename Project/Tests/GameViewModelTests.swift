@@ -186,4 +186,19 @@ final class GameViewModelTests: XCTestCase {
 		XCTAssertEqual(stars, 0, "Expected stars to be 0 for invalid ID, but got \(stars).")
 	}
 
+	// MARK: - Erase Button Tapped
+
+	func test_eraserButtonTapped_shouldCallResetProgressAndupdateGameState() {
+		
+		sut.eraserButtonTapped()
+
+		XCTAssertTrue(mockGameManager.resetProgressCalled, "Expected resetProgress to be called, but it wasn't.")
+		XCTAssertEqual(sut.levelId, 0, "Expected initial level ID to be 0, but got \(sut.levelId).")
+		XCTAssertEqual(sut.taps, 0, "Expected initial taps to be 0, but got \(sut.taps).")
+		XCTAssertFalse(sut.isLevelCompleted, "Expected initial isLevelCompleted to be false, but it was true.")
+		XCTAssertEqual(sut.isTutorialLevel, true, "Expected initial isTutorialLevel to be true, but got \(sut.isTutorialLevel).")
+		XCTAssertEqual(sut.cells, [[0]], "Expected initial cells matrix to match the first level's cells matrix, but got \(sut.cells).")
+		XCTAssertEqual(sut.numberOfLevels, 1, "Expected number of levels to be 1, but got \(sut.numberOfLevels).")
+	}
+
 }

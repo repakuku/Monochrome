@@ -34,14 +34,14 @@ final class GameRepositoryTests: XCTestCase {
 
 		let emptyData = Data()
 		let url = createTemporaryFile(with: emptyData)
-		let game = sut.getSavedGame(from: url)
+		let game = sut.getGame(from: url)
 
 		assertNewGame(game: game)
 	}
 
 	func test_getSavedGame_withInvalidUrl_shouldReturnNewGame() {
 		let invalidUrl = URL(string: "")
-		let game = sut.getSavedGame(from: invalidUrl)
+		let game = sut.getGame(from: invalidUrl)
 
 		assertNewGame(game: game)
 	}
@@ -49,7 +49,7 @@ final class GameRepositoryTests: XCTestCase {
 	func test_getSavedGame_withInvalidJson_shouldReturnNewGame() {
 		let invalidJson = "invalid json".data(using: .utf8)!
 		let invalidJsonUrl = createTemporaryFile(with: invalidJson)
-		let game = sut.getSavedGame(from: invalidJsonUrl)
+		let game = sut.getGame(from: invalidJsonUrl)
 
 		assertNewGame(game: game)
 	}
@@ -63,7 +63,7 @@ final class GameRepositoryTests: XCTestCase {
 		let savedGameData = try! JSONEncoder().encode(savedGame)
 		let savedgameUrl = createTemporaryFile(with: savedGameData)
 
-		let game = sut.getSavedGame(from: savedgameUrl)
+		let game = sut.getGame(from: savedgameUrl)
 
 		XCTAssertEqual(game, savedGame, "Expected saved game to be \(savedGame), but got \(game).")
 	}
@@ -96,6 +96,33 @@ final class GameRepositoryTests: XCTestCase {
 		sut.saveGame(game, to: invalidUrl)
 
 		XCTAssertFalse(FileManager.default.fileExists(atPath: invalidUrl?.path ?? ""), "Expected file to exist at path \(invalidUrl?.path ?? "").")
+	}
+
+	// MARK: - Delete Saved Game
+
+	func test_deleteSavedGame_shouldDeleteGame() {
+		let game = Game(
+			level: Level(id: 1, cellsMatrix: [[0, 1], [1, 0]]),
+			taps: 1,
+			levels: [Level(id: 1, cellsMatrix: [[0, 1], [1, 0]])]
+		)
+
+		let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+
+		sut.saveGame(game, to: tempUrl)
+
+		XCTAssertTrue(FileManager.default.fileExists(atPath: tempUrl.path), "Expected file to exist at path \(tempUrl.path).")
+
+		sut.deleteSavedGame(from: tempUrl)
+
+		XCTAssertFalse(FileManager.default.fileExists(atPath: tempUrl.path), "Expected file to exist at path \(tempUrl.path).")
+	}
+
+	func test_deleteSavedGame_withInvalidUrl_shouldNotThrowError() {
+		let invalidUrl = URL(string: "invalid_url")
+		sut.deleteSavedGame(from: invalidUrl)
+
+		// Handle case
 	}
 }
 

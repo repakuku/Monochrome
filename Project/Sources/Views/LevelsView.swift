@@ -17,7 +17,10 @@ struct LevelsView: View {
 			Color(Theme.backgroundColor)
 				.ignoresSafeArea()
 			VStack(spacing: Sizes.Spacing.normal) {
-				HeaderView(viewIsShowing: $levelsViewIsShowing)
+				HeaderView(
+					viewModel: viewModel,
+					viewIsShowing: $levelsViewIsShowing
+				)
 				LabelView()
 				ScrollView {
 					VStack(spacing: Sizes.Spacing.normal) {
@@ -70,11 +73,17 @@ struct RowView: View {
 }
 
 struct HeaderView: View {
+	@ObservedObject var viewModel: GameViewModel
 	@Binding var viewIsShowing: Bool
 
 	var body: some View {
 		ZStack {
 			HStack {
+				Button {
+					viewModel.eraserButtonTapped()
+				} label: {
+					RoundedImageView(systemName: Images.eraser.rawValue, isFilled: false)
+				}
 				Spacer()
 				Button {
 					viewIsShowing = false

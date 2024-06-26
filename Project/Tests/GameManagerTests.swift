@@ -411,6 +411,37 @@ final class GameManagerTests: XCTestCase {
 
 		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for an invalid level ID, but got \(stars).")
 	}
+
+	// MARK: - Reset Progress
+
+	func test_resetProgress_shouldCallDeleteSavedGameAndResetProgress() {
+
+		sut.resetProgress()
+
+		XCTAssertTrue(stubGameRepository.deleteSavedGameCalled, "Expected deleteSavedGame to be called, but it wasn't.")
+
+		let expectedLevels = [
+			Level(id: 0, cellsMatrix: [[0]]),
+			Level(id: 1, cellsMatrix: [[0, 0], [1, 0]]),
+			Level(id: 2, cellsMatrix: [[0, 0], [1, 1]]),
+			Level(id: 3, cellsMatrix: [[1, 0], [1, 1]]),
+			Level(id: 4, cellsMatrix: [[1, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 1]]),
+			Level(id: 5, cellsMatrix: [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]])
+		]
+
+		let expectedGame = Game(
+			level: expectedLevels[0],
+			taps: expectedLevels[0].id,
+			levels: expectedLevels
+		)
+
+		XCTAssertEqual(sut.numberOfLevels, expectedGame.levels.count, "Expected number of levels to be \(expectedGame.levels.count), but got \(sut.numberOfLevels).")
+		XCTAssertEqual(sut.currentLevelId, expectedGame.level.id, "Expected current level ID to be \(expectedGame.level.id), but got \(sut.currentLevelId).")
+		XCTAssertEqual(sut.currentLevelCells, expectedGame.level.cellsMatrix, "Expected current level cells to be \(expectedGame.level.cellsMatrix), but got \(sut.currentLevelCells).")
+		XCTAssertEqual(sut.currentTaps, expectedGame.taps, "Expected current taps to be \(expectedGame.taps), but got \(sut.currentTaps).")
+		XCTAssertEqual(sut.currentLevelSize, expectedGame.level.levelSize, "Expected current level size to be \(expectedGame.level.levelSize), but got \(sut.currentLevelSize).")
+		XCTAssertEqual(sut.currentlevelStatus, expectedGame.level.status, "Expected current level status to be \(expectedGame.level.status), but got \(sut.currentlevelStatus).")
+	}
 }
 
 private extension GameManagerTests {

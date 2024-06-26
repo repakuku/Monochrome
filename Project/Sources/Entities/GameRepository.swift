@@ -10,7 +10,8 @@ import Foundation
 
 protocol IGameRepository {
 	func saveGame(_ game: Game, to gameUrl: URL?)
-	func getSavedGame(from savedGameUrl: URL?) -> Game
+	func getGame(from savedGameUrl: URL?) -> Game
+	func deleteSavedGame(from savedGameUrl: URL?)
 }
 
 final class GameRepository: IGameRepository {
@@ -36,7 +37,7 @@ final class GameRepository: IGameRepository {
 		}
 	}
 
-	func getSavedGame(from savedGameUrl: URL?) -> Game {
+	func getGame(from savedGameUrl: URL?) -> Game {
 		guard let savedGameUrl = savedGameUrl else {
 			return getNewGame()
 		}
@@ -57,6 +58,18 @@ final class GameRepository: IGameRepository {
 		}
 	}
 
+	func deleteSavedGame(from savedGameUrl: URL?) {
+		guard let savedGameUrl = savedGameUrl else {
+			return
+		}
+
+		do {
+			try FileManager.default.removeItem(at: savedGameUrl)
+		} catch {
+			// TODO: Handle error
+		}
+	}
+
 	private func getNewGame() -> Game {
 		let newLevels = levelRepository.getLevels()
 		let firstLevel = newLevels[0]
@@ -69,7 +82,9 @@ final class GameRepository: IGameRepository {
 }
 
 final class StubGameRepository: IGameRepository {
+
 	var saveGameCalled = false
+	var deleteSavedGameCalled = false
 
 	var game = Game(
 		level: Level(id: 0, cellsMatrix: [[0]]),
@@ -88,7 +103,12 @@ final class StubGameRepository: IGameRepository {
 		saveGameCalled = true
 	}
 
-	func getSavedGame(from savedGameUrl: URL?) -> Game {
+	func getGame(from savedGameUrl: URL?) -> Game {
 		game
+	}
+
+	// TODO: Test
+	func deleteSavedGame(from savedGameUrl: URL?) {
+		deleteSavedGameCalled = true
 	}
 }
