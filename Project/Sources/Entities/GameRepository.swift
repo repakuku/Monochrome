@@ -9,7 +9,7 @@
 import Foundation
 
 protocol IGameRepository {
-	func saveGame(_ game: Game, to gameUrl: URL?) -> Bool
+	func saveGame(_ game: Game, to gameUrl: URL?)
 	func getSavedGame(from savedGameUrl: URL?) -> Game
 }
 
@@ -21,9 +21,9 @@ final class GameRepository: IGameRepository {
 		self.levelRepository = levelRepository
 	}
 
-	func saveGame(_ game: Game, to gameUrl: URL?) -> Bool {
+	func saveGame(_ game: Game, to gameUrl: URL?) {
 		guard let gameUrl = gameUrl else {
-			return false
+			return
 		}
 
 		let encoder = JSONEncoder()
@@ -32,9 +32,7 @@ final class GameRepository: IGameRepository {
 		do {
 			let gameData = try encoder.encode(game)
 			try gameData.write(to: gameUrl, options: .atomic)
-			return true
 		} catch {
-			return false
 		}
 	}
 
@@ -71,63 +69,23 @@ final class GameRepository: IGameRepository {
 }
 
 final class StubGameRepository: IGameRepository {
-	var saveGameResult = false
+	var saveGameCalled = false
 
 	var game = Game(
 		level: Level(id: 0, cellsMatrix: [[0]]),
 		taps: 0,
 		levels: [
-			Level(
-				id: 0,
-				cellsMatrix: [
-					[0]
-				]
-			),
-			Level(
-				id: 1,
-				cellsMatrix: [
-					[0, 0],
-					[1, 0]
-				]
-			),
-			Level(
-				id: 2,
-				cellsMatrix: [
-					[0, 0],
-					[1, 1]
-				]
-			),
-			Level(
-				id: 3,
-				cellsMatrix: [
-					[1, 0],
-					[1, 1]
-				]
-			),
-			Level(
-				id: 4,
-				cellsMatrix: [
-					[1, 0, 0, 0],
-					[0, 1, 1, 0],
-					[0, 1, 1, 0],
-					[0, 0, 0, 1]
-				]
-			),
-			Level(
-				id: 5,
-				cellsMatrix: [
-					[1, 1, 1, 1],
-					[1, 0, 0, 1],
-					[1, 0, 0, 1],
-					[1, 1, 1, 1]
-				]
-			)
+			Level(id: 0, cellsMatrix: [[0]]),
+			Level(id: 1, cellsMatrix: [[0, 0], [1, 0]]),
+			Level(id: 2, cellsMatrix: [[0, 0], [1, 1]]),
+			Level(id: 3, cellsMatrix: [[1, 0], [1, 1]]),
+			Level(id: 4, cellsMatrix: [[1, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 1]]),
+			Level(id: 5, cellsMatrix: [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]])
 		]
 	)
 
-	func saveGame(_ game: Game, to gameUrl: URL?) -> Bool {
-		saveGameResult = true
-		return saveGameResult
+	func saveGame(_ game: Game, to gameUrl: URL?) {
+		saveGameCalled = true
 	}
 
 	func getSavedGame(from savedGameUrl: URL?) -> Game {

@@ -31,7 +31,10 @@ final class GameRepositoryTests: XCTestCase {
 	// MARK: - Get Saved Game
 
 	func test_getSavedGame_forTheFirstRun_shouldReturnNewGame() {
-		let game = sut.getSavedGame(from: Endpoints.gameUrl)
+
+		let emptyData = Data()
+		let url = createTemporaryFile(with: emptyData)
+		let game = sut.getSavedGame(from: url)
 
 		assertNewGame(game: game)
 	}
@@ -67,7 +70,7 @@ final class GameRepositoryTests: XCTestCase {
 
 	// MARK: - Save Game
 
-	func test_saveGame_shouldSavegameAndReturnTrue() {
+	func test_saveGame_shouldSaveGame() {
 		let game = Game(
 			level: Level(id: 1, cellsMatrix: [[0, 1], [1, 0]]),
 			taps: 1,
@@ -76,23 +79,23 @@ final class GameRepositoryTests: XCTestCase {
 
 		let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
 
-		let result = sut.saveGame(game, to: tempUrl)
+		sut.saveGame(game, to: tempUrl)
 
-		XCTAssertTrue(result, "Expected saveGame to return true.")
 		XCTAssertTrue(FileManager.default.fileExists(atPath: tempUrl.path), "Expected file to exist at path \(tempUrl.path).")
 	}
 
-	func test_saveGame_withInvalidUrl_shouldReturnFalse() {
+	func test_saveGame_withInvalidUrl_shouldNotSaveGame() {
 		let game = Game(
 			level: Level(id: 1, cellsMatrix: [[0, 1], [1, 0]]),
 			taps: 1,
 			levels: [Level(id: 1, cellsMatrix: [[0, 1], [1, 0]])]
 		)
 
-		let invalidUrl = URL(string: "")
-		let result = sut.saveGame(game, to: invalidUrl)
+		let invalidUrl = URL(string: "invalid_url")
 
-		XCTAssertFalse(result, "Expected saveGame to return false for invalid URL.")
+		sut.saveGame(game, to: invalidUrl)
+
+		XCTAssertFalse(FileManager.default.fileExists(atPath: invalidUrl?.path ?? ""), "Expected file to exist at path \(invalidUrl?.path ?? "").")
 	}
 }
 

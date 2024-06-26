@@ -56,7 +56,9 @@ final class GameManager: IGameManager {
 	private let gameRepository: IGameRepository
 	private let levelRepository: ILevelRepository
 	private let levelService: ILevelService
+
 	private let originLevels: [Level]
+	private let gameUrl: URL?
 
 	private var game: Game
 
@@ -71,6 +73,7 @@ final class GameManager: IGameManager {
 
 		originLevels = levelRepository.getLevels()
 		game = gameRepository.getSavedGame(from: Endpoints.gameUrl)
+		gameUrl = Endpoints.gameUrl
 	}
 
 	func toggleColors(atX x: Int, atY y: Int) {
@@ -85,17 +88,23 @@ final class GameManager: IGameManager {
 		if levelService.checkMatrix(level: game.level) {
 			completeLevel()
 		}
+
+		gameRepository.saveGame(game, to: gameUrl)
 	}
 
 	func nextLevel() {
 		let nextLevelId = min(game.levels.count - 1, game.level.id + 1)
 		game.level = originLevels[nextLevelId]
 		game.taps = 0
+
+		gameRepository.saveGame(game, to: gameUrl)
 	}
 
 	func restartLevel() {
 		game.taps = 0
 		game.level = originLevels[game.level.id]
+
+		gameRepository.saveGame(game, to: gameUrl)
 	}
 
 	func selectLevel(id: Int) {
@@ -106,6 +115,8 @@ final class GameManager: IGameManager {
 		game.level = game.levels[id]
 		game.level.status = .incompleted
 		game.taps = 0
+
+		gameRepository.saveGame(game, to: gameUrl)
 	}
 
 	func getHint() {
