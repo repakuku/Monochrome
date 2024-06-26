@@ -88,7 +88,10 @@ struct BackgroundView: View {
 			}
 		}
 		.sheet(isPresented: $guideViewIsShowing) {
-			GuideView(viewisShowing: $guideViewIsShowing)
+			GuideView(
+				viewModel: viewModel,
+				viewisShowing: $guideViewIsShowing
+			)
 		}
 	}
  }
