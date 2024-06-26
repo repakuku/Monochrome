@@ -140,7 +140,6 @@ final class GameManager: IGameManager {
 		level.status = .completed(taps)
 
 		if case let .completed(prevTaps) = levels[level.id].status {
-			// TODO: Tests
 			levels[level.id].status = .completed(min(taps, prevTaps))
 		} else {
 			levels[level.id].status = .completed(taps)

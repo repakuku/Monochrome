@@ -22,7 +22,10 @@ final class GameManagerTests: XCTestCase {
 		mockLevelService = MockLevelService()
 		stubLevelRepository = StubLevelRepository()
 
-		sut = GameManager(levelRepository: stubLevelRepository, levelService: mockLevelService)
+		sut = GameManager(
+			levelRepository: stubLevelRepository,
+			levelService: mockLevelService
+		)
 	}
 
 	override func tearDown() {
@@ -44,12 +47,11 @@ final class GameManagerTests: XCTestCase {
 			cellsMatrix: [[0]]
 		)
 
-		XCTAssertEqual(currentLevel.id, expectedLevel.id, "Expected initial level ID to be 0.")
-		XCTAssertEqual(currentLevel.cellsMatrix, expectedLevel.cellsMatrix, "Expected initial cells matrix to match.")
-		XCTAssertEqual(currentLevel.status, .incompleted, "Expected initial level to not be completed.")
-		XCTAssertEqual(sut.taps, 0, "Expected initial taps to be 0.")
-		XCTAssertEqual(sut.level.status, expectedLevel.status, "Expected initial level to not be completed.")
-	}
+		XCTAssertEqual(currentLevel.id, expectedLevel.id, "Expected initial level ID to be 0, but got \(currentLevel.id).")
+		XCTAssertEqual(currentLevel.cellsMatrix, expectedLevel.cellsMatrix, "Expected initial cells matrix to match, but got \(currentLevel.cellsMatrix).")
+		XCTAssertEqual(currentLevel.status, .incompleted, "Expected initial level to not be completed, but got \(currentLevel.status).")
+		XCTAssertEqual(sut.taps, 0, "Expected initial taps to be 0, but got \(sut.taps).")
+		XCTAssertEqual(sut.level.status, expectedLevel.status, "Expected initial level to not be completed, but got \(sut.level.status).")	}
 
 	// MARK: - Toggle Colors
 
@@ -57,21 +59,37 @@ final class GameManagerTests: XCTestCase {
 
 		sut.toggleColors(atX: 0, atY: 0)
 
-		XCTAssertTrue(mockLevelService.toggleColorsCalled)
-		XCTAssertEqual(sut.taps, 1)
+		XCTAssertTrue(mockLevelService.toggleColorsCalled, "Expected toggleColors to be called, but it wasn't.")
+		XCTAssertEqual(sut.taps, 1, "Expected taps to be 1, but got \(sut.taps).")
 	}
 
 	func test_toggleColors_withInvalidCoordinates_shouldNotCalltoggleColors() {
 
 		sut.toggleColors(atX: -1, atY: 0)
 
-		XCTAssertFalse(mockLevelService.toggleColorsCalled)
+		XCTAssertFalse(mockLevelService.toggleColorsCalled, "Expected toggleColors not to be called for invalid coordinates, but it was.")
+	}
+
+	func test_toggleColors_shouldCompleteTheLevelAndSaveTheBestResult() {
+		mockLevelService.checkMatrixResult = true
+
+		let levelId = sut.level.id
+
+		sut.toggleColors(atX: 0, atY: 0)
+
+		XCTAssertEqual(sut.level.status, .completed(1), "Expected level to be completed with 1 tap, but got \(sut.level.status).")
+
+		sut.toggleColors(atX: 0, atY: 0)
+		sut.toggleColors(atX: 0, atY: 0)
+
+		XCTAssertEqual(sut.level.status, .completed(3), "Expected level to be completed with 3 taps, but got \(sut.level.status).")
+		XCTAssertEqual(sut.levels[levelId].status, .completed(1), "Expected best result to be 1 tap, but got \(sut.levels[levelId].status).")
 	}
 
 	// MARK: - isLevelCompleted
 
 	func test_isLevelCompleted_shouldReturnFalseForInitialStatus() {
-		XCTAssertFalse(sut.getStatusForLevel(id: 0))
+		XCTAssertFalse(sut.getStatusForLevel(id: 0), "Expected initial status to be incompleted, but it wasn't.")
 	}
 
 	func test_isLevelCompleted_shouldReturnTrueAfterCorrectToggle() {
@@ -80,7 +98,7 @@ final class GameManagerTests: XCTestCase {
 
 		sut.toggleColors(atX: 0, atY: 0)
 
-		XCTAssertTrue(sut.getStatusForLevel(id: 0))
+		XCTAssertTrue(sut.getStatusForLevel(id: 0), "Expected level to be completed, but it wasn't.")
 	}
 
 	// MARK: - Next level
@@ -98,10 +116,10 @@ final class GameManagerTests: XCTestCase {
 			]
 		)
 
-		XCTAssertEqual(currentLevel.id, expectedLevel.id, "Expected to advance to level ID 1 after calling nextLevel.")
-		XCTAssertEqual(currentLevel.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to match for level 1.")
-		XCTAssertEqual(sut.level.status, .incompleted, "Expected level to be incomplete after advancing to the next level.")
-		XCTAssertEqual(sut.taps, 0, "Expected taps to reset to 0 after advancing to the next level.")
+		XCTAssertEqual(currentLevel.id, expectedLevel.id, "Expected to advance to level ID 1, but got \(currentLevel.id).")
+		XCTAssertEqual(currentLevel.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to match for level 1, but got \(currentLevel.cellsMatrix).")
+		XCTAssertEqual(sut.level.status, .incompleted, "Expected level to be incomplete after advancing, but got \(sut.level.status).")
+		XCTAssertEqual(sut.taps, 0, "Expected taps to reset to 0, but got \(sut.taps).")
 	}
 
 	func test_nextLevel_forLastLevel_shouldRemainAtLastLevel() {
@@ -121,10 +139,10 @@ final class GameManagerTests: XCTestCase {
 			]
 		)
 
-		XCTAssertEqual(currentLevel.id, expectedLevel.id, "Expected to remain at the last level (ID 2) after calling nextLevel at the last level.")
-		XCTAssertEqual(currentLevel.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to match for the last level.")
-		XCTAssertEqual(sut.level.status, .incompleted, "Expected level to be incomplete when remaining at the last level.")
-		XCTAssertEqual(sut.taps, 0, "Expected taps to reset to 0 when remaining at the last level.")
+		XCTAssertEqual(currentLevel.id, expectedLevel.id, "Expected to remain at the last level (ID 5), but got \(currentLevel.id).")
+		XCTAssertEqual(currentLevel.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to match for the last level, but got \(currentLevel.cellsMatrix).")
+		XCTAssertEqual(sut.level.status, .incompleted, "Expected level to be incomplete, but got \(sut.level.status).")
+		XCTAssertEqual(sut.taps, 0, "Expected taps to reset to 0, but got \(sut.taps).")
 	}
 
 	// MARK: - Restart Level
@@ -136,9 +154,9 @@ final class GameManagerTests: XCTestCase {
 
 		let expectedMatrix = [[0]]
 
-		XCTAssertEqual(sut.level.cellsMatrix, expectedMatrix, "Expected cells matrix to reset to initial state on restart.")
-		XCTAssertEqual(sut.taps, 0, "Expected taps to reset to 0 on restart.")
-		XCTAssertEqual(sut.level.status, .incompleted, "Expected level to not be completed after restart.")
+		XCTAssertEqual(sut.level.cellsMatrix, expectedMatrix, "Expected cells matrix to reset to initial state, but got \(sut.level.cellsMatrix).")
+		XCTAssertEqual(sut.taps, 0, "Expected taps to reset to 0, but got \(sut.taps).")
+		XCTAssertEqual(sut.level.status, .incompleted, "Expected level to not be completed, but got \(sut.level.status).")
 	}
 
 	func test_restartLevel_withMultipleActions_shouldResetToInitialState() {
@@ -158,10 +176,10 @@ final class GameManagerTests: XCTestCase {
 			]
 		)
 
-		XCTAssertEqual(currentLevel.id, expectedLevel.id, "Expected to remain at the same level (ID 1) after restarting the level.")
-		XCTAssertEqual(currentLevel.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to reset to initial state after restarting the level.")
-		XCTAssertEqual(sut.level.status, .incompleted, "Expected level to be incomplete after restarting.")
-		XCTAssertEqual(sut.taps, 0, "Expected taps to reset to 0 after restarting the level.")
+		XCTAssertEqual(currentLevel.id, expectedLevel.id, "Expected to remain at the same level (ID 1), but got \(currentLevel.id).")
+		XCTAssertEqual(currentLevel.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to reset to initial state, but got \(currentLevel.cellsMatrix).")
+		XCTAssertEqual(sut.level.status, .incompleted, "Expected level to be incomplete, but got \(sut.level.status).")
+		XCTAssertEqual(sut.taps, 0, "Expected taps to reset to 0, but got \(sut.taps).")
 	}
 
 	// MARK: - Select Level
@@ -184,10 +202,10 @@ final class GameManagerTests: XCTestCase {
 			]
 		)
 
-		XCTAssertEqual(level.id, expectedLevel.id, "Expected level ID to be \(expectedLevel.id).")
-		XCTAssertEqual(level.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to match.")
-		XCTAssertEqual(sut.taps, 0, "Expected taps to be reset to 0 after selecting a new level.")
-		XCTAssertEqual(sut.level.status, .incompleted, "Expected level to be incomplete after selecting.")
+		XCTAssertEqual(level.id, expectedLevel.id, "Expected level ID to be \(expectedLevel.id), but got \(level.id).")
+		XCTAssertEqual(level.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to match, but got \(level.cellsMatrix).")
+		XCTAssertEqual(sut.taps, 0, "Expected taps to be reset to 0, but got \(sut.taps).")
+		XCTAssertEqual(sut.level.status, .incompleted, "Expected level to be incomplete, but got \(sut.level.status).")
 	}
 
 	func test_selectLevel_withInvalidId_ShouldReturnCurrentLevel() {
@@ -198,15 +216,15 @@ final class GameManagerTests: XCTestCase {
 
 		var level = sut.level
 
-		XCTAssertEqual(level.id, expectedLevel.id)
-		XCTAssertEqual(level.cellsMatrix, expectedLevel.cellsMatrix)
+		XCTAssertEqual(level.id, expectedLevel.id, "Expected level ID to remain \(expectedLevel.id), but got \(level.id).")
+		XCTAssertEqual(level.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to remain the same, but got \(level.cellsMatrix).")
 
 		sut.selectLevel(id: Int.max)
 
 		level = sut.level
 
-		XCTAssertEqual(level.id, expectedLevel.id)
-		XCTAssertEqual(level.cellsMatrix, expectedLevel.cellsMatrix)
+		XCTAssertEqual(level.id, expectedLevel.id, "Expected level ID to remain \(expectedLevel.id), but got \(level.id).")
+		XCTAssertEqual(level.cellsMatrix, expectedLevel.cellsMatrix, "Expected cells matrix to remain the same, but got \(level.cellsMatrix).")
 	}
 
 	// MARK: - Get Hint
@@ -215,7 +233,7 @@ final class GameManagerTests: XCTestCase {
 
 		sut.getHint()
 
-		XCTAssertTrue(mockLevelService.getHintCalled)
+		XCTAssertTrue(mockLevelService.getHintCalled, "Expected getHint to be called, but it wasn't.")
 	}
 
 	// MARK: - Get Taps For Level
@@ -227,12 +245,12 @@ final class GameManagerTests: XCTestCase {
 		var taps = sut.getTapsForLevel(id: 0)
 		var expectedTaps = 0
 
-		XCTAssertEqual(taps, 0, "Expected initial taps to be \(expectedTaps) for level 0.")
+		XCTAssertEqual(taps, 0, "Expected initial taps to be \(expectedTaps) for level 0, but got \(taps).")
 
 		taps = sut.getTapsForLevel(id: 1)
 		expectedTaps = 5
 
-		XCTAssertEqual(taps, 5, "Expected initial taps to be \(expectedTaps) for level 1.")
+		XCTAssertEqual(taps, 5, "Expected taps to be \(expectedTaps) for level 1, but got \(taps).")
 	}
 
 	func test_getTapsForLevel_withIncorrectId_shouldReturnCorrectTapsForCompletedlevel() {
@@ -240,11 +258,11 @@ final class GameManagerTests: XCTestCase {
 		var taps = sut.getTapsForLevel(id: -1)
 		let expectedTaps = 0
 
-		XCTAssertEqual(taps, expectedTaps, "Expected taps to be \(expectedTaps) for invalid level ID.")
+		XCTAssertEqual(taps, expectedTaps, "Expected taps to be \(expectedTaps) for invalid level ID, but got \(taps).")
 
 		taps = sut.getTapsForLevel(id: Int.max)
 
-		XCTAssertEqual(taps, expectedTaps, "Expected taps to be \(expectedTaps) for invalid level ID.")
+		XCTAssertEqual(taps, expectedTaps, "Expected taps to be \(expectedTaps) for invalid level ID, but got \(taps).")
 	}
 
 	// MARK: - Get Status For Level
@@ -253,24 +271,24 @@ final class GameManagerTests: XCTestCase {
 
 		var status = sut.getStatusForLevel(id: 1)
 
-		XCTAssertFalse(status, "Expected level 1 to be incompleted initially.")
+		XCTAssertFalse(status, "Expected level 1 to be incompleted initially, but it wasn't.")
 
 		sut.levels[1].status = .completed(2)
 
 		status = sut.getStatusForLevel(id: 1)
 
-		XCTAssertTrue(status, "Expected level 1 to be completed.")
+		XCTAssertTrue(status, "Expected level 1 to be completed, but it wasn't.")
 	}
 
 	func test_getStatusForLevel_withInvalidId_shouldReturnFalse() {
 
 		var status = sut.getStatusForLevel(id: -1)
 
-		XCTAssertFalse(status, "Expected level status to be false for an invalid level ID.")
+		XCTAssertFalse(status, "Expected level status to be false for an invalid level ID, but it wasn't.")
 
 		status = sut.getStatusForLevel(id: Int.max)
 
-		XCTAssertFalse(status, "Expected level status to be false for an invalid level ID.")
+		XCTAssertFalse(status, "Expected level status to be false for an invalid level ID, but it wasn't.")
 	}
 
 	// MARK: - Get Stars For Level
@@ -282,7 +300,7 @@ final class GameManagerTests: XCTestCase {
 		let stars = sut.getStarsForLevel(id: 5)
 		let expectedStars = 0
 
-		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 initially.")
+		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 initially, but got \(stars).")
 	}
 
 	func test_getStarsForLevel_withHighNumberOfTaps_ShouldReturnOneStar() {
@@ -293,8 +311,8 @@ final class GameManagerTests: XCTestCase {
 		let stars = sut.getStarsForLevel(id: 5)
 		let expectedStars = 1
 
-		XCTAssertTrue(sut.getStatusForLevel(id: 5), "Level should be completed.")
-		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 with high number of taps.")
+		XCTAssertTrue(sut.getStatusForLevel(id: 5), "Level should be completed, but it wasn't.")
+		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 with high number of taps, but got \(stars).")
 	}
 
 	func test_getStarsForLevel_withModerateNumberOfTaps_ShouldReturnTwoStars() {
@@ -305,8 +323,8 @@ final class GameManagerTests: XCTestCase {
 		let stars = sut.getStarsForLevel(id: 5)
 		let expectedStars = 2
 
-		XCTAssertTrue(sut.getStatusForLevel(id: 5), "Level should be completed.")
-		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 with moderate number of taps.")
+		XCTAssertTrue(sut.getStatusForLevel(id: 5), "Level should be completed, but it wasn't.")
+		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 with moderate number of taps, but got \(stars).")
 	}
 
 	func test_getStarsForLevel_withMinimalNumberOfTaps_ShouldReturnThreeStars() {
@@ -317,8 +335,8 @@ final class GameManagerTests: XCTestCase {
 		let stars = sut.getStarsForLevel(id: 5)
 		let expectedStars = 3
 
-		XCTAssertTrue(sut.getStatusForLevel(id: 5), "Level should be completed.")
-		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 with minimal number of taps.")
+		XCTAssertTrue(sut.getStatusForLevel(id: 5), "Level should be completed, but it wasn't.")
+		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 with minimal number of taps, but got \(stars).")
 	}
 
 	func test_getStarsForLevel_forCurrentGame_ShouldReturnActualNumberOfStars() {
@@ -330,14 +348,14 @@ final class GameManagerTests: XCTestCase {
 		var stars = sut.getStarsForLevel(id: 5)
 		var expectedStars = 3
 
-		XCTAssertTrue(sut.getStatusForLevel(id: 5), "Level should be completed.")
-		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 with minimal number of taps.")
+		XCTAssertTrue(sut.getStatusForLevel(id: 5), "Level should be completed, but it wasn't.")
+		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 with minimal number of taps, but got \(stars).")
 
 		stars = sut.getStarsForLevel(id: 5, forCurrentGame: true)
 		expectedStars = 2
 
-		XCTAssertTrue(sut.getStatusForLevel(id: 5), "Level should be completed.")
-		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 after replay.")
+		XCTAssertTrue(sut.getStatusForLevel(id: 5), "Level should be completed, but it wasn't.")
+		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for the level 5 after replay, but got \(stars).")
 	}
 
 	func test_getStarsForLevel_withInvalidId_ShouldReturnZeroStars() {
@@ -345,10 +363,10 @@ final class GameManagerTests: XCTestCase {
 		var stars = sut.getStarsForLevel(id: -1)
 		let expectedStars = 0
 
-		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for an invalid level ID.")
+		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for an invalid level ID, but got \(stars).")
 
 		stars = sut.getStarsForLevel(id: Int.max)
 
-		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for an invalid level ID.")
+		XCTAssertEqual(stars, expectedStars, "Expected \(expectedStars) stars for an invalid level ID, but got \(stars).")
 	}
 }
