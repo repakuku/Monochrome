@@ -18,4 +18,5 @@ enum Images: String {
 	case starFilled = "star.fill"
 	case book = "book"
 	case eraser = "eraser.fill"
+	case back = "chevron.backward"
 }

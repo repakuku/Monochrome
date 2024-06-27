@@ -10,6 +10,7 @@
 		02DC904331317DCAF156BF25 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 356B4C37748236D10D808E8F /* Assets.xcassets */; };
 		069E1B9410F9ACEB7E7721EF /* RoundedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD3E51752F115DCAB489A3 /* RoundedViews.swift */; };
 		079BDEF02C2DC66E00FC7388 /* DeleteGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079BDEEF2C2DC66E00FC7388 /* DeleteGameView.swift */; };
+		079BDEF42C2DF4D600FC7388 /* FlipTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079BDEF32C2DF4D600FC7388 /* FlipTextView.swift */; };
 		0B15B73B384603FFF2CC119A /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC199E3AE72AC3B72F6EBB17 /* GameManager.swift */; };
 		1A34E10DEF08DD21267DEBEF /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6E5EF9A80EC7371940944 /* GameViewModelTests.swift */; };
 		2133E6A16C94EEFE97CDDC43 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0ECBAAD4CB4AE96EF2C379 /* Game.swift */; };
@@ -79,6 +80,7 @@
 		0482F0341A977ABDF3BEC927 /* Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		06BD3E51752F115DCAB489A3 /* RoundedViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedViews.swift; sourceTree = "<group>"; };
 		079BDEEF2C2DC66E00FC7388 /* DeleteGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteGameView.swift; sourceTree = "<group>"; };
+		079BDEF32C2DF4D600FC7388 /* FlipTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipTextView.swift; sourceTree = "<group>"; };
 		08FD17822A6AAFF0D12CD91B /* LevelServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelServiceTests.swift; sourceTree = "<group>"; };
 		1B33E1E14E02551A3CA0B874 /* Monochrome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Monochrome.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FC786D509133CEC3339B09A /* MonochromeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "MonochromeTests-Info.plist"; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 				06BD3E51752F115DCAB489A3 /* RoundedViews.swift */,
 				9B7738A2A741E8293C04A261 /* TextViews.swift */,
 				079BDEEF2C2DC66E00FC7388 /* DeleteGameView.swift */,
+				079BDEF32C2DF4D600FC7388 /* FlipTextView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43898B605029DD681B7BBBF1 /* TuistBundle+Monochrome.swift in Sources */,
+				079BDEF42C2DF4D600FC7388 /* FlipTextView.swift in Sources */,
 				F21B4D51C9125D283B86210A /* MonochromeApp.swift in Sources */,
 				264EB7BA96DAF77D93180CC9 /* Endpoints.swift in Sources */,
 				2133E6A16C94EEFE97CDDC43 /* Game.swift in Sources */,

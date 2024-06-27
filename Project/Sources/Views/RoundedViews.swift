@@ -13,24 +13,35 @@ struct RoundedImageView: View {
 	let isFilled: Bool
 
 	var body: some View {
-		Image(systemName: systemName)
-			.font(.title)
-			.foregroundStyle(isFilled ? Color(Theme.buttonFilledTextColor) : Color(Theme.textColor))
-			.frame(
-				width: Sizes.General.roundedViewLength,
-				height: Sizes.General.roundedViewLength
-			)
-			.background(
-				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-					.fill(isFilled ? Color(Theme.buttonFilledBackgroundColor) : Color.clear)
-			)
-			.overlay(
-				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-					.strokeBorder(
-						Color(Theme.buttonStrokeColor),
-						lineWidth: isFilled ? 0 : Sizes.Stroke.width
-					)
-			)
+		ZStack {
+			RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+				.fill(Color.gray)
+				.frame(
+					width: Sizes.General.roundedViewLength,
+					height: Sizes.General.roundedViewLength
+				)
+				.offset(x: 4, y: 4)
+
+			Image(systemName: systemName)
+				.font(.title)
+				.foregroundStyle(isFilled ? Color(Theme.buttonFilledTextColor) : Color(Theme.textColor))
+				.frame(
+					width: Sizes.General.roundedViewLength,
+					height: Sizes.General.roundedViewLength
+				)
+				.background(
+					RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+						.fill(isFilled ? Color(Theme.buttonFilledBackgroundColor) : Color(Theme.backgroundColor))
+				)
+				.overlay(
+					RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+						.strokeBorder(
+							Color(Theme.buttonStrokeColor),
+							lineWidth: isFilled ? 0 : Sizes.Stroke.width
+						)
+				)
+				.zIndex(1)
+		}
 	}
 }
 
