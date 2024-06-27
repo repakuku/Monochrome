@@ -109,7 +109,12 @@ struct BottomView: View {
 
 	var body: some View {
 		HStack {
-			RoundedTextView(text: String(viewModel.taps), isFilled: false)
+			Button {
+			} label: {
+				RoundedImageView(systemName: Images.back.rawValue, isFilled: false)
+			}
+			Spacer()
+			FlipTextView(value: $viewModel.taps)
 			Spacer()
 			Button {
 				withAnimation {
