@@ -10,7 +10,8 @@ import SwiftUI
 
 struct FieldView: View {
 	@ObservedObject var viewModel: GameViewModel
-	@Binding var showInstructions: Bool
+	@Binding var showMenu: Bool
+	@Binding var showInstruction: Bool
 
 	var body: some View {
 		VStack {
@@ -20,7 +21,12 @@ struct FieldView: View {
 						Button {
 							withAnimation {
 								viewModel.cellTapped(atX: x, atY: y)
-								showInstructions = false
+								if showMenu {
+									showMenu = false
+								}
+								if showInstruction {
+									showInstruction = false
+								}
 							}
 						} label: {
 							if viewModel.cells[x][y] == 0 {
@@ -87,6 +93,7 @@ struct FieldView: View {
 				levelService: LevelService()
 			)
 		),
-		showInstructions: .constant(true)
+		showMenu: .constant(false),
+		showInstruction: .constant(false)
 	)
 }

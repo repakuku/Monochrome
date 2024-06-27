@@ -115,7 +115,11 @@ struct BottomView: View {
 			}
 		}
 		.sheet(isPresented: $levelsViewIsShowing) {
-			LevelsView(viewModel: viewModel, levelsViewIsShowing: $levelsViewIsShowing)
+			LevelsView(
+				viewModel: viewModel,
+				levelsViewIsShowing: $levelsViewIsShowing,
+				showInstruction: $showMenu
+			)
 		}
 	}
 }

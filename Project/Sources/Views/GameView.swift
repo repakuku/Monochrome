@@ -25,12 +25,12 @@ struct GameView: View {
 	)
 
 	@State private var showMenu = false
-	@State private var showInstructions = true
 	@State private var showResult = false
+	@State private var showInstruction = true
 
 	var body: some View {
 		ZStack {
-			if showInstructions {
+			if showInstruction {
 				InstructionView()
 			}
 
@@ -44,14 +44,13 @@ struct GameView: View {
 			}
 
 			if showResult {
-				ResultView(
-					viewModel: viewModel
-				)
+				ResultView(viewModel: viewModel)
 					.transition(.scale)
 			} else {
 				FieldView(
 					viewModel: viewModel,
-					showInstructions: $showInstructions
+					showMenu: $showMenu,
+					showInstruction: $showInstruction
 				)
 					.transition(.scale)
 					.zIndex(1)
