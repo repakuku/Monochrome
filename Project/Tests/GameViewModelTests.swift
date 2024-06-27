@@ -33,7 +33,7 @@ final class GameViewModelTests: XCTestCase {
 		XCTAssertEqual(sut.taps, 0, "Expected initial taps to be 0, but got \(sut.taps).")
 		XCTAssertFalse(sut.isLevelCompleted, "Expected initial isLevelCompleted to be false, but it was true.")
 		XCTAssertEqual(sut.isTutorialLevel, true, "Expected initial isTutorialLevel to be true, but got \(sut.isTutorialLevel).")
-		XCTAssertEqual(sut.cells, [[0]], "Expected initial cells matrix to match the first level's cells matrix, but got \(sut.cells).")
+		XCTAssertEqual(sut.cells, [[.empty]], "Expected initial cells matrix to match the first level's cells matrix, but got \(sut.cells).")
 		XCTAssertEqual(sut.numberOfLevels, 1, "Expected number of levels to be 1, but got \(sut.numberOfLevels).")
 	}
 
@@ -197,7 +197,7 @@ final class GameViewModelTests: XCTestCase {
 		XCTAssertEqual(sut.taps, 0, "Expected initial taps to be 0, but got \(sut.taps).")
 		XCTAssertFalse(sut.isLevelCompleted, "Expected initial isLevelCompleted to be false, but it was true.")
 		XCTAssertTrue(sut.isTutorialLevel, "Expected initial isTutorialLevel to be true, but got \(sut.isTutorialLevel).")
-		XCTAssertEqual(sut.cells, [[0]], "Expected initial cells matrix to match the first level's cells matrix, but got \(sut.cells).")
+		XCTAssertEqual(sut.cells, [[.empty]], "Expected initial cells matrix to match the first level's cells matrix, but got \(sut.cells).")
 		XCTAssertEqual(sut.numberOfLevels, 1, "Expected number of levels to be 1, but got \(sut.numberOfLevels).")
 	}
 
