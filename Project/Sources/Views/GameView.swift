@@ -42,8 +42,8 @@ struct GameView: View {
 					showInstruction: $showInstruction,
 					showDeletionAlert: $showDeletionAlert
 				)
-					.blur(radius: viewModel.isLevelCompleted ? Sizes.Blur.max : Sizes.Blur.min)
-					.disabled(viewModel.isLevelCompleted)
+				.blur(radius: (showResult || showDeletionAlert) ? Sizes.Blur.max : Sizes.Blur.min)
+				.disabled((showResult || showDeletionAlert))
 			}
 
 			if showDeletionAlert {
@@ -52,8 +52,11 @@ struct GameView: View {
 					viewIsShowing: $showDeletionAlert,
 					showInstruction: $showInstruction
 				)
+				.zIndex(2)
+				.transition(.scale)
 			} else if showResult {
 				ResultView(viewModel: viewModel)
+					.zIndex(1)
 					.transition(.scale)
 			} else {
 				FieldView(
@@ -61,9 +64,9 @@ struct GameView: View {
 					showMenu: $showMenu,
 					showInstruction: $showInstruction
 				)
-					.transition(.scale)
-					.zIndex(1)
-					.disabled(viewModel.isLevelCompleted)
+				.transition(.scale)
+				.zIndex(1)
+				.disabled(viewModel.isLevelCompleted)
 			}
 		}
 		.onChange(of: viewModel.isLevelCompleted) { isCompleted in
