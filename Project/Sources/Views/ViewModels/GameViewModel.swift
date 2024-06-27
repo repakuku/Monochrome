@@ -105,7 +105,7 @@ final class GameViewModel: ObservableObject {
 	func eraserButtonTapped() {
 		gameManager.resetProgress()
 
-		isTutorialLevel = gameManager.currentLevelId == 0
+		isTutorialLevel = true
 		levelId = gameManager.currentLevelId
 		cells = gameManager.currentLevelCells
 		taps = gameManager.currentTaps
