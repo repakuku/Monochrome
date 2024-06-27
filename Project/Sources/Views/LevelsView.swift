@@ -17,7 +17,7 @@ struct LevelsView: View {
 			Color(Theme.backgroundColor)
 				.ignoresSafeArea()
 			VStack(spacing: Sizes.Spacing.normal) {
-				HeaderView(
+				LevelsHeaderView(
 					viewModel: viewModel,
 					viewIsShowing: $levelsViewIsShowing
 				)
@@ -72,7 +72,7 @@ struct RowView: View {
 	}
 }
 
-struct HeaderView: View {
+struct LevelsHeaderView: View {
 	@ObservedObject var viewModel: GameViewModel
 	@Binding var viewIsShowing: Bool
 
