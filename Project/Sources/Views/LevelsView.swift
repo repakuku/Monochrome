@@ -12,6 +12,7 @@ struct LevelsView: View {
 	@ObservedObject var viewModel: GameViewModel
 	@Binding var levelsViewIsShowing: Bool
 	@Binding var showInstruction: Bool
+	@Binding var showDeletionAlert: Bool
 
 	var body: some View {
 		ZStack {
@@ -21,7 +22,8 @@ struct LevelsView: View {
 				LevelsHeaderView(
 					viewModel: viewModel,
 					viewIsShowing: $levelsViewIsShowing,
-					showInstruction: $showInstruction
+					showInstruction: $showInstruction,
+					showDeletionAlert: $showDeletionAlert
 				)
 				LabelView()
 				ScrollView {
@@ -79,15 +81,14 @@ struct LevelsHeaderView: View {
 
 	@Binding var viewIsShowing: Bool
 	@Binding var showInstruction: Bool
+	@Binding var showDeletionAlert: Bool
 
 	var body: some View {
 		ZStack {
 			HStack {
 				Button {
-					viewModel.eraserButtonTapped()
-					if showInstruction {
-						showInstruction = false
-					}
+					viewIsShowing = false
+					showDeletionAlert = true
 				} label: {
 					RoundedImageView(systemName: Images.eraser.rawValue, isFilled: false)
 				}
@@ -149,6 +150,7 @@ struct StarsView: View {
 			)
 		),
 		levelsViewIsShowing: .constant(true),
-		showInstruction: .constant(false)
+		showInstruction: .constant(false),
+		showDeletionAlert: .constant(false)
 	)
 }
