@@ -42,8 +42,16 @@ struct GameView: View {
 					showInstruction: $showInstruction,
 					showDeletionAlert: $showDeletionAlert
 				)
-				.blur(radius: (showResult || showDeletionAlert) ? Sizes.Blur.max : Sizes.Blur.min)
-				.disabled((showResult || showDeletionAlert))
+				.blur(
+					radius: (
+						showResult || showDeletionAlert
+					) ? Sizes.Blur.max : Sizes.Blur.min
+				)
+				.disabled(
+					(
+						showResult || showDeletionAlert
+					)
+				)
 			}
 
 			if showDeletionAlert {
@@ -52,26 +60,46 @@ struct GameView: View {
 					viewIsShowing: $showDeletionAlert,
 					showInstruction: $showInstruction
 				)
-				.zIndex(2)
-				.transition(.scale)
+				.zIndex(
+					2
+				)
+				.transition(
+					.scale
+				)
 			} else if showResult {
-				ResultView(viewModel: viewModel)
-					.zIndex(1)
-					.transition(.scale)
+				ResultView(
+					viewModel: viewModel
+				)
+				.zIndex(
+					1
+				)
+				.transition(
+					.scale
+				)
 			} else {
 				FieldView(
 					viewModel: viewModel,
 					showMenu: $showMenu,
 					showInstruction: $showInstruction
 				)
-				.transition(.scale)
-				.zIndex(1)
-				.disabled(viewModel.isLevelCompleted)
+				.transition(
+					.scale
+				)
+				.zIndex(
+					1
+				)
+				.disabled(
+					viewModel.isLevelCompleted
+				)
 			}
 		}
-		.onChange(of: viewModel.isLevelCompleted) { isCompleted in
+		.onChange(
+			of: viewModel.isLevelCompleted
+		) { isCompleted in
 			if isCompleted {
-				DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+				DispatchQueue.main.asyncAfter(
+					deadline: .now() + 0.6
+				) {
 					withAnimation {
 						showResult = true
 					}
@@ -94,8 +122,13 @@ struct GameView: View {
 struct InstructionView: View {
 	var body: some View {
 		VStack {
-			InstructionText(text: "Tap on the cell")
-				.padding(.bottom, Sizes.Padding.large)
+			InstructionText(
+				text: "Tap on the cell"
+			)
+			.padding(
+				.bottom,
+				Sizes.Padding.large
+			)
 		}
 	}
 }
