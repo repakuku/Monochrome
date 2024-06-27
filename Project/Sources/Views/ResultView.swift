@@ -13,7 +13,7 @@ struct ResultView: View {
 
 	var body: some View {
 		if viewModel.isTutorialLevel {
-			AlertView(
+			ResultAlertView(
 				viewModel: viewModel,
 				title: "Great Start!",
 				stars: 0,
@@ -21,7 +21,7 @@ struct ResultView: View {
 				showReplayButton: false
 			)
 		} else {
-			AlertView(
+			ResultAlertView(
 				viewModel: viewModel,
 				title: "Level Done!",
 				stars: viewModel.getStarsForLevel(id: viewModel.levelId, forCurrentGame: true),
@@ -32,7 +32,7 @@ struct ResultView: View {
 	}
 }
 
-struct AlertView: View {
+struct ResultAlertView: View {
 	@ObservedObject var viewModel: GameViewModel
 
 	let title: String
@@ -65,7 +65,11 @@ struct AlertView: View {
 						viewModel.nextLevel()
 					}
 				} label: {
-					ButtonTextFilled(text: "Next Level")
+					ButtonTextFilled(
+						text: "Next Level",
+						backgroundColor: Color(Theme.buttonFilledBackgroundColor),
+						foregroundColor: Color(Theme.buttonFilledTextColor)
+					)
 				}
 			}
 		}

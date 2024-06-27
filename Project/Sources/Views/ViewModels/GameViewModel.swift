@@ -8,10 +8,17 @@
 
 import Foundation
 
+enum CellState: Int {
+	case empty = 0
+	case filled
+	case hintEmpty
+	case hintFilled
+}
+
 final class GameViewModel: ObservableObject {
 	@Published var isTutorialLevel: Bool
 	@Published var levelId: Int
-	@Published var cells: [[Int]]
+	@Published var cells: [[CellState]]
 	@Published var taps: Int
 	@Published var isLevelCompleted: Bool
 
@@ -30,7 +37,7 @@ final class GameViewModel: ObservableObject {
 
 		isTutorialLevel = gameManager.currentLevelId == 0
 		levelId = gameManager.currentLevelId
-		cells = gameManager.currentLevelCells
+		cells = GameViewModel.mapCells(gameManager.currentLevelCells)
 		taps = gameManager.currentTaps
 		isLevelCompleted = false
 	}
@@ -107,14 +114,22 @@ final class GameViewModel: ObservableObject {
 
 		isTutorialLevel = true
 		levelId = gameManager.currentLevelId
-		cells = gameManager.currentLevelCells
+		cells = GameViewModel.mapCells(gameManager.currentLevelCells)
 		taps = gameManager.currentTaps
 		isLevelCompleted = false
 	}
 
+	private static func mapCells(_ cells: [[Int]]) -> [[CellState]] {
+		cells.map { row in
+			row.map { value in
+				CellState(rawValue: value) ?? .empty
+			}
+		}
+	}
+
 	private func updateLevel() {
 		levelId = gameManager.currentLevelId
-		cells = gameManager.currentLevelCells
+		cells = GameViewModel.mapCells(gameManager.currentLevelCells)
 		taps = gameManager.currentTaps
 	}
 }
