@@ -11,6 +11,7 @@ import SwiftUI
 struct LevelsView: View {
 	@ObservedObject var viewModel: GameViewModel
 	@Binding var levelsViewIsShowing: Bool
+	@Binding var showInstruction: Bool
 
 	var body: some View {
 		ZStack {
@@ -19,7 +20,8 @@ struct LevelsView: View {
 			VStack(spacing: Sizes.Spacing.normal) {
 				LevelsHeaderView(
 					viewModel: viewModel,
-					viewIsShowing: $levelsViewIsShowing
+					viewIsShowing: $levelsViewIsShowing,
+					showInstruction: $showInstruction
 				)
 				LabelView()
 				ScrollView {
@@ -74,13 +76,18 @@ struct RowView: View {
 
 struct LevelsHeaderView: View {
 	@ObservedObject var viewModel: GameViewModel
+
 	@Binding var viewIsShowing: Bool
+	@Binding var showInstruction: Bool
 
 	var body: some View {
 		ZStack {
 			HStack {
 				Button {
 					viewModel.eraserButtonTapped()
+					if showInstruction {
+						showInstruction = false
+					}
 				} label: {
 					RoundedImageView(systemName: Images.eraser.rawValue, isFilled: false)
 				}
@@ -141,6 +148,7 @@ struct StarsView: View {
 				levelService: LevelService()
 			)
 		),
-		levelsViewIsShowing: .constant(true)
+		levelsViewIsShowing: .constant(true),
+		showInstruction: .constant(false)
 	)
 }
