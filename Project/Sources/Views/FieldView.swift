@@ -21,59 +21,54 @@ struct FieldView: View {
 						Button {
 							withAnimation {
 								viewModel.cellTapped(atX: x, atY: y)
-								if showMenu {
-									showMenu = false
-								}
-								if showInstruction {
-									showInstruction = false
-								}
+								showMenu = false
+								showInstruction = false
 							}
 						} label: {
-							if viewModel.cells[x][y] == 0 {
-								RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-									.stroke(lineWidth: Sizes.Stroke.width)
-									.frame(
-										width: Sizes.General.roundedViewLength,
-										height: Sizes.General.roundedViewLength
-									)
-									.foregroundStyle(
-										Color(Theme.accentCellColor)
-									)
-							} else if viewModel.cells[x][y] == 1 {
-								RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-									.frame(
-										width: Sizes.General.roundedViewLength,
-										height: Sizes.General.roundedViewLength
-									)
-									.foregroundStyle(
-										Color(Theme.accentCellColor)
-									)
-									.transition(.scale)
-							} else if viewModel.cells[x][y] == 2 {
-								RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-									.stroke(lineWidth: Sizes.Stroke.width)
-									.frame(
-										width: Sizes.General.roundedViewLength,
-										height: Sizes.General.roundedViewLength
-									)
-									.foregroundStyle(
-										Color(Theme.hintCellColor)
-									)
-							} else {
-								RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-									.frame(
-										width: Sizes.General.roundedViewLength,
-										height: Sizes.General.roundedViewLength
-									)
-									.foregroundStyle(
-										Color(Theme.hintCellColor)
-									)
-									.transition(.scale)
-							}
+							cellView(for: viewModel.cells[x][y])
 						}
 					}
 				}
 			}
+		}
+	}
+
+	@ViewBuilder
+	private func cellView(for value: CellState) -> some View {
+		switch value {
+		case .empty:
+			CellView(filled: false, color: Color(Theme.accentCellColor))
+		case .filled:
+			CellView(filled: true, color: Color(Theme.accentCellColor))
+		case .hintEmpty:
+			CellView(filled: false, color: Color(Theme.hintCellColor))
+		case .hintFilled:
+			CellView(filled: true, color: Color(Theme.hintCellColor))
+		}
+	}
+}
+
+struct CellView: View {
+	let filled: Bool
+	let color: Color
+
+	var body: some View {
+		if filled {
+			RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+				.frame(
+					width: Sizes.General.roundedViewLength,
+					height: Sizes.General.roundedViewLength
+				)
+				.foregroundStyle(color)
+				.transition(.scale)
+		} else {
+			RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+				.stroke(lineWidth: Sizes.Stroke.width)
+				.frame(
+					width: Sizes.General.roundedViewLength,
+					height: Sizes.General.roundedViewLength
+				)
+				.foregroundStyle(color)
 		}
 	}
 }

@@ -11,6 +11,8 @@ import SwiftUI
 struct BackgroundView: View {
 	@ObservedObject var viewModel: GameViewModel
 	@Binding var showMenu: Bool
+	@Binding var showInstruction: Bool
+	@Binding var showDeletionAlert: Bool
 
 	var body: some View {
 		ZStack {
@@ -22,7 +24,9 @@ struct BackgroundView: View {
 				Spacer()
 				BottomView(
 					viewModel: viewModel,
-					showMenu: $showMenu
+					showMenu: $showMenu,
+					showInstruction: $showInstruction,
+					showDeletionAlert: $showDeletionAlert
 				)
 			}
 			.padding()
@@ -100,6 +104,8 @@ struct BottomView: View {
 	@ObservedObject var viewModel: GameViewModel
 	@State private var levelsViewIsShowing = false
 	@Binding var showMenu: Bool
+	@Binding var showInstruction: Bool
+	@Binding var showDeletionAlert: Bool
 
 	var body: some View {
 		HStack {
@@ -118,7 +124,8 @@ struct BottomView: View {
 			LevelsView(
 				viewModel: viewModel,
 				levelsViewIsShowing: $levelsViewIsShowing,
-				showInstruction: $showMenu
+				showInstruction: $showInstruction,
+				showDeletionAlert: $showDeletionAlert
 			)
 		}
 	}
@@ -139,6 +146,8 @@ struct BottomView: View {
 				levelService: LevelService()
 			)
 		),
-		showMenu: .constant(true)
+		showMenu: .constant(true),
+		showInstruction: .constant(false),
+		showDeletionAlert: .constant(false)
 	)
 }
