@@ -271,7 +271,6 @@ final class MockGameManager: IGameManager {
 		getStarsForLevelResult
 	}
 
-	// TODO: Test
 	func resetProgress() {
 		resetProgressCalled = true
 	}
