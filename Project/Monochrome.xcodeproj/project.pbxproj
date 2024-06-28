@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		02DC904331317DCAF156BF25 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 356B4C37748236D10D808E8F /* Assets.xcassets */; };
 		069E1B9410F9ACEB7E7721EF /* RoundedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD3E51752F115DCAB489A3 /* RoundedViews.swift */; };
-		079BDEF02C2DC66E00FC7388 /* DeleteGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079BDEEF2C2DC66E00FC7388 /* DeleteGameView.swift */; };
-		079BDEF42C2DF4D600FC7388 /* FlipTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079BDEF32C2DF4D600FC7388 /* FlipTextView.swift */; };
 		0B15B73B384603FFF2CC119A /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC199E3AE72AC3B72F6EBB17 /* GameManager.swift */; };
 		1A34E10DEF08DD21267DEBEF /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6E5EF9A80EC7371940944 /* GameViewModelTests.swift */; };
 		2133E6A16C94EEFE97CDDC43 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0ECBAAD4CB4AE96EF2C379 /* Game.swift */; };
@@ -25,9 +23,11 @@
 		616846AB5255375299A7D2FA /* LevelRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E56637CCD3EBCF8C3183FF /* LevelRepositoryTests.swift */; };
 		6DC23DD50BA9772C8D33AA02 /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B334CD7B983AB3A448CA13 /* FieldView.swift */; };
 		6ED3D1EA18EBE688058D2B4A /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAF1C698748915EDD3F5938 /* GameView.swift */; };
+		7760BAC7374A47155EBA343C /* FlipTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5610D2DB0FEB58E71D33B9F8 /* FlipTextView.swift */; };
 		7DDA1DA1BFDC6D3C4C3B64CA /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F51DF9D8499573FBE6A7C3 /* Colors.swift */; };
 		82B9BC06C8F33037ADAFDFF0 /* LevelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906207B8F3DD519CD93CC061 /* LevelTests.swift */; };
 		84ABA15B11B462505C7B8179 /* LevelServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FD17822A6AAFF0D12CD91B /* LevelServiceTests.swift */; };
+		84E8743EAE892085B1201F99 /* DeleteGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8AA896F37A6D4C7BB8D8E27 /* DeleteGameView.swift */; };
 		8632E2B8D91CC40C9BF11116 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E175EBADA1B09D069BC795CA /* GameViewModel.swift */; };
 		8AF1DCDD2455CC84836A3A09 /* Sizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F686E1909C8E1D6D6DB4C03 /* Sizes.swift */; };
 		9DBA8A036FA2B53603A69AED /* LevelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE16BDFB1DBBE2AFB26316C3 /* LevelService.swift */; };
@@ -79,8 +79,6 @@
 		020848DCE082B517F18C0DCB /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		0482F0341A977ABDF3BEC927 /* Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		06BD3E51752F115DCAB489A3 /* RoundedViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedViews.swift; sourceTree = "<group>"; };
-		079BDEEF2C2DC66E00FC7388 /* DeleteGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteGameView.swift; sourceTree = "<group>"; };
-		079BDEF32C2DF4D600FC7388 /* FlipTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipTextView.swift; sourceTree = "<group>"; };
 		08FD17822A6AAFF0D12CD91B /* LevelServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelServiceTests.swift; sourceTree = "<group>"; };
 		1B33E1E14E02551A3CA0B874 /* Monochrome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Monochrome.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FC786D509133CEC3339B09A /* MonochromeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "MonochromeTests-Info.plist"; sourceTree = "<group>"; };
@@ -90,6 +88,7 @@
 		3F9638C3A02B90D7704134FA /* LevelRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelRepository.swift; sourceTree = "<group>"; };
 		48CE91EF5F8537DFBDB62119 /* LevelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelsView.swift; sourceTree = "<group>"; };
 		50E56637CCD3EBCF8C3183FF /* LevelRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelRepositoryTests.swift; sourceTree = "<group>"; };
+		5610D2DB0FEB58E71D33B9F8 /* FlipTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipTextView.swift; sourceTree = "<group>"; };
 		67F875707066184F04FB5999 /* GameManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManagerTests.swift; sourceTree = "<group>"; };
 		6AAF1C698748915EDD3F5938 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		72DEDF05D88B22498293CDD2 /* Monochrome-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Monochrome-Info.plist"; sourceTree = "<group>"; };
@@ -107,6 +106,7 @@
 		BC199E3AE72AC3B72F6EBB17 /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		D0E0D157B65165DA148CF2EB /* MonochromeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonochromeApp.swift; sourceTree = "<group>"; };
 		D3F51DF9D8499573FBE6A7C3 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		D8AA896F37A6D4C7BB8D8E27 /* DeleteGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteGameView.swift; sourceTree = "<group>"; };
 		DD1B649FF04E3095FEEE7FBA /* UIKit+Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+Dynamic.swift"; sourceTree = "<group>"; };
 		DE16BDFB1DBBE2AFB26316C3 /* LevelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelService.swift; sourceTree = "<group>"; };
 		E175EBADA1B09D069BC795CA /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
@@ -216,15 +216,15 @@
 			children = (
 				06D0BA29300AA4DB8B6624A2 /* ViewModels */,
 				771EF85CE9731D4F4557B73D /* BackgroundView.swift */,
+				D8AA896F37A6D4C7BB8D8E27 /* DeleteGameView.swift */,
 				B4B334CD7B983AB3A448CA13 /* FieldView.swift */,
+				5610D2DB0FEB58E71D33B9F8 /* FlipTextView.swift */,
 				6AAF1C698748915EDD3F5938 /* GameView.swift */,
 				B1CA0FBC21312924554FB82E /* GuideView.swift */,
 				48CE91EF5F8537DFBDB62119 /* LevelsView.swift */,
 				F75DDF20D233667236BBD118 /* ResultView.swift */,
 				06BD3E51752F115DCAB489A3 /* RoundedViews.swift */,
 				9B7738A2A741E8293C04A261 /* TextViews.swift */,
-				079BDEEF2C2DC66E00FC7388 /* DeleteGameView.swift */,
-				079BDEF32C2DF4D600FC7388 /* FlipTextView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -345,6 +345,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1510;
 				ORGANIZATIONNAME = repakuku;
 				TargetAttributes = {
 					D6ABC78F1C2172B93A49B041 = {
@@ -450,7 +451,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				43898B605029DD681B7BBBF1 /* TuistBundle+Monochrome.swift in Sources */,
-				079BDEF42C2DF4D600FC7388 /* FlipTextView.swift in Sources */,
 				F21B4D51C9125D283B86210A /* MonochromeApp.swift in Sources */,
 				264EB7BA96DAF77D93180CC9 /* Endpoints.swift in Sources */,
 				2133E6A16C94EEFE97CDDC43 /* Game.swift in Sources */,
@@ -465,14 +465,15 @@
 				2A1A72D302B665F508502510 /* Images.swift in Sources */,
 				8AF1DCDD2455CC84836A3A09 /* Sizes.swift in Sources */,
 				54C0E08621709F0C56AD6137 /* BackgroundView.swift in Sources */,
+				84E8743EAE892085B1201F99 /* DeleteGameView.swift in Sources */,
 				6DC23DD50BA9772C8D33AA02 /* FieldView.swift in Sources */,
+				7760BAC7374A47155EBA343C /* FlipTextView.swift in Sources */,
 				6ED3D1EA18EBE688058D2B4A /* GameView.swift in Sources */,
 				FB7853959E5607558780E064 /* GuideView.swift in Sources */,
 				3CAF6EB66706FBA689DA5B6B /* LevelsView.swift in Sources */,
 				B2EA8803937F3D26078758BC /* ResultView.swift in Sources */,
 				069E1B9410F9ACEB7E7721EF /* RoundedViews.swift in Sources */,
 				FC74C0684185B8E6E3D362E0 /* TextViews.swift in Sources */,
-				079BDEF02C2DC66E00FC7388 /* DeleteGameView.swift in Sources */,
 				8632E2B8D91CC40C9BF11116 /* GameViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
