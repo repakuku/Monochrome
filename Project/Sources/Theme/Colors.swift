@@ -18,6 +18,13 @@ enum Colors {
 		static let Cinnabar = UIColor(hex: 0xDC5047)
 		static let WellRead = UIColor(hex: 0xB33234)
 	}
+
+	enum Gray {
+		static let AlmondFrost = UIColor(hex: 0xA28F85)
+		static let WhiteSmoke = UIColor(hex: 0xEFEFEF)
+		static let Iron = UIColor(hex: 0xD1D5D8)
+		static let IronGray = UIColor(hex: 0x75706B)
+	}
 }
 
 enum Theme {
@@ -34,6 +41,7 @@ enum Theme {
 	static let redButtonFilledTextColor = UIColor.color(light: Colors.softBlack, dark: Colors.softWhite)
 	static let buttonFilledBackgroundColor = UIColor.color(light: Colors.softBlack, dark: Colors.softWhite)
 	static let buttonFilledBackgroundColorRed = UIColor.color(light: Colors.Red.Cinnabar, dark: Colors.Red.WellRead)
+	static let buttonShadowColor = UIColor.color(light: Colors.Gray.IronGray, dark: Colors.Gray.Iron)
 
 	// Cell Colors
 	static let mainCellColor = UIColor.color(light: Colors.softWhite, dark: Colors.softBlack)
