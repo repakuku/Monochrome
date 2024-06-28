@@ -35,15 +35,27 @@ struct FieldView: View {
 
 	@ViewBuilder
 	private func cellView(for value: CellState) -> some View {
+		CellView(
+			filled: isFilled(for: value),
+			color: color(for: value)
+		)
+	}
+
+	private func color(for value: CellState) -> Color {
 		switch value {
-		case .empty:
-			CellView(filled: false, color: Color(Theme.accentCellColor))
-		case .filled:
-			CellView(filled: true, color: Color(Theme.accentCellColor))
-		case .hintEmpty:
-			CellView(filled: false, color: Color(Theme.hintCellColor))
-		case .hintFilled:
-			CellView(filled: true, color: Color(Theme.hintCellColor))
+		case .empty, .filled:
+			return Color(Theme.accentCellColor)
+		case .hintEmpty, .hintFilled:
+			return Color(Theme.hintCellColor)
+		}
+	}
+
+	private func isFilled(for value: CellState) -> Bool {
+		switch value {
+		case .empty, .hintEmpty:
+			return false
+		case .filled, .hintFilled:
+			return true
 		}
 	}
 }
