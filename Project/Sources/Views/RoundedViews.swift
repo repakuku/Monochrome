@@ -11,37 +11,61 @@ import SwiftUI
 struct RoundedImageView: View {
 	let systemName: String
 	let isFilled: Bool
+	let action: () -> Void
+
+	@State private var isPressed = false
 
 	var body: some View {
-		ZStack {
-			RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-				.fill(Color.gray)
-				.frame(
-					width: Sizes.General.roundedViewLength,
-					height: Sizes.General.roundedViewLength
-				)
-				.offset(x: 4, y: 4)
-
-			Image(systemName: systemName)
-				.font(.title)
-				.foregroundStyle(isFilled ? Color(Theme.buttonFilledTextColor) : Color(Theme.textColor))
-				.frame(
-					width: Sizes.General.roundedViewLength,
-					height: Sizes.General.roundedViewLength
-				)
-				.background(
+		Button {
+			action()
+		} label: {
+			ZStack {
+				if !isPressed {
 					RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-						.fill(isFilled ? Color(Theme.buttonFilledBackgroundColor) : Color(Theme.backgroundColor))
-				)
-				.overlay(
-					RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-						.strokeBorder(
-							Color(Theme.buttonStrokeColor),
-							lineWidth: isFilled ? 0 : Sizes.Stroke.width
+						.fill(Color.gray)
+						.frame(
+							width: Sizes.General.roundedViewLength,
+							height: Sizes.General.roundedViewLength
 						)
-				)
-				.zIndex(1)
+						.offset(x: 3, y: 3)
+				}
+
+				Image(systemName: systemName)
+					.font(.title)
+					.foregroundStyle(isFilled ? Color(Theme.buttonFilledTextColor) : Color(Theme.textColor))
+					.frame(
+						width: Sizes.General.roundedViewLength,
+						height: Sizes.General.roundedViewLength
+					)
+					.background(
+						RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+							.fill(isFilled ? Color(Theme.buttonFilledBackgroundColor) : Color(Theme.backgroundColor))
+					)
+					.overlay(
+						RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+							.strokeBorder(
+								Color(Theme.buttonStrokeColor),
+								lineWidth: isFilled ? 0 : Sizes.Stroke.width
+							)
+					)
+					.zIndex(1)
+					.offset(x: isPressed ? 3 : 0, y: isPressed ? 3 : 0)
+			}
 		}
+		.buttonStyle(PlainButtonStyle())
+		.simultaneousGesture(
+			DragGesture(minimumDistance: 0)
+				.onChanged { _ in
+					withAnimation(nil) {
+						isPressed = true
+					}
+				}
+				.onEnded { _ in
+					withAnimation(nil) {
+						isPressed = false
+					}
+				}
+		)
 	}
 }
 
@@ -74,8 +98,8 @@ struct RoundedTextView: View {
 struct RoundedViewsPreview: View {
 	var body: some View {
 		VStack {
-			RoundedImageView(systemName: Images.questionmark.rawValue, isFilled: false)
-			RoundedImageView(systemName: Images.checklist.rawValue, isFilled: true)
+			RoundedImageView(systemName: Images.questionmark.rawValue, isFilled: false, action: {})
+			RoundedImageView(systemName: Images.checklist.rawValue, isFilled: true, action: {})
 			RoundedTextView(text: "1", isFilled: false)
 			RoundedTextView(text: "2", isFilled: true)
 		}
