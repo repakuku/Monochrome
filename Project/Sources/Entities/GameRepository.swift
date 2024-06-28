@@ -30,10 +30,8 @@ final class GameRepository: IGameRepository {
 		let encoder = JSONEncoder()
 		encoder.outputFormatting = .prettyPrinted
 
-		do {
-			let gameData = try encoder.encode(game)
-			try gameData.write(to: gameUrl, options: .atomic)
-		} catch {
+		if let gameData = try? encoder.encode(game) {
+			try? gameData.write(to: gameUrl, options: .atomic)
 		}
 	}
 
@@ -44,16 +42,14 @@ final class GameRepository: IGameRepository {
 
 		let decoder = JSONDecoder()
 
-		do {
-			let savedGameData = try Data(contentsOf: savedGameUrl)
-			let savedGame = try decoder.decode(Game.self, from: savedGameData)
-
+		if let savedGameData = try? Data(contentsOf: savedGameUrl),
+		   let savedGame = try? decoder.decode(Game.self, from: savedGameData) {
 			return Game(
 				level: savedGame.level,
 				taps: savedGame.taps,
 				levels: savedGame.levels
 			)
-		} catch {
+		} else {
 			return getNewGame()
 		}
 	}
@@ -63,11 +59,7 @@ final class GameRepository: IGameRepository {
 			return
 		}
 
-		do {
-			try FileManager.default.removeItem(at: savedGameUrl)
-		} catch {
-			// TODO: Handle error
-		}
+		try? FileManager.default.removeItem(at: savedGameUrl)
 	}
 
 	private func getNewGame() -> Game {
@@ -107,7 +99,6 @@ final class StubGameRepository: IGameRepository {
 		game
 	}
 
-	// TODO: Test
 	func deleteSavedGame(from savedGameUrl: URL?) {
 		deleteSavedGameCalled = true
 	}

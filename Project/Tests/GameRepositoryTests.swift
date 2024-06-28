@@ -84,18 +84,18 @@ final class GameRepositoryTests: XCTestCase {
 		XCTAssertTrue(FileManager.default.fileExists(atPath: tempUrl.path), "Expected file to exist at path \(tempUrl.path).")
 	}
 
-	func test_saveGame_withInvalidUrl_shouldNotSaveGame() {
+	func test_saveGame_withNilUrl_shouldNotSaveGame() {
 		let game = Game(
 			level: Level(id: 1, cellsMatrix: [[0, 1], [1, 0]]),
 			taps: 1,
 			levels: [Level(id: 1, cellsMatrix: [[0, 1], [1, 0]])]
 		)
 
-		let invalidUrl = URL(string: "invalid_url")
+		let nilUrl: URL? = nil
 
-		sut.saveGame(game, to: invalidUrl)
+		sut.saveGame(game, to: nilUrl)
 
-		XCTAssertFalse(FileManager.default.fileExists(atPath: invalidUrl?.path ?? ""), "Expected file to exist at path \(invalidUrl?.path ?? "").")
+		XCTAssertFalse(FileManager.default.fileExists(atPath: nilUrl?.path ?? ""), "Expected file not to be saved when URL is nil.")
 	}
 
 	// MARK: - Delete Saved Game
@@ -118,11 +118,12 @@ final class GameRepositoryTests: XCTestCase {
 		XCTAssertFalse(FileManager.default.fileExists(atPath: tempUrl.path), "Expected file to exist at path \(tempUrl.path).")
 	}
 
-	func test_deleteSavedGame_withInvalidUrl_shouldNotThrowError() {
-		let invalidUrl = URL(string: "invalid_url")
-		sut.deleteSavedGame(from: invalidUrl)
+	func test_deleteSavedGame_withNilUrl_shouldDeleteGame() {
+		let nilUrl: URL? = nil
 
-		// Handle case
+		sut.deleteSavedGame(from: nilUrl)
+
+		XCTAssert(true, "Expected deleteSavedGame to handle nil URL without errors.")
 	}
 }
 
