@@ -94,7 +94,7 @@ struct BigBoldText: View {
 	}
 }
 
-struct TapsText: View {
+ struct TapsText: View {
 	let value: Int
 
 	var body: some View {
@@ -102,6 +102,31 @@ struct TapsText: View {
 			.bold()
 			.foregroundColor(Color(Theme.textColor))
 			.font(.title3)
+	}
+ }
+
+struct TapsView: View {
+	@Binding var taps: Int
+
+	var body: some View {
+		ZStack {
+			Text(String(taps))
+				.kerning(Sizes.Kerning.large)
+				.foregroundStyle(Color(Theme.textColor))
+				.font(.largeTitle)
+				.frame(
+					height: Sizes.General.roundedViewLength
+				)
+				.transition(
+					AnyTransition.asymmetric(
+						insertion: .move(edge: .top),
+						removal: .move(edge: .bottom)
+					)
+				)
+			.id("Taps" + "\(taps)")
+		}
+		.frame(height: Sizes.General.roundedViewLength)
+		.clipped()
 	}
 }
 
