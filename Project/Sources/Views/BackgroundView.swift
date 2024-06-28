@@ -34,7 +34,7 @@ struct BackgroundView: View {
 	}
 }
 
- struct TopView: View {
+struct TopView: View {
 	@ObservedObject var viewModel: GameViewModel
 
 	@Binding var showMenu: Bool
@@ -43,51 +43,63 @@ struct BackgroundView: View {
 	var body: some View {
 		VStack {
 			HStack {
-				Button {
+				RoundedImageView(
+					systemName: Images.arrow.rawValue,
+					isFilled: false
+				) {
 					withAnimation {
 						viewModel.restartLevel()
 						showMenu = false
 					}
-				} label: {
-					RoundedImageView(systemName: Images.arrow.rawValue, isFilled: false)
 				}
+
 				Spacer()
+
 				BigBoldText(text: "Level \(viewModel.levelId)")
+
 				Spacer()
-				Button {
+
+				RoundedImageView(
+					systemName: Images.list.rawValue,
+					isFilled: !showMenu
+				) {
 					withAnimation {
 						showMenu.toggle()
-					}
-				} label: {
-					RoundedImageView(systemName: Images.list.rawValue, isFilled: !showMenu)
-				}
-			}
-			HStack {
-				Spacer()
-				Button {
-					withAnimation {
-						viewModel.getHint()
-						showMenu.toggle()
-					}
-				} label: {
-					if showMenu {
-						RoundedImageView(systemName: Images.questionmark.rawValue, isFilled: false)
-							.transition(.scale)
 					}
 				}
 			}
+
 			HStack {
 				Spacer()
-				Button {
-					withAnimation {
-						guideViewIsShowing = true
-						showMenu.toggle()
+
+				if showMenu {
+					RoundedImageView(
+						systemName: Images.questionmark.rawValue,
+						isFilled: false
+					) {
+						withAnimation {
+							viewModel.getHint()
+							showMenu.toggle()
+						}
 					}
-				} label: {
-					if showMenu {
-						RoundedImageView(systemName: Images.book.rawValue, isFilled: false)
-							.transition(.scale)
+					.transition(.scale)
+				}
+			}
+
+			HStack {
+				Spacer()
+
+				if showMenu {
+					RoundedImageView(
+						systemName: Images.book.rawValue,
+						isFilled: false
+					) {
+						withAnimation {
+							guideViewIsShowing = true
+							showMenu.toggle()
+						}
 					}
+					.transition(.scale)
 				}
 			}
 		}
@@ -98,7 +110,7 @@ struct BackgroundView: View {
 			)
 		}
 	}
- }
+}
 
 struct BottomView: View {
 	@ObservedObject var viewModel: GameViewModel
@@ -109,20 +121,28 @@ struct BottomView: View {
 
 	var body: some View {
 		HStack {
-			Button {
-			} label: {
-				RoundedImageView(systemName: Images.back.rawValue, isFilled: false)
+			RoundedImageView(
+				systemName: Images.back.rawValue,
+				isFilled: false
+			) {
+				// TODO: step back
 			}
+			.disabled(true)
+
 			Spacer()
+
 			FlipTextView(value: $viewModel.taps)
+
 			Spacer()
-			Button {
+
+			RoundedImageView(
+				systemName: Images.checklist.rawValue,
+				isFilled: false
+			) {
 				withAnimation {
 					levelsViewIsShowing = true
 					showMenu = false
 				}
-			} label: {
-				RoundedImageView(systemName: Images.checklist.rawValue, isFilled: false)
 			}
 		}
 		.sheet(isPresented: $levelsViewIsShowing) {

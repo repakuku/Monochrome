@@ -39,10 +39,13 @@ struct GuideHeaderView: View {
 		ZStack {
 			HStack {
 				Spacer()
-				Button {
-					viewIsShowing = false
-				} label: {
-					RoundedImageView(systemName: Images.xmark.rawValue, isFilled: true)
+				RoundedImageView(
+					systemName: Images.xmark.rawValue,
+					isFilled: true
+				) {
+					withAnimation {
+						viewIsShowing = false
+					}
 				}
 			}
 		}
