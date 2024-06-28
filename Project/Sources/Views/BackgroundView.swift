@@ -127,11 +127,11 @@ struct BottomView: View {
 			) {
 				// TODO: step back
 			}
-			.disabled(true)
 
 			Spacer()
 
-			FlipTextView(value: $viewModel.taps)
+//			BigBoldText(text: "\(viewModel.taps)")
+			TapsView(taps: $viewModel.taps)
 
 			Spacer()
 

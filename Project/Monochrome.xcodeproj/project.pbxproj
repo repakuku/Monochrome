@@ -23,7 +23,6 @@
 		616846AB5255375299A7D2FA /* LevelRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E56637CCD3EBCF8C3183FF /* LevelRepositoryTests.swift */; };
 		6DC23DD50BA9772C8D33AA02 /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B334CD7B983AB3A448CA13 /* FieldView.swift */; };
 		6ED3D1EA18EBE688058D2B4A /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAF1C698748915EDD3F5938 /* GameView.swift */; };
-		7760BAC7374A47155EBA343C /* FlipTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5610D2DB0FEB58E71D33B9F8 /* FlipTextView.swift */; };
 		7DDA1DA1BFDC6D3C4C3B64CA /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F51DF9D8499573FBE6A7C3 /* Colors.swift */; };
 		82B9BC06C8F33037ADAFDFF0 /* LevelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906207B8F3DD519CD93CC061 /* LevelTests.swift */; };
 		84ABA15B11B462505C7B8179 /* LevelServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FD17822A6AAFF0D12CD91B /* LevelServiceTests.swift */; };
@@ -88,7 +87,6 @@
 		3F9638C3A02B90D7704134FA /* LevelRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelRepository.swift; sourceTree = "<group>"; };
 		48CE91EF5F8537DFBDB62119 /* LevelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelsView.swift; sourceTree = "<group>"; };
 		50E56637CCD3EBCF8C3183FF /* LevelRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelRepositoryTests.swift; sourceTree = "<group>"; };
-		5610D2DB0FEB58E71D33B9F8 /* FlipTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipTextView.swift; sourceTree = "<group>"; };
 		67F875707066184F04FB5999 /* GameManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManagerTests.swift; sourceTree = "<group>"; };
 		6AAF1C698748915EDD3F5938 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		72DEDF05D88B22498293CDD2 /* Monochrome-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Monochrome-Info.plist"; sourceTree = "<group>"; };
@@ -218,7 +216,6 @@
 				771EF85CE9731D4F4557B73D /* BackgroundView.swift */,
 				D8AA896F37A6D4C7BB8D8E27 /* DeleteGameView.swift */,
 				B4B334CD7B983AB3A448CA13 /* FieldView.swift */,
-				5610D2DB0FEB58E71D33B9F8 /* FlipTextView.swift */,
 				6AAF1C698748915EDD3F5938 /* GameView.swift */,
 				B1CA0FBC21312924554FB82E /* GuideView.swift */,
 				48CE91EF5F8537DFBDB62119 /* LevelsView.swift */,
@@ -467,7 +464,6 @@
 				54C0E08621709F0C56AD6137 /* BackgroundView.swift in Sources */,
 				84E8743EAE892085B1201F99 /* DeleteGameView.swift in Sources */,
 				6DC23DD50BA9772C8D33AA02 /* FieldView.swift in Sources */,
-				7760BAC7374A47155EBA343C /* FlipTextView.swift in Sources */,
 				6ED3D1EA18EBE688058D2B4A /* GameView.swift in Sources */,
 				FB7853959E5607558780E064 /* GuideView.swift in Sources */,
 				3CAF6EB66706FBA689DA5B6B /* LevelsView.swift in Sources */,

@@ -22,7 +22,7 @@ struct RoundedImageView: View {
 			ZStack {
 				if !isPressed {
 					RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-						.fill(Color.gray)
+						.fill(Color(Theme.buttonShadowColor))
 						.frame(
 							width: Sizes.General.roundedViewLength,
 							height: Sizes.General.roundedViewLength
@@ -49,21 +49,18 @@ struct RoundedImageView: View {
 							)
 					)
 					.zIndex(1)
-					.offset(x: isPressed ? 3 : 0, y: isPressed ? 3 : 0)
+					.offset(x: isPressed ? 4 : 0, y: isPressed ? 4 : 0)
+					.scaleEffect(CGSize(width: isPressed ? 0.95 : 1, height: isPressed ? 0.95 : 1))
 			}
 		}
 		.buttonStyle(PlainButtonStyle())
 		.simultaneousGesture(
 			DragGesture(minimumDistance: 0)
 				.onChanged { _ in
-					withAnimation(nil) {
-						isPressed = true
-					}
+					isPressed = true
 				}
 				.onEnded { _ in
-					withAnimation(nil) {
-						isPressed = false
-					}
+					isPressed = false
 				}
 		)
 	}
