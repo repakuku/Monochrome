@@ -86,21 +86,25 @@ struct LevelsHeaderView: View {
 	var body: some View {
 		ZStack {
 			HStack {
-				Button {
+				RoundedImageView(
+					systemName: Images.eraser.rawValue,
+					isFilled: false
+				) {
 					withAnimation {
 						viewIsShowing = false
 						showDeletionAlert = true
 					}
-				} label: {
-					RoundedImageView(systemName: Images.eraser.rawValue, isFilled: false)
 				}
+
 				Spacer()
-				Button {
+
+				RoundedImageView(
+					systemName: Images.xmark.rawValue,
+					isFilled: true
+				) {
 					withAnimation {
 						viewIsShowing = false
 					}
-				} label: {
-					RoundedImageView(systemName: Images.xmark.rawValue, isFilled: true)
 				}
 			}
 		}
