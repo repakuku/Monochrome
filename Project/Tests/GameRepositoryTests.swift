@@ -146,7 +146,7 @@ private extension GameRepositoryTests {
 			]
 		)
 
-		XCTAssertEqual(game.level, expectedGame.level, "Expected game to be \(expectedGame), but got \(game).", file: file, line: line)
+		XCTAssertEqual(game, expectedGame, "Expected game to be \(expectedGame), but got \(game).", file: file, line: line)
 	}
 
 	func createTemporaryFile(with data: Data) -> URL {
