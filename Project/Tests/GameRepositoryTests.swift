@@ -57,7 +57,7 @@ final class GameRepositoryTests: XCTestCase {
 	func test_getSavedGame_shouldReturnSavedGame() {
 		let savedGame = Game(
 			level: Level(id: 1, cellsMatrix: [[0, 1], [1, 0]]),
-			taps: 1,
+			taps: [],
 			levels: [Level(id: 1, cellsMatrix: [[0, 1], [1, 0]])]
 		)
 		let savedGameData = try! JSONEncoder().encode(savedGame)
@@ -73,7 +73,7 @@ final class GameRepositoryTests: XCTestCase {
 	func test_saveGame_shouldSaveGame() {
 		let game = Game(
 			level: Level(id: 1, cellsMatrix: [[0, 1], [1, 0]]),
-			taps: 1,
+			taps: [],
 			levels: [Level(id: 1, cellsMatrix: [[0, 1], [1, 0]])]
 		)
 
@@ -87,7 +87,7 @@ final class GameRepositoryTests: XCTestCase {
 	func test_saveGame_withNilUrl_shouldNotSaveGame() {
 		let game = Game(
 			level: Level(id: 1, cellsMatrix: [[0, 1], [1, 0]]),
-			taps: 1,
+			taps: [],
 			levels: [Level(id: 1, cellsMatrix: [[0, 1], [1, 0]])]
 		)
 
@@ -103,7 +103,7 @@ final class GameRepositoryTests: XCTestCase {
 	func test_deleteSavedGame_shouldDeleteGame() {
 		let game = Game(
 			level: Level(id: 1, cellsMatrix: [[0, 1], [1, 0]]),
-			taps: 1,
+			taps: [],
 			levels: [Level(id: 1, cellsMatrix: [[0, 1], [1, 0]])]
 		)
 
@@ -135,7 +135,7 @@ private extension GameRepositoryTests {
 	) {
 		let expectedGame = Game(
 			level: Level(id: 0, cellsMatrix: [[0]]),
-			taps: 0,
+			taps: [],
 			levels: [
 				Level(id: 0, cellsMatrix: [[0]]),
 				Level(id: 1, cellsMatrix: [[0, 0], [1, 0]]),

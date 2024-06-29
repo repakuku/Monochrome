@@ -186,6 +186,15 @@ final class GameViewModelTests: XCTestCase {
 		XCTAssertEqual(stars, 0, "Expected stars to be 0 for invalid ID, but got \(stars).")
 	}
 
+	// MARK: - Undo Button Tapped
+
+	func test_undoButtonTapped_shouldCallUndoLastTap() {
+
+		sut.undoButtonTapped()
+
+		XCTAssertTrue(mockGameManager.undoLastTapCalled, "Expected undoLastTap to be called, but it wasn't.")
+	}
+
 	// MARK: - Erase Button Tapped
 
 	func test_eraserButtonTapped_shouldCallResetProgressAndupdateGameState() {

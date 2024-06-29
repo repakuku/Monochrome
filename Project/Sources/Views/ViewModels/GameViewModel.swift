@@ -38,7 +38,7 @@ final class GameViewModel: ObservableObject {
 		isTutorialLevel = gameManager.currentLevelId == 0
 		levelId = gameManager.currentLevelId
 		cells = GameViewModel.mapCells(gameManager.currentLevelCells)
-		taps = gameManager.currentTaps
+		taps = gameManager.tapsCount
 		isLevelCompleted = false
 	}
 
@@ -109,13 +109,18 @@ final class GameViewModel: ObservableObject {
 		return gameManager.getStarsForLevel(id: id, forCurrentGame: false)
 	}
 
+	func undoButtonTapped() {
+		gameManager.undoLastTap()
+		updateLevel()
+	}
+
 	func eraserButtonTapped() {
 		gameManager.resetProgress()
 
 		isTutorialLevel = true
 		levelId = gameManager.currentLevelId
 		cells = GameViewModel.mapCells(gameManager.currentLevelCells)
-		taps = gameManager.currentTaps
+		taps = gameManager.tapsCount
 		isLevelCompleted = false
 	}
 
@@ -130,6 +135,6 @@ final class GameViewModel: ObservableObject {
 	private func updateLevel() {
 		levelId = gameManager.currentLevelId
 		cells = GameViewModel.mapCells(gameManager.currentLevelCells)
-		taps = gameManager.currentTaps
+		taps = gameManager.tapsCount
 	}
 }
