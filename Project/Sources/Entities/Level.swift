@@ -63,7 +63,7 @@ struct Level: Codable, Equatable {
 		cellsMatrix.count
 	}
 
-	init(id: Int, cellsMatrix: [[Int]]) {
+	init(id: Int, cellsMatrix: [[Int]], status: LevelStatus = .incompleted) {
 
 		let isIncorrectMatrix = cellsMatrix.isEmpty || cellsMatrix.contains { $0.count != cellsMatrix.count }
 
@@ -75,7 +75,7 @@ struct Level: Codable, Equatable {
 			self.cellsMatrix = cellsMatrix
 		}
 
-		self.status = .incompleted
+		self.status = status
 	}
 
 	static func == (lhs: Level, rhs: Level) -> Bool {
