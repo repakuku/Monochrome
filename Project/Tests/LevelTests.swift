@@ -11,7 +11,7 @@ import XCTest
 
 final class LevelTests: XCTestCase {
 	
-	func test_init_shouldImplementCorrectInstance() {
+	func test_init_incompletedLevel_shouldImplementCorrectInstance() {
 		let sut = Level(
 			id: 1,
 			cellsMatrix: [
@@ -33,13 +33,14 @@ final class LevelTests: XCTestCase {
 		)
 	}
 
-	func test_init_incompletedLevel_shouldImplementCorrectInstance() {
+	func test_init_completedLevel_shouldImplementCorrectInstance() {
 		let sut = Level(
 			id: 1,
 			cellsMatrix: [
 				[0, 0],
 				[1, 0]
-			]
+			],
+			status: .completed(2)
 		)
 
 		let expectedMatrix = [
@@ -51,7 +52,7 @@ final class LevelTests: XCTestCase {
 			sut,
 			expectedId: 1,
 			expectedMatrix: expectedMatrix,
-			expectedStatus: .incompleted
+			expectedStatus: .completed(2)
 		)
 	}
 
