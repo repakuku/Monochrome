@@ -67,7 +67,7 @@ final class GameRepository: IGameRepository {
 		let firstLevel = newLevels[0]
 		return Game(
 			level: firstLevel,
-			taps: 0,
+			taps: [],
 			levels: newLevels
 		)
 	}
@@ -80,7 +80,7 @@ final class StubGameRepository: IGameRepository {
 
 	var game = Game(
 		level: Level(id: 0, cellsMatrix: [[0]]),
-		taps: 0,
+		taps: [],
 		levels: [
 			Level(id: 0, cellsMatrix: [[0]]),
 			Level(id: 1, cellsMatrix: [[0, 0], [1, 0]]),

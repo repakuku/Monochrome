@@ -125,12 +125,13 @@ struct BottomView: View {
 				systemName: Images.back.rawValue,
 				isFilled: false
 			) {
-				// TODO: step back
+				withAnimation {
+					viewModel.undoButtonTapped()
+				}
 			}
 
 			Spacer()
 
-//			BigBoldText(text: "\(viewModel.taps)")
 			TapsView(taps: $viewModel.taps)
 
 			Spacer()
