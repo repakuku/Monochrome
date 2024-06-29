@@ -61,7 +61,7 @@ struct TopView: View {
 
 				RoundedImageView(
 					systemName: Images.list.rawValue,
-					isFilled: !showMenu
+					isFilled: showMenu
 				) {
 					withAnimation {
 						showMenu.toggle()
