@@ -21,7 +21,7 @@ final class LevelRepository: ILevelRepository {
 	}
 
 	func getLevels() -> [Level] {
-		levels
+		levels.sortedById()
 	}
 
 	private func loadJsonLevels(from url: URL?) -> [Level] {
@@ -39,55 +39,16 @@ final class LevelRepository: ILevelRepository {
 }
 
 final class StubLevelRepository: ILevelRepository {
-	var levels: [Level] = [
-		Level(
-			id: 0,
-			cellsMatrix: [
-				[0]
-			]
-		),
-		Level(
-			id: 1,
-			cellsMatrix: [
-				[0, 0],
-				[1, 0]
-			]
-		),
-		Level(
-			id: 2,
-			cellsMatrix: [
-				[0, 0],
-				[1, 1]
-			]
-		),
-		Level(
-			id: 3,
-			cellsMatrix: [
-				[1, 0],
-				[1, 1]
-			]
-		),
-		Level(
-			id: 4,
-			cellsMatrix: [
-				[1, 0, 0, 0],
-				[0, 1, 1, 0],
-				[0, 1, 1, 0],
-				[0, 0, 0, 1]
-			]
-		),
-		Level(
-			id: 5,
-			cellsMatrix: [
-				[1, 1, 1, 1],
-				[1, 0, 0, 1],
-				[1, 0, 0, 1],
-				[1, 1, 1, 1]
-			]
-		)
+	var levels = [
+		Level(id: 0, cellsMatrix: [[0]]),
+		Level(id: 1, cellsMatrix: [[0, 0], [1, 0]]),
+		Level(id: 2, cellsMatrix: [[0, 0], [1, 1]]),
+		Level(id: 3, cellsMatrix: [[1, 0], [1, 1]]),
+		Level(id: 4, cellsMatrix: [[1, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 1]]),
+		Level(id: 5, cellsMatrix: [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]])
 	]
 
 	func getLevels() -> [Level] {
-		levels
+		levels.sortedById()
 	}
 }

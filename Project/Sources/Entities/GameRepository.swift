@@ -35,7 +35,7 @@ final class GameRepository: IGameRepository {
 		}
 	}
 
-	func getGame(from savedGameUrl: URL?) -> Game {
+	func getGame(from savedGameUrl: URL? = nil) -> Game {
 		guard let savedGameUrl = savedGameUrl else {
 			return getNewGame()
 		}
@@ -44,11 +44,19 @@ final class GameRepository: IGameRepository {
 
 		if let savedGameData = try? Data(contentsOf: savedGameUrl),
 		   let savedGame = try? decoder.decode(Game.self, from: savedGameData) {
-			return Game(
-				level: savedGame.level,
-				taps: savedGame.taps,
-				levels: savedGame.levels
-			)
+
+			let newGame = getNewGame()
+
+			if newGame.levelsHash != savedGame.levelsHash {
+				return newGame
+			} else {
+				return Game(
+					level: savedGame.level,
+					taps: savedGame.taps,
+					levels: savedGame.levels,
+					levelsHash: savedGame.levelsHash
+				)
+			}
 		} else {
 			return getNewGame()
 		}
@@ -65,10 +73,14 @@ final class GameRepository: IGameRepository {
 	private func getNewGame() -> Game {
 		let newLevels = levelRepository.getLevels()
 		let firstLevel = newLevels[0]
+
+		let newLevelsHash = HashService.calculateHash(of: newLevels)
+
 		return Game(
 			level: firstLevel,
 			taps: [],
-			levels: newLevels
+			levels: newLevels,
+			levelsHash: newLevelsHash
 		)
 	}
 }
@@ -88,7 +100,8 @@ final class StubGameRepository: IGameRepository {
 			Level(id: 3, cellsMatrix: [[1, 0], [1, 1]]),
 			Level(id: 4, cellsMatrix: [[1, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 1]]),
 			Level(id: 5, cellsMatrix: [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]])
-		]
+		],
+		levelsHash: "hash"
 	)
 
 	func saveGame(_ game: Game, to gameUrl: URL?) {
