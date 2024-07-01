@@ -25,11 +25,12 @@ struct Game: Codable, Equatable {
 	var level: Level
 	var taps: [Tap]
 	var levels: [Level]
+	var levelsHash: String
 
 	static func == (lhs: Game, rhs: Game) -> Bool {
-		if lhs.level == rhs.level
-			&& lhs.taps == rhs.taps
-			&& lhs.levels == rhs.levels {
+		if lhs.taps == rhs.taps
+			&& lhs.levels == rhs.levels
+			&& lhs.levelsHash == rhs.levelsHash {
 			return true
 		} else {
 			return false

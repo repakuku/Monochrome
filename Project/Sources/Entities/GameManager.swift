@@ -242,7 +242,8 @@ final class MockGameManager: IGameManager {
 	var game = Game(
 		level: Level(id: 0, cellsMatrix: [[0]]),
 		taps: [],
-		levels: [Level(id: 0, cellsMatrix: [[0]])]
+		levels: [Level(id: 0, cellsMatrix: [[0]])],
+		levelsHash: "hash"
 	)
 
 	var toggleColorsCalled = false

@@ -44,20 +44,8 @@ final class GameManagerTests: XCTestCase {
 	// MARK: - Initialization
 
 	func test_init_shouldImplementCorrectInstance() {
-		let expectedLevels = [
-			Level(id: 0, cellsMatrix: [[0]]),
-			Level(id: 1, cellsMatrix: [[0, 0], [1, 0]]),
-			Level(id: 2, cellsMatrix: [[0, 0], [1, 1]]),
-			Level(id: 3, cellsMatrix: [[1, 0], [1, 1]]),
-			Level(id: 4, cellsMatrix: [[1, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 1]]),
-			Level(id: 5, cellsMatrix: [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]])
-		]
 
-		let expectedGame = Game(
-			level: expectedLevels[0],
-			taps: [],
-			levels: expectedLevels
-		)
+		let expectedGame = createGame()
 
 		XCTAssertEqual(sut.numberOfLevels, expectedGame.levels.count, "Expected number of levels to be \(expectedGame.levels.count), but got \(sut.numberOfLevels).")
 		XCTAssertEqual(sut.currentLevelId, expectedGame.level.id, "Expected current level ID to be \(expectedGame.level.id), but got \(sut.currentLevelId).")
@@ -456,20 +444,7 @@ final class GameManagerTests: XCTestCase {
 
 		XCTAssertTrue(stubGameRepository.deleteSavedGameCalled, "Expected deleteSavedGame to be called, but it wasn't.")
 
-		let expectedLevels = [
-			Level(id: 0, cellsMatrix: [[0]]),
-			Level(id: 1, cellsMatrix: [[0, 0], [1, 0]]),
-			Level(id: 2, cellsMatrix: [[0, 0], [1, 1]]),
-			Level(id: 3, cellsMatrix: [[1, 0], [1, 1]]),
-			Level(id: 4, cellsMatrix: [[1, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 1]]),
-			Level(id: 5, cellsMatrix: [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]])
-		]
-
-		let expectedGame = Game(
-			level: expectedLevels[0],
-			taps: [],
-			levels: expectedLevels
-		)
+		let expectedGame = createGame()
 
 		XCTAssertEqual(sut.numberOfLevels, expectedGame.levels.count, "Expected number of levels to be \(expectedGame.levels.count), but got \(sut.numberOfLevels).")
 		XCTAssertEqual(sut.currentLevelId, expectedGame.level.id, "Expected current level ID to be \(expectedGame.level.id), but got \(sut.currentLevelId).")
@@ -495,5 +470,23 @@ private extension GameManagerTests {
 		mockLevelService.checkMatrixResult = true
 
 		sut.toggleColors(atX: 0, atY: 0)
+	}
+
+	private func createGame() -> Game {
+		let levels = [
+			Level(id: 0, cellsMatrix: [[0]]),
+			Level(id: 1, cellsMatrix: [[0, 0], [1, 0]]),
+			Level(id: 2, cellsMatrix: [[0, 0], [1, 1]]),
+			Level(id: 3, cellsMatrix: [[1, 0], [1, 1]]),
+			Level(id: 4, cellsMatrix: [[1, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 1]]),
+			Level(id: 5, cellsMatrix: [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]])
+		]
+
+		return Game(
+			level: levels[0],
+			taps: [],
+			levels: levels,
+			levelsHash: "new_hash"
+		)
 	}
 }

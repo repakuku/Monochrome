@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		02DC904331317DCAF156BF25 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 356B4C37748236D10D808E8F /* Assets.xcassets */; };
 		069E1B9410F9ACEB7E7721EF /* RoundedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06BD3E51752F115DCAB489A3 /* RoundedViews.swift */; };
+		07ACCBCB2C334363000DCC11 /* HashService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ACCBCA2C334363000DCC11 /* HashService.swift */; };
+		07ACCBCF2C334397000DCC11 /* HashServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ACCBCE2C334397000DCC11 /* HashServiceTests.swift */; };
+		07ACCBD12C334F80000DCC11 /* Array+sortedById.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ACCBD02C334F80000DCC11 /* Array+sortedById.swift */; };
 		0B15B73B384603FFF2CC119A /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC199E3AE72AC3B72F6EBB17 /* GameManager.swift */; };
 		1A34E10DEF08DD21267DEBEF /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6E5EF9A80EC7371940944 /* GameViewModelTests.swift */; };
 		2133E6A16C94EEFE97CDDC43 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0ECBAAD4CB4AE96EF2C379 /* Game.swift */; };
@@ -78,6 +81,9 @@
 		020848DCE082B517F18C0DCB /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		0482F0341A977ABDF3BEC927 /* Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		06BD3E51752F115DCAB489A3 /* RoundedViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedViews.swift; sourceTree = "<group>"; };
+		07ACCBCA2C334363000DCC11 /* HashService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashService.swift; sourceTree = "<group>"; };
+		07ACCBCE2C334397000DCC11 /* HashServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashServiceTests.swift; sourceTree = "<group>"; };
+		07ACCBD02C334F80000DCC11 /* Array+sortedById.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+sortedById.swift"; sourceTree = "<group>"; };
 		08FD17822A6AAFF0D12CD91B /* LevelServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelServiceTests.swift; sourceTree = "<group>"; };
 		1B33E1E14E02551A3CA0B874 /* Monochrome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Monochrome.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FC786D509133CEC3339B09A /* MonochromeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "MonochromeTests-Info.plist"; sourceTree = "<group>"; };
@@ -160,6 +166,7 @@
 				50E56637CCD3EBCF8C3183FF /* LevelRepositoryTests.swift */,
 				08FD17822A6AAFF0D12CD91B /* LevelServiceTests.swift */,
 				906207B8F3DD519CD93CC061 /* LevelTests.swift */,
+				07ACCBCE2C334397000DCC11 /* HashServiceTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -242,6 +249,7 @@
 			children = (
 				B14293AE42766CA0985A5CCB /* UIColor+Hex.swift */,
 				DD1B649FF04E3095FEEE7FBA /* UIKit+Dynamic.swift */,
+				07ACCBD02C334F80000DCC11 /* Array+sortedById.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -272,6 +280,7 @@
 				0482F0341A977ABDF3BEC927 /* Level.swift */,
 				3F9638C3A02B90D7704134FA /* LevelRepository.swift */,
 				DE16BDFB1DBBE2AFB26316C3 /* LevelService.swift */,
+				07ACCBCA2C334363000DCC11 /* HashService.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -439,6 +448,7 @@
 				1A34E10DEF08DD21267DEBEF /* GameViewModelTests.swift in Sources */,
 				616846AB5255375299A7D2FA /* LevelRepositoryTests.swift in Sources */,
 				84ABA15B11B462505C7B8179 /* LevelServiceTests.swift in Sources */,
+				07ACCBCF2C334397000DCC11 /* HashServiceTests.swift in Sources */,
 				82B9BC06C8F33037ADAFDFF0 /* LevelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -460,6 +470,7 @@
 				371D8FA659B012D24F677DBD /* UIKit+Dynamic.swift in Sources */,
 				7DDA1DA1BFDC6D3C4C3B64CA /* Colors.swift in Sources */,
 				2A1A72D302B665F508502510 /* Images.swift in Sources */,
+				07ACCBCB2C334363000DCC11 /* HashService.swift in Sources */,
 				8AF1DCDD2455CC84836A3A09 /* Sizes.swift in Sources */,
 				54C0E08621709F0C56AD6137 /* BackgroundView.swift in Sources */,
 				84E8743EAE892085B1201F99 /* DeleteGameView.swift in Sources */,
@@ -469,6 +480,7 @@
 				3CAF6EB66706FBA689DA5B6B /* LevelsView.swift in Sources */,
 				B2EA8803937F3D26078758BC /* ResultView.swift in Sources */,
 				069E1B9410F9ACEB7E7721EF /* RoundedViews.swift in Sources */,
+				07ACCBD12C334F80000DCC11 /* Array+sortedById.swift in Sources */,
 				FC74C0684185B8E6E3D362E0 /* TextViews.swift in Sources */,
 				8632E2B8D91CC40C9BF11116 /* GameViewModel.swift in Sources */,
 			);
