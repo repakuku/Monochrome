@@ -3,7 +3,7 @@ import ProjectDescription
 // MARK: - Project Settings
 
 enum ProjectSettings {
-	public static var organizationName: String { "repakuku" }
+	public static var organizationName: String { "com.repakuku" }
 	public static var projectName: String { "Monochrome" }
 	public static var appVersionName: String { "1.0.0" }
 	public static var appVersionBuild: Int { 1 }
@@ -38,6 +38,11 @@ private let infoPlistExtension: [String: Plist.Value] = [
 	"UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"]
 ]
 
+let targetSettings: [String: SettingValue] = [
+	"TARGETED_DEVICE_FAMILY": "1",
+	"ENABLE_USER_SCRIPT_SANDBOXING": "NO"
+]
+
 // MARK: - Targets
 
 let target = Target(
@@ -52,9 +57,7 @@ let target = Target(
 	scripts: scripts,
 	dependencies: [],
 	settings: .settings(
-		base: [
-			"TARGETED_DEVICE_FAMILY": "1"
-		]
+		base: targetSettings
 	)
 )
 
@@ -70,9 +73,7 @@ let testTarget = Target(
 		.target(name: "\(ProjectSettings.projectName)")
 	],
 	settings: .settings(
-		base: [
-			"TARGETED_DEVICE_FAMILY": "1"
-		]
+		base: targetSettings
 	)
 )
 

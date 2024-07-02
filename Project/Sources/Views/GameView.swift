@@ -24,7 +24,8 @@ struct GameView: View {
 			)
 	)
 
-	@State private var showMenu = false
+	@State private var showFirstMenuItem = false
+	@State private var showSecondMenuItem = false
 	@State private var showResult = false
 	@State private var showInstruction = true
 	@State private var showDeletionAlert = false
@@ -38,7 +39,8 @@ struct GameView: View {
 			if !viewModel.isTutorialLevel {
 				BackgroundView(
 					viewModel: viewModel,
-					showMenu: $showMenu,
+					showFirstMenuItem: $showFirstMenuItem,
+					showSecondMenuItem: $showSecondMenuItem,
 					showInstruction: $showInstruction,
 					showDeletionAlert: $showDeletionAlert
 				)
@@ -63,7 +65,8 @@ struct GameView: View {
 			} else {
 				FieldView(
 					viewModel: viewModel,
-					showMenu: $showMenu,
+					showFirstMenuItem: $showFirstMenuItem,
+					showSecondMenuItem: $showSecondMenuItem,
 					showInstruction: $showInstruction
 				)
 				.transition(.scale)
@@ -90,7 +93,8 @@ struct GameView: View {
 		}
 		.onTapGesture {
 			withAnimation {
-				showMenu = false
+				showFirstMenuItem = false
+				showSecondMenuItem = false
 			}
 		}
 		.statusBarHidden()
