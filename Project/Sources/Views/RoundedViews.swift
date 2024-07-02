@@ -22,12 +22,12 @@ struct RoundedImageView: View {
 			ZStack {
 				if !isPressed {
 					RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-						.fill(Color(Theme.buttonShadowColor))
+						.fill(Color(Theme.buttonEdgeColor))
 						.frame(
 							width: Sizes.General.roundedViewLength,
 							height: Sizes.General.roundedViewLength
 						)
-						.offset(x: 3, y: 3)
+						.offset(y: 4)
 				}
 
 				Image(systemName: systemName)
@@ -49,8 +49,8 @@ struct RoundedImageView: View {
 							)
 					)
 					.zIndex(1)
-					.offset(x: isPressed ? 4 : 0, y: isPressed ? 4 : 0)
-					.scaleEffect(CGSize(width: isPressed ? 0.95 : 1, height: isPressed ? 0.95 : 1))
+					.offset(y: isPressed ? 4 : 0)
+//					.scaleEffect(CGSize(width: isPressed ? 0.95 : 1, height: isPressed ? 0.95 : 1))
 			}
 		}
 		.buttonStyle(PlainButtonStyle())

@@ -10,7 +10,8 @@ import SwiftUI
 
 struct BackgroundView: View {
 	@ObservedObject var viewModel: GameViewModel
-	@Binding var showMenu: Bool
+	@Binding var showFirstMenuItem: Bool
+	@Binding var showSecondMenuItem: Bool
 	@Binding var showInstruction: Bool
 	@Binding var showDeletionAlert: Bool
 
@@ -20,11 +21,18 @@ struct BackgroundView: View {
 				.ignoresSafeArea()
 
 			VStack {
-				TopView(viewModel: viewModel, showMenu: $showMenu)
+				TopView(
+					viewModel: viewModel,
+					showFirstMenuItem: $showFirstMenuItem,
+					showSecondMenuItem: $showSecondMenuItem
+				)
+
 				Spacer()
+
 				BottomView(
 					viewModel: viewModel,
-					showMenu: $showMenu,
+					showFirstMenuItem: $showFirstMenuItem,
+					showSecondMenuItem: $showSecondMenuItem,
 					showInstruction: $showInstruction,
 					showDeletionAlert: $showDeletionAlert
 				)
@@ -36,8 +44,8 @@ struct BackgroundView: View {
 
 struct TopView: View {
 	@ObservedObject var viewModel: GameViewModel
-
-	@Binding var showMenu: Bool
+	@Binding var showFirstMenuItem: Bool
+	@Binding var showSecondMenuItem: Bool
 	@State private var guideViewIsShowing = false
 
 	var body: some View {
@@ -49,7 +57,8 @@ struct TopView: View {
 				) {
 					withAnimation {
 						viewModel.restartLevel()
-						showMenu = false
+						showFirstMenuItem = false
+						showSecondMenuItem = false
 					}
 				}
 
@@ -61,46 +70,63 @@ struct TopView: View {
 
 				RoundedImageView(
 					systemName: Images.list.rawValue,
-					isFilled: showMenu
+					isFilled: showFirstMenuItem
 				) {
 					withAnimation {
-						showMenu.toggle()
+						showFirstMenuItem.toggle()
 					}
 				}
 			}
+			.zIndex(2)
 
-			HStack {
-				Spacer()
+			if showFirstMenuItem {
+				HStack {
+					Spacer()
 
-				if showMenu {
-					RoundedImageView(
-						systemName: Images.questionmark.rawValue,
-						isFilled: false
-					) {
-						withAnimation {
-							viewModel.getHint()
-							showMenu.toggle()
+					VStack {
+						RoundedImageView(
+							systemName: Images.questionmark.rawValue,
+							isFilled: false
+						) {
+							withAnimation {
+								viewModel.getHint()
+								showFirstMenuItem.toggle()
+							}
 						}
 					}
-					.transition(.scale)
+				}
+				.zIndex(1)
+				.transition(.offset(y: -Sizes.General.roundedViewLength - Sizes.Spacing.small))
+				.onAppear {
+					DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+						withAnimation {
+							showSecondMenuItem = true
+						}
+					}
+				}
+				.onDisappear {
+					withAnimation {
+						showSecondMenuItem = false
+					}
 				}
 			}
 
-			HStack {
-				Spacer()
+			if showSecondMenuItem {
+				HStack {
+					Spacer()
 
-				if showMenu {
 					RoundedImageView(
 						systemName: Images.book.rawValue,
 						isFilled: false
 					) {
 						withAnimation {
 							guideViewIsShowing = true
-							showMenu.toggle()
+							showFirstMenuItem.toggle()
 						}
 					}
-					.transition(.scale)
 				}
+				.zIndex(0)
+				.transition(.offset(y: -Sizes.General.roundedViewLength - Sizes.Spacing.small))
 			}
 		}
 		.sheet(isPresented: $guideViewIsShowing) {
@@ -115,7 +141,8 @@ struct TopView: View {
 struct BottomView: View {
 	@ObservedObject var viewModel: GameViewModel
 	@State private var levelsViewIsShowing = false
-	@Binding var showMenu: Bool
+	@Binding var showFirstMenuItem: Bool
+	@Binding var showSecondMenuItem: Bool
 	@Binding var showInstruction: Bool
 	@Binding var showDeletionAlert: Bool
 
@@ -142,7 +169,8 @@ struct BottomView: View {
 			) {
 				withAnimation {
 					levelsViewIsShowing = true
-					showMenu = false
+					showFirstMenuItem = false
+					showSecondMenuItem = false
 				}
 			}
 		}
@@ -172,7 +200,8 @@ struct BottomView: View {
 				levelService: LevelService()
 			)
 		),
-		showMenu: .constant(true),
+		showFirstMenuItem: .constant(true),
+		showSecondMenuItem: .constant(true),
 		showInstruction: .constant(false),
 		showDeletionAlert: .constant(false)
 	)
