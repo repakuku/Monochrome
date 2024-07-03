@@ -25,26 +25,84 @@ struct LevelsView: View {
 					showInstruction: $showInstruction,
 					showDeletionAlert: $showDeletionAlert
 				)
+
 				LabelView()
+
 				ScrollView {
 					VStack(spacing: Sizes.Spacing.normal) {
 						ForEach(1..<viewModel.numberOfLevels, id: \.self) { index in
-							Button {
+							RoundedRowView(
+								index: index,
+								stars: viewModel.getStarsForLevel(id: index),
+								taps: viewModel.getTapsForLevel(id: index),
+								isFilled: viewModel.getStatusForLevel(id: index)
+							) {
 								viewModel.selectLevel(id: index)
 								levelsViewIsShowing = false
-							} label: {
-								RowView(
-									index: index,
-									stars: viewModel.getStarsForLevel(id: index),
-									taps: viewModel.getTapsForLevel(id: index),
-									isFilled: viewModel.getStatusForLevel(id: index)
-								)
 							}
 						}
 					}
 				}
 			}
 		}
+	}
+}
+
+struct RoundedRowView: View {
+	let index: Int
+	let stars: Int
+	let taps: Int
+	let isFilled: Bool
+	let action: () -> Void
+
+	@State private var isPressed = false
+
+	var body: some View {
+		Button {
+			action()
+		} label: {
+			ZStack {
+				if !isPressed {
+					RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+						.fill(Color(Theme.buttonEdgeColor))
+						.frame(height: Sizes.General.roundedViewLength)
+						.offset(y: 4)
+				}
+
+				RowView(
+					index: index,
+					stars: stars,
+					taps: taps,
+					isFilled: isFilled
+				)
+				.frame(height: Sizes.General.roundedViewLength)
+				.background(
+						RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+							.fill(Color(Theme.backgroundColor))
+					)
+					.overlay(
+						RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+							.stroke(
+								Color(Theme.buttonStrokeColor),
+								lineWidth: Sizes.Stroke.width
+							)
+					)
+					.zIndex(1)
+					.offset(y: isPressed ? 4 : 0)
+			}
+			.padding(.horizontal)
+			.frame(maxWidth: Sizes.Levels.maxRowWidth, minHeight: Sizes.Levels.minRowHeight)
+		}
+		.buttonStyle(ClearButtonStyle())
+		.simultaneousGesture(
+			DragGesture(minimumDistance: 0)
+				.onChanged { _ in
+					isPressed = true
+				}
+				.onEnded { _ in
+					isPressed = false
+				}
+		)
 	}
 }
 
@@ -64,15 +122,6 @@ struct RowView: View {
 			TapsText(value: taps)
 				.frame(width: Sizes.Levels.tapsColumnWidth)
 		}
-		.background(
-			RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-				.stroke(
-					Color(Theme.buttonStrokeColor),
-					lineWidth: Sizes.Stroke.width
-				)
-		)
-		.padding(.horizontal)
-		.frame(maxWidth: Sizes.Levels.maxRowWidth, minHeight: Sizes.Levels.minRowHeight)
 	}
 }
 
@@ -121,7 +170,7 @@ struct LabelView: View {
 			LabelText(title: "Stars")
 				.frame(width: Sizes.Levels.starsColumnWidth)
 			Spacer()
-			LabelText(title: "Best")
+			LabelText(title: "Result")
 				.frame(width: Sizes.Levels.tapsColumnWidth)
 		}
 		.padding(.horizontal)

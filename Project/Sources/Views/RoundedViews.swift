@@ -43,7 +43,7 @@ struct RoundedImageView: View {
 					)
 					.overlay(
 						RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-							.strokeBorder(
+							.stroke(
 								Color(Theme.buttonStrokeColor),
 								lineWidth: isFilled ? 0 : Sizes.Stroke.width
 							)
@@ -153,7 +153,7 @@ struct RoundedViewsPreview: View {
 		VStack {
 			RoundedImageView(systemName: Images.questionmark.rawValue, isFilled: false, action: {})
 			RoundedImageView(systemName: Images.checklist.rawValue, isFilled: true, action: {})
-			RoundedCellView(color: Color(Theme.mainCellColor), isFilled: true, action: {})
+			RoundedCellView(color: Color(Theme.accentCellColor), isFilled: true, action: {})
 			RoundedCellView(color: Color(Theme.accentCellColor), isFilled: false, action: {})
 			RoundedTextView(text: "1", isFilled: false)
 			RoundedTextView(text: "2", isFilled: true)
