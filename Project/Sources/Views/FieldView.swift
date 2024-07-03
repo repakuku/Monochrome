@@ -19,15 +19,13 @@ struct FieldView: View {
 			ForEach(0..<viewModel.levelSize, id: \.self) { x in
 				HStack {
 					ForEach(0..<viewModel.levelSize, id: \.self) { y in
-						Button {
+						cellView(for: viewModel.cells[x][y]) {
 							withAnimation {
 								viewModel.cellTapped(atX: x, atY: y)
 								showFirstMenuItem = false
 								showSecondMenuItem = false
 								showInstruction = false
 							}
-						} label: {
-							cellView(for: viewModel.cells[x][y])
 						}
 					}
 				}
@@ -36,10 +34,11 @@ struct FieldView: View {
 	}
 
 	@ViewBuilder
-	private func cellView(for value: CellState) -> some View {
-		CellView(
-			filled: isFilled(for: value),
-			color: color(for: value)
+	private func cellView(for value: CellState, action: @escaping () -> Void) -> some View {
+		RoundedCellView(
+			color: color(for: value),
+			isFilled: isFilled(for: value),
+			action: action
 		)
 	}
 
@@ -62,7 +61,7 @@ struct FieldView: View {
 	}
 }
 
-struct CellView: View {
+ struct CellView: View {
 	let filled: Bool
 	let color: Color
 
@@ -85,7 +84,7 @@ struct CellView: View {
 				.foregroundStyle(color)
 		}
 	}
-}
+ }
 
 #Preview {
 	FieldView(
