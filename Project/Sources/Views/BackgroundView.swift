@@ -103,6 +103,7 @@ struct TopView: View {
 							showSecondMenuItem = true
 						}
 					}
+					.transition(.scale)
 				}
 				.onDisappear {
 					withAnimation {
@@ -124,6 +125,7 @@ struct TopView: View {
 							showFirstMenuItem.toggle()
 						}
 					}
+					.transition(.scale)
 				}
 				.zIndex(0)
 				.transition(.offset(y: -Sizes.General.roundedViewLength - Sizes.Spacing.small))
@@ -141,8 +143,10 @@ struct TopView: View {
 struct BottomView: View {
 	@ObservedObject var viewModel: GameViewModel
 	@State private var levelsViewIsShowing = false
+
 	@Binding var showFirstMenuItem: Bool
 	@Binding var showSecondMenuItem: Bool
+
 	@Binding var showInstruction: Bool
 	@Binding var showDeletionAlert: Bool
 
@@ -202,6 +206,7 @@ struct BottomView: View {
 		),
 		showFirstMenuItem: .constant(true),
 		showSecondMenuItem: .constant(true),
+
 		showInstruction: .constant(false),
 		showDeletionAlert: .constant(false)
 	)

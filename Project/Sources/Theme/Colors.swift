@@ -43,6 +43,7 @@ enum Theme {
 	static let buttonFilledBackgroundColorRed = UIColor.color(light: Colors.Red.Cinnabar, dark: Colors.Red.WellRead)
 	static let buttonEdgeColor = UIColor.color(light: Colors.softBlack, dark: Colors.softWhite)
 
+
 	// Cell Colors
 	static let mainCellColor = UIColor.color(light: Colors.softWhite, dark: Colors.softBlack)
 	static let accentCellColor = UIColor.color(light: Colors.softBlack, dark: Colors.softWhite)

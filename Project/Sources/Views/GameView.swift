@@ -24,8 +24,10 @@ struct GameView: View {
 			)
 	)
 
+
 	@State private var showFirstMenuItem = false
 	@State private var showSecondMenuItem = false
+
 	@State private var showResult = false
 	@State private var showInstruction = true
 	@State private var showDeletionAlert = false
@@ -41,6 +43,7 @@ struct GameView: View {
 					viewModel: viewModel,
 					showFirstMenuItem: $showFirstMenuItem,
 					showSecondMenuItem: $showSecondMenuItem,
+
 					showInstruction: $showInstruction,
 					showDeletionAlert: $showDeletionAlert
 				)

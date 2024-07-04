@@ -10,8 +10,10 @@ import SwiftUI
 
 struct FieldView: View {
 	@ObservedObject var viewModel: GameViewModel
+
 	@Binding var showFirstMenuItem: Bool
 	@Binding var showSecondMenuItem: Bool
+
 	@Binding var showInstruction: Bool
 
 	var body: some View {
@@ -22,10 +24,12 @@ struct FieldView: View {
 						cellView(for: viewModel.cells[x][y]) {
 							withAnimation {
 								viewModel.cellTapped(atX: x, atY: y)
+
 								showFirstMenuItem = false
 								showSecondMenuItem = false
 								showInstruction = false
 							}
+
 						}
 					}
 				}
@@ -34,11 +38,13 @@ struct FieldView: View {
 	}
 
 	@ViewBuilder
+
 	private func cellView(for value: CellState, action: @escaping () -> Void) -> some View {
 		RoundedCellView(
 			color: color(for: value),
 			isFilled: isFilled(for: value),
 			action: action
+
 		)
 	}
 
@@ -101,6 +107,7 @@ struct FieldView: View {
 				levelService: LevelService()
 			)
 		),
+
 		showFirstMenuItem: .constant(false),
 		showSecondMenuItem: .constant(false),
 		showInstruction: .constant(false)
