@@ -103,6 +103,7 @@ struct TopView: View {
 							showSecondMenuItem = true
 						}
 					}
+					.transition(.scale)
 				}
 				.onDisappear {
 					withAnimation {
@@ -124,6 +125,7 @@ struct TopView: View {
 							showFirstMenuItem.toggle()
 						}
 					}
+					.transition(.scale)
 				}
 				.zIndex(0)
 				.transition(.offset(y: -Sizes.General.roundedViewLength - Sizes.Spacing.small))
