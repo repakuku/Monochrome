@@ -52,7 +52,7 @@ let target = Target(
 	bundleId: ProjectSettings.bundleId,
 	deploymentTargets: .iOS(ProjectSettings.targetVersion),
 	infoPlist: .extendingDefault(with: infoPlistExtension),
-	sources: ["Sources/**", "Shared/**"],
+	sources: ["Sources/**"],
 	resources: ["Resources/**"],
 	scripts: scripts,
 	dependencies: [],
@@ -67,7 +67,7 @@ let testTarget = Target(
 	product: .unitTests,
 	bundleId: "\(ProjectSettings.bundleId)Tests",
 	deploymentTargets: .iOS(ProjectSettings.targetVersion),
-	sources: ["Tests/**", "Shared/**"],
+	sources: ["Tests/**"],
 	scripts: scripts,
 	dependencies: [
 		.target(name: "\(ProjectSettings.projectName)")
