@@ -3,11 +3,11 @@ import ProjectDescription
 // MARK: - Project Settings
 
 enum ProjectSettings {
-	public static var organizationName: String { "repakuku" }
+	public static var organizationName: String { "com.repakuku" }
 	public static var projectName: String { "Monochrome" }
 	public static var appVersionName: String { "1.0.0" }
 	public static var appVersionBuild: Int { 1 }
-	public static var developmentTeam: String { "" }
+	public static var developmentTeam: String { "6PNGGFV6BC" }
 	public static var targetVersion: String { "15.0" }
 	public static var bundleId: String { "\(organizationName).\(projectName)" }
 }
@@ -29,14 +29,18 @@ private let infoPlistExtension: [String: Plist.Value] = [
 		"UISceneConfigurations": [
 			"UIWindowSceneSessionRoleApplication": [
 				[
-					"UISceneConfigurationName": "Default Configuration",
-					"UISceneDelegateClassName": "$(PRODUCT_MODULE_NAME).SceneDelegate"
+					"UISceneConfigurationName": "Default Configuration"
 				]
 			]
 		]
 	],
 	"UILaunchStoryboardName": "LaunchScreen",
 	"UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"]
+]
+
+let targetSettings: [String: SettingValue] = [
+	"TARGETED_DEVICE_FAMILY": "1",
+	"ENABLE_USER_SCRIPT_SANDBOXING": "NO"
 ]
 
 // MARK: - Targets
@@ -48,14 +52,12 @@ let target = Target(
 	bundleId: ProjectSettings.bundleId,
 	deploymentTargets: .iOS(ProjectSettings.targetVersion),
 	infoPlist: .extendingDefault(with: infoPlistExtension),
-	sources: ["Sources/**", "Shared/**"],
+	sources: ["Sources/**"],
 	resources: ["Resources/**"],
 	scripts: scripts,
 	dependencies: [],
 	settings: .settings(
-		base: [
-			"TARGETED_DEVICE_FAMILY": "1"
-		]
+		base: targetSettings
 	)
 )
 
@@ -65,15 +67,13 @@ let testTarget = Target(
 	product: .unitTests,
 	bundleId: "\(ProjectSettings.bundleId)Tests",
 	deploymentTargets: .iOS(ProjectSettings.targetVersion),
-	sources: ["Tests/**", "Shared/**"],
+	sources: ["Tests/**"],
 	scripts: scripts,
 	dependencies: [
 		.target(name: "\(ProjectSettings.projectName)")
 	],
 	settings: .settings(
-		base: [
-			"TARGETED_DEVICE_FAMILY": "1"
-		]
+		base: targetSettings
 	)
 )
 

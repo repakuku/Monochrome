@@ -63,14 +63,16 @@ struct ButtonTextStroked: View {
 
 struct ButtonTextFilled: View {
 	let text: String
+	let backgroundColor: Color
+	let foregroundColor: Color
 
 	var body: some View {
 		Text(text)
 			.bold()
 			.padding()
 			.frame(maxWidth: .infinity)
-			.background(Color(Theme.buttonFilledBackgroundColor))
-			.foregroundColor(Color(Theme.buttonFilledTextColor))
+			.background(backgroundColor)
+			.foregroundColor(foregroundColor)
 			.cornerRadius(Sizes.General.cornerRadius)
 			.overlay(
 				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
@@ -92,7 +94,7 @@ struct BigBoldText: View {
 	}
 }
 
-struct TapsText: View {
+ struct TapsText: View {
 	let value: Int
 
 	var body: some View {
@@ -100,6 +102,31 @@ struct TapsText: View {
 			.bold()
 			.foregroundColor(Color(Theme.textColor))
 			.font(.title3)
+	}
+ }
+
+struct TapsView: View {
+	@Binding var taps: Int
+
+	var body: some View {
+		ZStack {
+			Text(String(taps))
+				.kerning(Sizes.Kerning.large)
+				.foregroundStyle(Color(Theme.textColor))
+				.font(.largeTitle)
+				.frame(
+					height: Sizes.General.roundedViewLength
+				)
+				.transition(
+					AnyTransition.asymmetric(
+						insertion: .move(edge: .top),
+						removal: .move(edge: .bottom)
+					)
+				)
+			.id("Taps" + "\(taps)")
+		}
+		.frame(height: Sizes.General.roundedViewLength)
+		.clipped()
 	}
 }
 
@@ -110,7 +137,16 @@ struct TextViewsPreviews: View {
 			InstructionText(text: "Tap on any cell")
 			BodyText(text: "Message")
 			ButtonTextStroked(text: "Replay")
-			ButtonTextFilled(text: "Next Level")
+			ButtonTextFilled(
+				text: "Next Level",
+				backgroundColor: Color(Theme.buttonFilledBackgroundColor),
+				foregroundColor: Color(Theme.buttonFilledTextColor)
+			)
+			ButtonTextFilled(
+				text: "Next Level",
+				backgroundColor: Color(Theme.buttonFilledBackgroundColorRed),
+				foregroundColor: Color(Theme.redButtonFilledTextColor)
+			)
 			BigBoldText(text: "Levels")
 			TapsText(value: 33)
 		}

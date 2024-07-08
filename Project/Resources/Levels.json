@@ -53,10 +53,70 @@
 	{
 		"id": 5,
 		"cellsMatrix": [
+			[0, 1, 1, 0],
 			[1, 1, 1, 1],
+			[1, 1, 1, 1],
+			[0, 1, 1, 0]
+		],
+		"status": {
+			"type": "incompleted"
+		}
+	},
+	{
+		"id": 6,
+		"cellsMatrix": [
+			[0, 1, 1, 0],
 			[1, 0, 0, 1],
 			[1, 0, 0, 1],
+			[0, 1, 1, 0]
+		],
+		"status": {
+			"type": "incompleted"
+		}
+	},
+	{
+		"id": 7,
+		"cellsMatrix": [
+			[0, 1, 0, 0],
+			[0, 0, 0, 1],
+			[1, 0, 0, 0],
+			[0, 0, 1, 0]
+		],
+		"status": {
+			"type": "incompleted"
+		}
+	},
+	{
+		"id": 8,
+		"cellsMatrix": [
+			[0, 0, 1, 0],
+			[1, 1, 0, 0],
+			[0, 0, 1, 1],
+			[0, 1, 0, 0]
+		],
+		"status": {
+			"type": "incompleted"
+		}
+	},
+	{
+		"id": 9,
+		"cellsMatrix": [
+			[1, 1, 1, 1],
+			[1, 0, 1, 0],
+			[0, 1, 0, 1],
 			[1, 1, 1, 1]
+		],
+		"status": {
+			"type": "incompleted"
+		}
+	},
+	{
+		"id": 10,
+		"cellsMatrix": [
+			[0, 0, 0, 0],
+			[0, 0, 0, 0],
+			[0, 0, 0, 0],
+			[0, 0, 0, 0]
 		],
 		"status": {
 			"type": "incompleted"

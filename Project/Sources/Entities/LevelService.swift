@@ -105,12 +105,14 @@ final class LevelService: ILevelService {
 
 final class MockLevelService: ILevelService {
 	var toggleColorsCalled = false
+	var toggleColorsCalledCount = 0
 	var checkMatrixResult = false
 	var getHintCalled = false
 	var countTargetTapsResult = 0
 
 	func toggleColors(level: inout Level, atX: Int, atY: Int) {
 		toggleColorsCalled = true
+		toggleColorsCalledCount += 1
 	}
 
 	func checkMatrix(level: Level) -> Bool {

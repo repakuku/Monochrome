@@ -11,26 +11,108 @@ import SwiftUI
 struct RoundedImageView: View {
 	let systemName: String
 	let isFilled: Bool
+	let action: () -> Void
+
+	@State private var isPressed = false
 
 	var body: some View {
-		Image(systemName: systemName)
-			.font(.title)
-			.foregroundStyle(isFilled ? Color(Theme.buttonFilledTextColor) : Color(Theme.textColor))
-			.frame(
-				width: Sizes.General.roundedViewLength,
-				height: Sizes.General.roundedViewLength
-			)
-			.background(
-				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-					.fill(isFilled ? Color(Theme.buttonFilledBackgroundColor) : Color.clear)
-			)
-			.overlay(
-				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-					.strokeBorder(
-						Color(Theme.buttonStrokeColor),
-						lineWidth: isFilled ? 0 : Sizes.Stroke.width
+		Button {
+			action()
+		} label: {
+			ZStack {
+				if !isPressed {
+					RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+						.fill(Color(Theme.buttonEdgeColor))
+						.frame(
+							width: Sizes.General.roundedViewLength,
+							height: Sizes.General.roundedViewLength
+						)
+						.offset(y: 4)
+				}
+
+				Image(systemName: systemName)
+					.font(.title)
+					.foregroundStyle(isFilled ? Color(Theme.buttonFilledTextColor) : Color(Theme.textColor))
+					.frame(
+						width: Sizes.General.roundedViewLength,
+						height: Sizes.General.roundedViewLength
 					)
-			)
+					.background(
+						RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+							.fill(isFilled ? Color(Theme.buttonFilledBackgroundColor) : Color(Theme.backgroundColor))
+					)
+					.overlay(
+						RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+							.stroke(
+								Color(Theme.buttonStrokeColor),
+								lineWidth: isFilled ? 0 : Sizes.Stroke.width
+							)
+					)
+					.zIndex(1)
+					.offset(y: isPressed ? 4 : 0)
+			}
+		}
+		.buttonStyle(ClearButtonStyle())
+		.simultaneousGesture(
+			DragGesture(minimumDistance: 0)
+				.onChanged { _ in
+					isPressed = true
+				}
+				.onEnded { _ in
+					isPressed = false
+				}
+		)
+	}
+}
+
+struct RoundedCellView: View {
+	let color: Color
+	let isFilled: Bool
+	let action: () -> Void
+
+	@State private var isPressed = false
+
+	var body: some View {
+		Button {
+			action()
+		} label: {
+			ZStack {
+				if !isPressed {
+					RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+						.fill(color)
+						.frame(
+							width: Sizes.General.roundedViewLength,
+							height: Sizes.General.roundedViewLength
+						)
+						.offset(y: 4)
+				}
+
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+					.stroke(lineWidth: isFilled ? 0 : Sizes.Stroke.width)
+					.frame(
+						width: Sizes.General.roundedViewLength,
+						height: Sizes.General.roundedViewLength
+					)
+					.foregroundStyle(color)
+					.background(
+						RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+							.fill(isFilled ? color : Color(Theme.backgroundColor))
+					)
+					.zIndex(1)
+					.offset(y: isPressed ? 4 : 0)
+					.offset(y: isFilled ? 3 : 0)
+			}
+		}
+		.buttonStyle(ClearButtonStyle())
+		.simultaneousGesture(
+			DragGesture(minimumDistance: 0)
+				.onChanged { _ in
+					isPressed = true
+				}
+				.onEnded { _ in
+					isPressed = false
+				}
+		)
 	}
 }
 
@@ -60,11 +142,19 @@ struct RoundedTextView: View {
 	}
 }
 
+struct ClearButtonStyle: ButtonStyle {
+	func makeBody(configuration: Configuration) -> some View {
+		configuration.label
+	}
+}
+
 struct RoundedViewsPreview: View {
 	var body: some View {
 		VStack {
-			RoundedImageView(systemName: Images.questionmark.rawValue, isFilled: false)
-			RoundedImageView(systemName: Images.checklist.rawValue, isFilled: true)
+			RoundedImageView(systemName: Images.questionmark.rawValue, isFilled: false, action: {})
+			RoundedImageView(systemName: Images.checklist.rawValue, isFilled: true, action: {})
+			RoundedCellView(color: Color(Theme.accentCellColor), isFilled: true, action: {})
+			RoundedCellView(color: Color(Theme.accentCellColor), isFilled: false, action: {})
 			RoundedTextView(text: "1", isFilled: false)
 			RoundedTextView(text: "2", isFilled: true)
 		}

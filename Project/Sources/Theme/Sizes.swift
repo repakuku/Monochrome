@@ -46,6 +46,7 @@ enum Sizes {
 	enum Spacing {
 		static let small: CGFloat = 5
 		static let normal: CGFloat = 10
+		static let double: CGFloat = 20
 	}
 
 	enum Stroke {

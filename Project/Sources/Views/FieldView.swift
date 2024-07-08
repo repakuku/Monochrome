@@ -10,59 +10,21 @@ import SwiftUI
 
 struct FieldView: View {
 	@ObservedObject var viewModel: GameViewModel
-	@Binding var showInstructions: Bool
+	@Binding var showFirstMenuItem: Bool
+	@Binding var showSecondMenuItem: Bool
+	@Binding var showInstruction: Bool
 
 	var body: some View {
 		VStack {
 			ForEach(0..<viewModel.levelSize, id: \.self) { x in
 				HStack {
 					ForEach(0..<viewModel.levelSize, id: \.self) { y in
-						Button {
+						cellView(for: viewModel.cells[x][y]) {
 							withAnimation {
 								viewModel.cellTapped(atX: x, atY: y)
-								showInstructions = false
-							}
-						} label: {
-							if viewModel.cells[x][y] == 0 {
-								RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-									.stroke(lineWidth: Sizes.Stroke.width)
-									.frame(
-										width: Sizes.General.roundedViewLength,
-										height: Sizes.General.roundedViewLength
-									)
-									.foregroundStyle(
-										Color(Theme.accentCellColor)
-									)
-							} else if viewModel.cells[x][y] == 1 {
-								RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-									.frame(
-										width: Sizes.General.roundedViewLength,
-										height: Sizes.General.roundedViewLength
-									)
-									.foregroundStyle(
-										Color(Theme.accentCellColor)
-									)
-									.transition(.scale)
-							} else if viewModel.cells[x][y] == 2 {
-								RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-									.stroke(lineWidth: Sizes.Stroke.width)
-									.frame(
-										width: Sizes.General.roundedViewLength,
-										height: Sizes.General.roundedViewLength
-									)
-									.foregroundStyle(
-										Color(Theme.hintCellColor)
-									)
-							} else {
-								RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-									.frame(
-										width: Sizes.General.roundedViewLength,
-										height: Sizes.General.roundedViewLength
-									)
-									.foregroundStyle(
-										Color(Theme.hintCellColor)
-									)
-									.transition(.scale)
+								showFirstMenuItem = false
+								showSecondMenuItem = false
+								showInstruction = false
 							}
 						}
 					}
@@ -70,7 +32,59 @@ struct FieldView: View {
 			}
 		}
 	}
+
+	@ViewBuilder
+	private func cellView(for value: CellState, action: @escaping () -> Void) -> some View {
+		RoundedCellView(
+			color: color(for: value),
+			isFilled: isFilled(for: value),
+			action: action
+		)
+	}
+
+	private func color(for value: CellState) -> Color {
+		switch value {
+		case .empty, .filled:
+			return Color(Theme.accentCellColor)
+		case .hintEmpty, .hintFilled:
+			return Color(Theme.hintCellColor)
+		}
+	}
+
+	private func isFilled(for value: CellState) -> Bool {
+		switch value {
+		case .empty, .hintEmpty:
+			return false
+		case .filled, .hintFilled:
+			return true
+		}
+	}
 }
+
+ struct CellView: View {
+	let filled: Bool
+	let color: Color
+
+	var body: some View {
+		if filled {
+			RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+				.frame(
+					width: Sizes.General.roundedViewLength,
+					height: Sizes.General.roundedViewLength
+				)
+				.foregroundStyle(color)
+				.transition(.scale)
+		} else {
+			RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+				.stroke(lineWidth: Sizes.Stroke.width)
+				.frame(
+					width: Sizes.General.roundedViewLength,
+					height: Sizes.General.roundedViewLength
+				)
+				.foregroundStyle(color)
+		}
+	}
+ }
 
 #Preview {
 	FieldView(
@@ -87,6 +101,8 @@ struct FieldView: View {
 				levelService: LevelService()
 			)
 		),
-		showInstructions: .constant(true)
+		showFirstMenuItem: .constant(false),
+		showSecondMenuItem: .constant(false),
+		showInstruction: .constant(false)
 	)
 }

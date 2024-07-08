@@ -24,43 +24,63 @@ struct GameView: View {
 			)
 	)
 
-	@State private var showMenu = false
-	@State private var showInstructions = true
+	@State private var showFirstMenuItem = false
+	@State private var showSecondMenuItem = false
 	@State private var showResult = false
+	@State private var showInstruction = true
+	@State private var showDeletionAlert = false
 
 	var body: some View {
 		ZStack {
-			if showInstructions {
+			if showInstruction {
 				InstructionView()
 			}
 
 			if !viewModel.isTutorialLevel {
 				BackgroundView(
 					viewModel: viewModel,
-					showMenu: $showMenu
+					showFirstMenuItem: $showFirstMenuItem,
+					showSecondMenuItem: $showSecondMenuItem,
+					showInstruction: $showInstruction,
+					showDeletionAlert: $showDeletionAlert
 				)
-					.blur(radius: viewModel.isLevelCompleted ? Sizes.Blur.max : Sizes.Blur.min)
-					.disabled(viewModel.isLevelCompleted)
+				.blur(radius: (showResult || showDeletionAlert) ? Sizes.Blur.max : Sizes.Blur.min)
+				.disabled((showResult || showDeletionAlert))
 			}
 
-			if showResult {
+			if showDeletionAlert {
+				DeleteGameView(
+					viewModel: viewModel,
+					viewIsShowing: $showDeletionAlert,
+					showInstruction: $showInstruction
+				)
+				.zIndex(2)
+				.transition(.scale)
+			} else if showResult {
 				ResultView(
 					viewModel: viewModel
 				)
-					.transition(.scale)
+				.zIndex(1)
+				.transition(.scale)
 			} else {
 				FieldView(
 					viewModel: viewModel,
-					showInstructions: $showInstructions
+					showFirstMenuItem: $showFirstMenuItem,
+					showSecondMenuItem: $showSecondMenuItem,
+					showInstruction: $showInstruction
 				)
-					.transition(.scale)
-					.zIndex(1)
-					.disabled(viewModel.isLevelCompleted)
+				.transition(.scale)
+				.zIndex(1)
+				.disabled(viewModel.isLevelCompleted)
 			}
 		}
-		.onChange(of: viewModel.isLevelCompleted) { isCompleted in
+		.onChange(
+			of: viewModel.isLevelCompleted
+		) { isCompleted in
 			if isCompleted {
-				DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+				DispatchQueue.main.asyncAfter(
+					deadline: .now() + 0.6
+				) {
 					withAnimation {
 						showResult = true
 					}
@@ -73,7 +93,8 @@ struct GameView: View {
 		}
 		.onTapGesture {
 			withAnimation {
-				showMenu = false
+				showFirstMenuItem = false
+				showSecondMenuItem = false
 			}
 		}
 		.statusBarHidden()
@@ -83,8 +104,10 @@ struct GameView: View {
 struct InstructionView: View {
 	var body: some View {
 		VStack {
-			InstructionText(text: "Tap on the cell")
-				.padding(.bottom, Sizes.Padding.large)
+			InstructionText(
+				text: "Tap on the cell"
+			)
+			.padding(.bottom, Sizes.Padding.large)
 		}
 	}
 }

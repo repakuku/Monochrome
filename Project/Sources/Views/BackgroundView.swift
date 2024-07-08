@@ -10,7 +10,10 @@ import SwiftUI
 
 struct BackgroundView: View {
 	@ObservedObject var viewModel: GameViewModel
-	@Binding var showMenu: Bool
+	@Binding var showFirstMenuItem: Bool
+	@Binding var showSecondMenuItem: Bool
+	@Binding var showInstruction: Bool
+	@Binding var showDeletionAlert: Bool
 
 	var body: some View {
 		ZStack {
@@ -18,11 +21,20 @@ struct BackgroundView: View {
 				.ignoresSafeArea()
 
 			VStack {
-				TopView(viewModel: viewModel, showMenu: $showMenu)
+				TopView(
+					viewModel: viewModel,
+					showFirstMenuItem: $showFirstMenuItem,
+					showSecondMenuItem: $showSecondMenuItem
+				)
+
 				Spacer()
+
 				BottomView(
 					viewModel: viewModel,
-					showMenu: $showMenu
+					showFirstMenuItem: $showFirstMenuItem,
+					showSecondMenuItem: $showSecondMenuItem,
+					showInstruction: $showInstruction,
+					showDeletionAlert: $showDeletionAlert
 				)
 			}
 			.padding()
@@ -30,89 +42,145 @@ struct BackgroundView: View {
 	}
 }
 
- struct TopView: View {
+struct TopView: View {
 	@ObservedObject var viewModel: GameViewModel
-
-	@Binding var showMenu: Bool
+	@Binding var showFirstMenuItem: Bool
+	@Binding var showSecondMenuItem: Bool
 	@State private var guideViewIsShowing = false
 
 	var body: some View {
 		VStack {
 			HStack {
-				Button {
+				RoundedImageView(
+					systemName: Images.arrow.rawValue,
+					isFilled: false
+				) {
 					withAnimation {
 						viewModel.restartLevel()
-						showMenu = false
+						showFirstMenuItem = false
+						showSecondMenuItem = false
 					}
-				} label: {
-					RoundedImageView(systemName: Images.arrow.rawValue, isFilled: false)
 				}
+
 				Spacer()
+
 				BigBoldText(text: "Level \(viewModel.levelId)")
+
 				Spacer()
-				Button {
+
+				RoundedImageView(
+					systemName: Images.list.rawValue,
+					isFilled: showFirstMenuItem
+				) {
 					withAnimation {
-						showMenu.toggle()
-					}
-				} label: {
-					RoundedImageView(systemName: Images.list.rawValue, isFilled: !showMenu)
-				}
-			}
-			HStack {
-				Spacer()
-				Button {
-					withAnimation {
-						viewModel.getHint()
-						showMenu.toggle()
-					}
-				} label: {
-					if showMenu {
-						RoundedImageView(systemName: Images.questionmark.rawValue, isFilled: false)
-							.transition(.scale)
+						showFirstMenuItem.toggle()
 					}
 				}
 			}
-			HStack {
-				Spacer()
-				Button {
-					withAnimation {
-						guideViewIsShowing = true
-						showMenu.toggle()
-					}
-				} label: {
-					if showMenu {
-						RoundedImageView(systemName: Images.book.rawValue, isFilled: false)
-							.transition(.scale)
+			.zIndex(2)
+
+			if showFirstMenuItem {
+				HStack {
+					Spacer()
+
+					VStack {
+						RoundedImageView(
+							systemName: Images.questionmark.rawValue,
+							isFilled: false
+						) {
+							withAnimation {
+								viewModel.getHint()
+								showFirstMenuItem.toggle()
+							}
+						}
 					}
 				}
+				.zIndex(1)
+				.transition(.offset(y: -Sizes.General.roundedViewLength - Sizes.Spacing.small))
+				.onAppear {
+					DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+						withAnimation {
+							showSecondMenuItem = true
+						}
+					}
+				}
+				.onDisappear {
+					withAnimation {
+						showSecondMenuItem = false
+					}
+				}
+			}
+
+			if showSecondMenuItem {
+				HStack {
+					Spacer()
+
+					RoundedImageView(
+						systemName: Images.book.rawValue,
+						isFilled: false
+					) {
+						withAnimation {
+							guideViewIsShowing = true
+							showFirstMenuItem.toggle()
+						}
+					}
+				}
+				.zIndex(0)
+				.transition(.offset(y: -Sizes.General.roundedViewLength - Sizes.Spacing.small))
 			}
 		}
 		.sheet(isPresented: $guideViewIsShowing) {
-			GuideView(viewisShowing: $guideViewIsShowing)
+			GuideView(
+				viewModel: viewModel,
+				viewisShowing: $guideViewIsShowing
+			)
 		}
 	}
- }
+}
 
 struct BottomView: View {
 	@ObservedObject var viewModel: GameViewModel
 	@State private var levelsViewIsShowing = false
-	@Binding var showMenu: Bool
+	@Binding var showFirstMenuItem: Bool
+	@Binding var showSecondMenuItem: Bool
+	@Binding var showInstruction: Bool
+	@Binding var showDeletionAlert: Bool
 
 	var body: some View {
 		HStack {
-			RoundedTextView(text: String(viewModel.taps), isFilled: false)
+			RoundedImageView(
+				systemName: Images.back.rawValue,
+				isFilled: false
+			) {
+				withAnimation {
+					viewModel.undoButtonTapped()
+				}
+			}
+
 			Spacer()
-			Button {
+
+			TapsView(taps: $viewModel.taps)
+
+			Spacer()
+
+			RoundedImageView(
+				systemName: Images.checklist.rawValue,
+				isFilled: false
+			) {
 				withAnimation {
 					levelsViewIsShowing = true
-					showMenu = false
+					showFirstMenuItem = false
+					showSecondMenuItem = false
 				}
-			} label: {
-				RoundedImageView(systemName: Images.checklist.rawValue, isFilled: false)
 			}
 		}
 		.sheet(isPresented: $levelsViewIsShowing) {
-			LevelsView(viewModel: viewModel, levelsViewIsShowing: $levelsViewIsShowing)
+			LevelsView(
+				viewModel: viewModel,
+				levelsViewIsShowing: $levelsViewIsShowing,
+				showInstruction: $showInstruction,
+				showDeletionAlert: $showDeletionAlert
+			)
 		}
 	}
 }
@@ -132,6 +200,9 @@ struct BottomView: View {
 				levelService: LevelService()
 			)
 		),
-		showMenu: .constant(true)
+		showFirstMenuItem: .constant(true),
+		showSecondMenuItem: .constant(true),
+		showInstruction: .constant(false),
+		showDeletionAlert: .constant(false)
 	)
 }

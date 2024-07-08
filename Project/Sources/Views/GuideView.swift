@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct GuideView: View {
+	@ObservedObject var viewModel: GameViewModel
 	@Binding var viewisShowing: Bool
 
 	var body: some View {
@@ -16,9 +17,13 @@ struct GuideView: View {
 			Color(Theme.backgroundColor)
 				.ignoresSafeArea()
 			VStack {
-				HeaderView(viewIsShowing: $viewisShowing)
+				GuideHeaderView(
+					viewModel: viewModel,
+					viewIsShowing: $viewisShowing
+				)
 				Spacer()
 				BodyText(text: "In Monochrome, your goal is to make all cells the same color by tapping to flip their colors. Each tap affects the selected cell and its row and column. Solve each puzzle with the fewest taps. \n\nGood luck!") // swiftlint:disable:this line_length
+					.frame(width: 300)
 					.padding()
 				Spacer()
 			}
@@ -26,6 +31,43 @@ struct GuideView: View {
 	}
 }
 
+struct GuideHeaderView: View {
+	@ObservedObject var viewModel: GameViewModel
+	@Binding var viewIsShowing: Bool
+
+	var body: some View {
+		ZStack {
+			HStack {
+				Spacer()
+				RoundedImageView(
+					systemName: Images.xmark.rawValue,
+					isFilled: true
+				) {
+					withAnimation {
+						viewIsShowing = false
+					}
+				}
+			}
+		}
+		.padding()
+	}
+}
+
 #Preview {
-	GuideView(viewisShowing: .constant(true))
+	GuideView(
+		viewModel: GameViewModel(
+			gameManager: GameManager(
+				gameRepository: GameRepository(
+					levelRepository: LevelRepository(
+						levelsJsonUrl: Endpoints.levelsJsonUrl
+					)
+				),
+				levelRepository: LevelRepository(
+					levelsJsonUrl: Endpoints.levelsJsonUrl
+				),
+				levelService: LevelService()
+			)
+		),
+		viewisShowing: .constant(true)
+	)
 }
