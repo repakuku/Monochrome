@@ -29,7 +29,7 @@ struct LevelsView: View {
 				LabelView()
 
 				ScrollView {
-					VStack(spacing: Sizes.Spacing.normal) {
+					VStack(spacing: Sizes.Spacing.double) {
 						ForEach(1..<viewModel.numberOfLevels, id: \.self) { index in
 							RoundedRowView(
 								index: index,
