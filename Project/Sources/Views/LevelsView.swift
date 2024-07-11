@@ -16,7 +16,7 @@ struct LevelsView: View {
 
 	var body: some View {
 		ZStack {
-			Color(Theme.backgroundColor)
+			Theme.backgroundColor
 				.ignoresSafeArea()
 			VStack(spacing: Sizes.Spacing.normal) {
 				LevelsHeaderView(
@@ -61,7 +61,7 @@ struct RoundedRowView: View {
 		} label: {
 			ZStack {
 				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-					.fill(Color(Theme.foregroundColor))
+					.fill(Theme.foregroundColor)
 					.frame(height: Sizes.General.roundedViewLength)
 					.offset(y: 4)
 
@@ -74,7 +74,7 @@ struct RoundedRowView: View {
 				.frame(height: Sizes.General.roundedViewLength)
 				.background(
 					RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-						.fill(Color(Theme.backgroundColor))
+						.fill(Theme.backgroundColor)
 				)
 				.overlay(
 					RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
@@ -168,7 +168,7 @@ struct StarsView: View {
 				Image(systemName: index < stars ? Images.starFilled.rawValue : Images.star.rawValue)
 			}
 		}
-		.foregroundColor(Color(Theme.foregroundColor))
+		.foregroundColor(Theme.foregroundColor)
 	}
 }
 

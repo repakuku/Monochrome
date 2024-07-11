@@ -38,8 +38,8 @@ struct DeleteGameView: View {
 				} label: {
 					ButtonTextFilled(
 						text: "Delete",
-						backgroundColor: Color(Theme.accentColor),
-						foregroundColor: Color(Theme.foregroundColor)
+						backgroundColor: Theme.accentColor,
+						foregroundColor: Theme.foregroundColor
 					)
 				}
 			}
@@ -47,7 +47,7 @@ struct DeleteGameView: View {
 		.padding()
 		.frame(width: Sizes.General.alertViewLength)
 		.background(
-			Color(Theme.backgroundColor)
+			Theme.backgroundColor
 		)
 		.clipShape(
 			RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)

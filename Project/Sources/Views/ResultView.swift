@@ -67,8 +67,8 @@ struct ResultAlertView: View {
 				} label: {
 					ButtonTextFilled(
 						text: "Next Level",
-						backgroundColor: Color(Theme.foregroundColor),
-						foregroundColor: Color(Theme.backgroundColor)
+						backgroundColor: Theme.foregroundColor,
+						foregroundColor: Theme.backgroundColor
 					)
 				}
 			}
@@ -76,7 +76,7 @@ struct ResultAlertView: View {
 		.padding()
 		.frame(width: Sizes.General.alertViewLength)
 		.background(
-			Color(Theme.backgroundColor)
+			Theme.backgroundColor
 		)
 		.clipShape(
 			RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)

@@ -14,7 +14,7 @@ struct GuideView: View {
 
 	var body: some View {
 		ZStack {
-			Color(Theme.backgroundColor)
+			Theme.backgroundColor
 				.ignoresSafeArea()
 			VStack {
 				GuideHeaderView(
