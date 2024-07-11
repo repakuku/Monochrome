@@ -29,7 +29,7 @@ struct LevelsView: View {
 				LabelView()
 
 				ScrollView {
-					VStack(spacing: Sizes.Spacing.normal) {
+					VStack(spacing: Sizes.Spacing.double) {
 						ForEach(1..<viewModel.numberOfLevels, id: \.self) { index in
 							RoundedRowView(
 								index: index,
@@ -59,15 +59,16 @@ struct RoundedRowView: View {
 
 	var body: some View {
 		Button {
-			action()
+			withAnimation {
+				action()
+				isPressed = true
+			}
 		} label: {
 			ZStack {
-				if !isPressed {
-					RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-						.fill(Color(Theme.buttonEdgeColor))
-						.frame(height: Sizes.General.roundedViewLength)
-						.offset(y: 4)
-				}
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+					.fill(Color(Theme.foregroundColor))
+					.frame(height: Sizes.General.roundedViewLength)
+					.offset(y: 4)
 
 				RowView(
 					index: index,
@@ -77,32 +78,20 @@ struct RoundedRowView: View {
 				)
 				.frame(height: Sizes.General.roundedViewLength)
 				.background(
-						RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-							.fill(Color(Theme.backgroundColor))
-					)
-					.overlay(
-						RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-							.stroke(
-								Color(Theme.buttonStrokeColor),
-								lineWidth: Sizes.Stroke.width
-							)
-					)
-					.zIndex(1)
-					.offset(y: isPressed ? 4 : 0)
+					RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+						.fill(Color(Theme.backgroundColor))
+				)
+				.overlay(
+					RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+						.stroke(lineWidth: Sizes.Stroke.width)
+				)
+				.zIndex(1)
+				.offset(y: isPressed ? 4 : 0)
 			}
 			.padding(.horizontal)
 			.frame(maxWidth: Sizes.Levels.maxRowWidth, minHeight: Sizes.Levels.minRowHeight)
 		}
 		.buttonStyle(ClearButtonStyle())
-		.simultaneousGesture(
-			DragGesture(minimumDistance: 0)
-				.onChanged { _ in
-					isPressed = true
-				}
-				.onEnded { _ in
-					isPressed = false
-				}
-		)
 	}
 }
 
@@ -117,10 +106,9 @@ struct RowView: View {
 			RoundedTextView(text: String(index), isFilled: isFilled)
 			Spacer()
 			StarsView(stars: stars)
-				.frame(width: Sizes.Levels.starsColumnWidth)
 			Spacer()
 			TapsText(value: taps)
-				.frame(width: Sizes.Levels.tapsColumnWidth)
+				.frame(width: Sizes.General.roundedViewLength)
 		}
 	}
 }
@@ -149,7 +137,7 @@ struct LevelsHeaderView: View {
 
 				RoundedImageView(
 					systemName: Images.xmark.rawValue,
-					isFilled: true
+					isFilled: false
 				) {
 					withAnimation {
 						viewIsShowing = false
@@ -168,10 +156,9 @@ struct LabelView: View {
 				.frame(width: Sizes.General.roundedViewLength)
 			Spacer()
 			LabelText(title: "Stars")
-				.frame(width: Sizes.Levels.starsColumnWidth)
 			Spacer()
-			LabelText(title: "Result")
-				.frame(width: Sizes.Levels.tapsColumnWidth)
+			LabelText(title: "Best")
+				.frame(width: Sizes.General.roundedViewLength)
 		}
 		.padding(.horizontal)
 		.frame(maxWidth: Sizes.Levels.maxRowWidth)
@@ -187,7 +174,7 @@ struct StarsView: View {
 				Image(systemName: index < stars ? Images.starFilled.rawValue : Images.star.rawValue)
 			}
 		}
-		.foregroundColor(Color(Theme.textColor))
+		.foregroundColor(Color(Theme.foregroundColor))
 	}
 }
 

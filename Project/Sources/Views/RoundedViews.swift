@@ -21,7 +21,7 @@ struct RoundedImageView: View {
 		} label: {
 			ZStack {
 				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-					.fill(Color(Theme.buttonEdgeColor))
+					.fill(Color(Theme.foregroundColor))
 					.frame(
 						width: Sizes.General.roundedViewLength,
 						height: Sizes.General.roundedViewLength
@@ -38,14 +38,14 @@ struct RoundedImageView: View {
 						RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 							.fill(
 								isFilled
-								? Color(Theme.buttonEdgeColor)
+								? Color(Theme.foregroundColor)
 								: Color(Theme.backgroundColor)
 							)
 					)
 					.foregroundStyle(
 						isFilled
 						? Color(Theme.backgroundColor)
-						: Color(Theme.buttonEdgeColor)
+						: Color(Theme.foregroundColor)
 					)
 					.overlay(
 						RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
@@ -130,15 +130,15 @@ struct RoundedTextView: View {
 				width: Sizes.General.roundedViewLength,
 				height: Sizes.General.roundedViewLength
 			)
-			.foregroundStyle(isFilled ? Color(Theme.backgroundColor) : Color(Theme.buttonEdgeColor))
+			.foregroundStyle(isFilled ? Color(Theme.backgroundColor) : Color(Theme.foregroundColor))
 			.background(
 				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-					.fill(isFilled ? Color(Theme.buttonFilledBackgroundColor) : Color.clear)
+					.fill(isFilled ? Color(Theme.foregroundColor) : Color(Theme.backgroundColor))
 			)
 			.overlay(
 				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.stroke(lineWidth: isFilled ? 0 : Sizes.Stroke.width)
-					.foregroundStyle(isFilled ? .clear : Color(Theme.buttonEdgeColor))
+					.foregroundStyle(isFilled ? .clear : Color(Theme.foregroundColor))
 			)
 	}
 }
@@ -154,10 +154,10 @@ struct RoundedViewsPreview: View {
 		VStack {
 			RoundedImageView(systemName: Images.questionmark.rawValue, isFilled: false, action: {})
 			RoundedImageView(systemName: Images.checklist.rawValue, isFilled: true, action: {})
-			RoundedCellView(color: Color(Theme.accentCellColor), isFilled: true, action: {})
-			RoundedCellView(color: Color(Theme.accentCellColor), isFilled: false, action: {})
-			RoundedCellView(color: Color(Theme.hintCellColor), isFilled: true, action: {})
-			RoundedCellView(color: Color(Theme.hintCellColor), isFilled: false, action: {})
+			RoundedCellView(color: Color(Theme.foregroundColor), isFilled: true, action: {})
+			RoundedCellView(color: Color(Theme.foregroundColor), isFilled: false, action: {})
+			RoundedCellView(color: Color(Theme.accentColor), isFilled: true, action: {})
+			RoundedCellView(color: Color(Theme.accentColor), isFilled: false, action: {})
 			RoundedTextView(text: "1", isFilled: false)
 			RoundedTextView(text: "2", isFilled: true)
 		}
