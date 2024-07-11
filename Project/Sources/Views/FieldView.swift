@@ -45,9 +45,9 @@ struct FieldView: View {
 	private func color(for value: CellState) -> Color {
 		switch value {
 		case .empty, .filled:
-			return Color(Theme.foregroundColor)
+			return Theme.foregroundColor
 		case .hintEmpty, .hintFilled:
-			return Color(Theme.accentColor)
+			return Theme.accentColor
 		}
 	}
 

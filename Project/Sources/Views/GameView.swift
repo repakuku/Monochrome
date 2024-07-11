@@ -32,7 +32,7 @@ struct GameView: View {
 
 	var body: some View {
 		ZStack {
-			Color(Theme.backgroundColor)
+			Theme.backgroundColor
 				.ignoresSafeArea()
 
 			if showInstruction {
@@ -101,6 +101,7 @@ struct GameView: View {
 			}
 		}
 		.statusBarHidden()
+		.navigationBarBackButtonHidden()
 	}
 }
 
