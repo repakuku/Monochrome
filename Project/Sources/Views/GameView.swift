@@ -101,7 +101,7 @@ struct GameView: View {
 			}
 		}
 		.statusBarHidden()
-		.navigationBarBackButtonHidden()
+		.navigationBarHidden(true)
 	}
 }
 
