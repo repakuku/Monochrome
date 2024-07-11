@@ -55,14 +55,9 @@ struct RoundedRowView: View {
 	let isFilled: Bool
 	let action: () -> Void
 
-	@State private var isPressed = false
-
 	var body: some View {
 		Button {
-			withAnimation {
-				action()
-				isPressed = true
-			}
+			action()
 		} label: {
 			ZStack {
 				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
@@ -86,7 +81,6 @@ struct RoundedRowView: View {
 						.stroke(lineWidth: Sizes.Stroke.width)
 				)
 				.zIndex(1)
-				.offset(y: isPressed ? 4 : 0)
 			}
 			.padding(.horizontal)
 			.frame(maxWidth: Sizes.Levels.maxRowWidth, minHeight: Sizes.Levels.minRowHeight)
