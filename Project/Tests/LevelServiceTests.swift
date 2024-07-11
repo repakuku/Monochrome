@@ -167,6 +167,32 @@ final class LevelServiceTests: XCTestCase {
 		XCTAssertEqual(testLevel.cellsMatrix[0][0], 3, "Expected cell at (0, 0) to be marked as a hint.")
 	}
 
+	func test_getHint_withouttogglingAnyCell_shouldMarktheSameCell() {
+		let sut = makeSut()
+
+		var testLevel = Level(
+			id: 1,
+			cellsMatrix: [
+				[0, 0],
+				[1, 0]
+			]
+		)
+
+		let expectedlevel = Level(
+			id: 1,
+			cellsMatrix: [
+				[0, 2],
+				[1, 0]
+			]
+		)
+
+		sut.getHint(level: &testLevel)
+		sut.getHint(level: &testLevel)
+		sut.getHint(level: &testLevel)
+
+		XCTAssertEqual(testLevel.cellsMatrix, expectedlevel.cellsMatrix)
+	}
+
 	// MARK: - Count Target Taps
 
 	func test_countTargetTaps_shouldReturnCorrectTapsCount() {

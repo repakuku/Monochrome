@@ -46,7 +46,7 @@ final class LevelService: ILevelService {
 				if answerMatrix[row][col] == 1 {
 					if level.cellsMatrix[row][col] == 0 {
 						level.cellsMatrix[row][col] = 2
-					} else {
+					} else if level.cellsMatrix[row][col] == 1 {
 						level.cellsMatrix[row][col] = 3
 					}
 					return
@@ -88,7 +88,7 @@ final class LevelService: ILevelService {
 
 		for row in 0..<level.levelSize {
 			for col in 0..<level.levelSize {
-				if level.cellsMatrix[row][col] == 0 {
+				if level.cellsMatrix[row][col] == 0 || level.cellsMatrix[row][col] == 2 {
 					for index in 0..<level.levelSize {
 						answerMatrix[row][index] = 1 - answerMatrix[row][index]
 						if index != row {
