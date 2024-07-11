@@ -16,7 +16,7 @@ struct LabelText: View {
 			.kerning(Sizes.Kerning.normal)
 			.font(.caption)
 			.bold()
-			.foregroundStyle(Color(Theme.textColor))
+			.foregroundStyle(Color(Theme.foregroundColor))
 	}
 }
 
@@ -27,7 +27,7 @@ struct InstructionText: View {
 		Text(text)
 			.kerning(Sizes.Kerning.normal)
 			.font(.title3)
-			.foregroundStyle(Color(Theme.textColor))
+			.foregroundStyle(Color(Theme.foregroundColor))
 			.multilineTextAlignment(.center)
 	}
 }
@@ -38,7 +38,7 @@ struct BodyText: View {
 	var body: some View {
 		Text(text)
 			.kerning(Sizes.Kerning.normal)
-			.foregroundStyle(Color(Theme.textColor))
+			.foregroundStyle(Color(Theme.foregroundColor))
 			.multilineTextAlignment(.center)
 	}
 }
@@ -52,11 +52,11 @@ struct ButtonTextStroked: View {
 			.padding()
 			.frame(maxWidth: .infinity)
 			.background(Color(Theme.backgroundColor))
-			.foregroundColor(Color(Theme.textColor))
+			.foregroundColor(Color(Theme.foregroundColor))
 			.overlay(
 				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.stroke(lineWidth: Sizes.Stroke.width)
-					.foregroundStyle(Color(Theme.buttonStrokeColor))
+					.foregroundStyle(Color(Theme.foregroundColor))
 			)
 	}
 }
@@ -77,7 +77,7 @@ struct ButtonTextFilled: View {
 			.overlay(
 				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.stroke(lineWidth: Sizes.Stroke.width)
-					.foregroundStyle(Color(Theme.buttonStrokeColor))
+					.foregroundStyle(Color(Theme.foregroundColor))
 			)
 	}
 }
@@ -88,7 +88,7 @@ struct BigBoldText: View {
 	var body: some View {
 		Text(text)
 			.kerning(Sizes.Kerning.large)
-			.foregroundStyle(Color(Theme.textColor))
+			.foregroundStyle(Color(Theme.foregroundColor))
 			.font(.largeTitle)
 			.frame(height: Sizes.General.roundedViewLength)
 	}
@@ -100,7 +100,7 @@ struct BigBoldText: View {
 	var body: some View {
 		Text(String(value))
 			.bold()
-			.foregroundColor(Color(Theme.textColor))
+			.foregroundColor(Color(Theme.foregroundColor))
 			.font(.title3)
 	}
  }
@@ -112,7 +112,7 @@ struct TapsView: View {
 		ZStack {
 			Text(String(taps))
 				.kerning(Sizes.Kerning.large)
-				.foregroundStyle(Color(Theme.textColor))
+				.foregroundStyle(Color(Theme.foregroundColor))
 				.font(.largeTitle)
 				.frame(
 					height: Sizes.General.roundedViewLength
@@ -139,13 +139,13 @@ struct TextViewsPreviews: View {
 			ButtonTextStroked(text: "Replay")
 			ButtonTextFilled(
 				text: "Next Level",
-				backgroundColor: Color(Theme.buttonFilledBackgroundColor),
-				foregroundColor: Color(Theme.buttonFilledTextColor)
+				backgroundColor: Color(Theme.foregroundColor),
+				foregroundColor: Color(Theme.backgroundColor)
 			)
 			ButtonTextFilled(
-				text: "Next Level",
-				backgroundColor: Color(Theme.buttonFilledBackgroundColorRed),
-				foregroundColor: Color(Theme.redButtonFilledTextColor)
+				text: "Delete",
+				backgroundColor: Color(Theme.accentColor),
+				foregroundColor: Color(Theme.foregroundColor)
 			)
 			BigBoldText(text: "Levels")
 			TapsText(value: 33)

@@ -67,8 +67,8 @@ struct ResultAlertView: View {
 				} label: {
 					ButtonTextFilled(
 						text: "Next Level",
-						backgroundColor: Color(Theme.buttonFilledBackgroundColor),
-						foregroundColor: Color(Theme.buttonFilledTextColor)
+						backgroundColor: Color(Theme.foregroundColor),
+						foregroundColor: Color(Theme.backgroundColor)
 					)
 				}
 			}

@@ -38,8 +38,8 @@ struct DeleteGameView: View {
 				} label: {
 					ButtonTextFilled(
 						text: "Delete",
-						backgroundColor: Color(Theme.buttonFilledBackgroundColorRed),
-						foregroundColor: Color(Theme.redButtonFilledTextColor)
+						backgroundColor: Color(Theme.accentColor),
+						foregroundColor: Color(Theme.foregroundColor)
 					)
 				}
 			}

@@ -16,29 +16,24 @@ struct BackgroundView: View {
 	@Binding var showDeletionAlert: Bool
 
 	var body: some View {
-		ZStack {
-			Color(Theme.backgroundColor)
-				.ignoresSafeArea()
+		VStack {
+			TopView(
+				viewModel: viewModel,
+				showFirstMenuItem: $showFirstMenuItem,
+				showSecondMenuItem: $showSecondMenuItem
+			)
 
-			VStack {
-				TopView(
-					viewModel: viewModel,
-					showFirstMenuItem: $showFirstMenuItem,
-					showSecondMenuItem: $showSecondMenuItem
-				)
+			Spacer()
 
-				Spacer()
-
-				BottomView(
-					viewModel: viewModel,
-					showFirstMenuItem: $showFirstMenuItem,
-					showSecondMenuItem: $showSecondMenuItem,
-					showInstruction: $showInstruction,
-					showDeletionAlert: $showDeletionAlert
-				)
-			}
-			.padding()
+			BottomView(
+				viewModel: viewModel,
+				showFirstMenuItem: $showFirstMenuItem,
+				showSecondMenuItem: $showSecondMenuItem,
+				showInstruction: $showInstruction,
+				showDeletionAlert: $showDeletionAlert
+			)
 		}
+		.padding()
 	}
 }
 
