@@ -20,33 +20,36 @@ struct RoundedImageView: View {
 			action()
 		} label: {
 			ZStack {
-				if !isPressed {
-					RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-						.fill(Color(Theme.buttonEdgeColor))
-						.frame(
-							width: Sizes.General.roundedViewLength,
-							height: Sizes.General.roundedViewLength
-						)
-						.offset(y: 4)
-				}
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+					.fill(Color(Theme.buttonEdgeColor))
+					.frame(
+						width: Sizes.General.roundedViewLength,
+						height: Sizes.General.roundedViewLength
+					)
+					.offset(y: 4)
 
 				Image(systemName: systemName)
 					.font(.title)
-					.foregroundStyle(isFilled ? Color(Theme.buttonFilledTextColor) : Color(Theme.textColor))
 					.frame(
 						width: Sizes.General.roundedViewLength,
 						height: Sizes.General.roundedViewLength
 					)
 					.background(
 						RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-							.fill(isFilled ? Color(Theme.buttonFilledBackgroundColor) : Color(Theme.backgroundColor))
+							.fill(
+								isFilled
+								? Color(Theme.buttonEdgeColor)
+								: Color(Theme.backgroundColor)
+							)
+					)
+					.foregroundStyle(
+						isFilled
+						? Color(Theme.backgroundColor)
+						: Color(Theme.buttonEdgeColor)
 					)
 					.overlay(
 						RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-							.stroke(
-								Color(Theme.buttonStrokeColor),
-								lineWidth: isFilled ? 0 : Sizes.Stroke.width
-							)
+							.stroke(lineWidth: Sizes.Stroke.width)
 					)
 					.zIndex(1)
 					.offset(y: isPressed ? 4 : 0)
@@ -77,15 +80,13 @@ struct RoundedCellView: View {
 			action()
 		} label: {
 			ZStack {
-				if !isPressed {
-					RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-						.fill(color)
-						.frame(
-							width: Sizes.General.roundedViewLength,
-							height: Sizes.General.roundedViewLength
-						)
-						.offset(y: 4)
-				}
+				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
+					.fill(color)
+					.frame(
+						width: Sizes.General.roundedViewLength,
+						height: Sizes.General.roundedViewLength
+					)
+					.offset(y: 4)
 
 				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.stroke(lineWidth: isFilled ? 0 : Sizes.Stroke.width)
@@ -99,8 +100,8 @@ struct RoundedCellView: View {
 							.fill(isFilled ? color : Color(Theme.backgroundColor))
 					)
 					.zIndex(1)
-					.offset(y: isPressed ? 4 : 0)
-					.offset(y: isFilled ? 3 : 0)
+					.offset(y: isPressed ? (isFilled ? 2 : 4) : 0)
+					.offset(y: isFilled ? 2 : 0)
 			}
 		}
 		.buttonStyle(ClearButtonStyle())
@@ -129,7 +130,7 @@ struct RoundedTextView: View {
 				width: Sizes.General.roundedViewLength,
 				height: Sizes.General.roundedViewLength
 			)
-			.foregroundStyle(isFilled ? Color(Theme.buttonFilledTextColor) : Color(Theme.textColor))
+			.foregroundStyle(isFilled ? Color(Theme.backgroundColor) : Color(Theme.buttonEdgeColor))
 			.background(
 				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.fill(isFilled ? Color(Theme.buttonFilledBackgroundColor) : Color.clear)
@@ -137,7 +138,7 @@ struct RoundedTextView: View {
 			.overlay(
 				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
 					.stroke(lineWidth: isFilled ? 0 : Sizes.Stroke.width)
-					.foregroundStyle(isFilled ? Color.clear : Color(Theme.buttonStrokeColor))
+					.foregroundStyle(isFilled ? .clear : Color(Theme.buttonEdgeColor))
 			)
 	}
 }
@@ -155,6 +156,8 @@ struct RoundedViewsPreview: View {
 			RoundedImageView(systemName: Images.checklist.rawValue, isFilled: true, action: {})
 			RoundedCellView(color: Color(Theme.accentCellColor), isFilled: true, action: {})
 			RoundedCellView(color: Color(Theme.accentCellColor), isFilled: false, action: {})
+			RoundedCellView(color: Color(Theme.hintCellColor), isFilled: true, action: {})
+			RoundedCellView(color: Color(Theme.hintCellColor), isFilled: false, action: {})
 			RoundedTextView(text: "1", isFilled: false)
 			RoundedTextView(text: "2", isFilled: true)
 		}
