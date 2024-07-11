@@ -32,6 +32,9 @@ struct GameView: View {
 
 	var body: some View {
 		ZStack {
+			Color(Theme.backgroundColor)
+				.ignoresSafeArea()
+
 			if showInstruction {
 				InstructionView()
 			}

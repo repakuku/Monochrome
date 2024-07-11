@@ -16,8 +16,8 @@ enum Sizes {
 	}
 
 	enum Levels {
-		static let starsColumnWidth: CGFloat = 60
-		static let tapsColumnWidth: CGFloat = 170
+		static let starsColumnWidth: CGFloat = 100
+		static let tapsColumnWidth: CGFloat = 50
 		static let maxRowWidth: CGFloat = 480
 		static let minRowHeight: CGFloat = 60
 	}
