@@ -9,7 +9,8 @@
 import SwiftUI
 
 struct DeleteGameView: View {
-	@ObservedObject var viewModel: GameViewModel
+	@EnvironmentObject var viewModel: GameViewModel
+
 	@Binding var viewIsShowing: Bool
 	@Binding var showInstruction: Bool
 
@@ -58,7 +59,11 @@ struct DeleteGameView: View {
 
 #Preview {
 	DeleteGameView(
-		viewModel: GameViewModel(
+		viewIsShowing: .constant(true),
+		showInstruction: .constant(false)
+	)
+	.environmentObject(
+		GameViewModel(
 			gameManager: GameManager(
 				gameRepository: GameRepository(
 					levelRepository: LevelRepository(
@@ -70,8 +75,6 @@ struct DeleteGameView: View {
 				),
 				levelService: LevelService()
 			)
-		),
-		viewIsShowing: .constant(true),
-		showInstruction: .constant(false)
+		)
 	)
 }

@@ -9,12 +9,11 @@
 import SwiftUI
 
 struct ResultView: View {
-	@ObservedObject var viewModel: GameViewModel
+	@EnvironmentObject var viewModel: GameViewModel
 
 	var body: some View {
 		if viewModel.isTutorialLevel {
 			ResultAlertView(
-				viewModel: viewModel,
 				title: "Great Start!",
 				stars: 0,
 				message: "In Monochrome, your goal is to make all cells the same color by tapping to flip their colors. Each tap affects the selected cell and its row and column. Solve each puzzle with the fewest taps. \n\nGood luck!", // swiftlint:disable:this line_length
@@ -22,7 +21,6 @@ struct ResultView: View {
 			)
 		} else {
 			ResultAlertView(
-				viewModel: viewModel,
 				title: "Level Done!",
 				stars: viewModel.getStarsForLevel(id: viewModel.levelId, forCurrentGame: true),
 				message: "Level \(viewModel.levelId) mastered in \(viewModel.taps) taps!",
@@ -33,7 +31,7 @@ struct ResultView: View {
 }
 
 struct ResultAlertView: View {
-	@ObservedObject var viewModel: GameViewModel
+	@EnvironmentObject var viewModel: GameViewModel
 
 	let title: String
 	let stars: Int
@@ -86,19 +84,20 @@ struct ResultAlertView: View {
 }
 
 #Preview {
-	ResultView(
-		viewModel: GameViewModel(
-			gameManager: GameManager(
-				gameRepository: GameRepository(
+	ResultView()
+		.environmentObject(
+			GameViewModel(
+				gameManager: GameManager(
+					gameRepository: GameRepository(
+						levelRepository: LevelRepository(
+							levelsJsonUrl: Endpoints.levelsJsonUrl
+						)
+					),
 					levelRepository: LevelRepository(
 						levelsJsonUrl: Endpoints.levelsJsonUrl
-					)
-				),
-				levelRepository: LevelRepository(
-					levelsJsonUrl: Endpoints.levelsJsonUrl
-				),
-				levelService: LevelService()
+					),
+					levelService: LevelService()
+				)
 			)
 		)
-	)
 }

@@ -9,7 +9,8 @@
 import SwiftUI
 
 struct BackgroundView: View {
-	@ObservedObject var viewModel: GameViewModel
+	@EnvironmentObject var viewModel: GameViewModel
+
 	@Binding var showFirstMenuItem: Bool
 	@Binding var showSecondMenuItem: Bool
 	@Binding var showInstruction: Bool
@@ -18,7 +19,6 @@ struct BackgroundView: View {
 	var body: some View {
 		VStack {
 			TopView(
-				viewModel: viewModel,
 				showFirstMenuItem: $showFirstMenuItem,
 				showSecondMenuItem: $showSecondMenuItem
 			)
@@ -26,7 +26,6 @@ struct BackgroundView: View {
 			Spacer()
 
 			BottomView(
-				viewModel: viewModel,
 				showFirstMenuItem: $showFirstMenuItem,
 				showSecondMenuItem: $showSecondMenuItem,
 				showInstruction: $showInstruction,
@@ -38,7 +37,8 @@ struct BackgroundView: View {
 }
 
 struct TopView: View {
-	@ObservedObject var viewModel: GameViewModel
+	@EnvironmentObject var viewModel: GameViewModel
+
 	@Binding var showFirstMenuItem: Bool
 	@Binding var showSecondMenuItem: Bool
 	@State private var guideViewIsShowing = false
@@ -134,7 +134,8 @@ struct TopView: View {
 }
 
 struct BottomView: View {
-	@ObservedObject var viewModel: GameViewModel
+	@EnvironmentObject var viewModel: GameViewModel
+
 	@State private var levelsViewIsShowing = false
 	@Binding var showFirstMenuItem: Bool
 	@Binding var showSecondMenuItem: Bool
@@ -171,7 +172,6 @@ struct BottomView: View {
 		}
 		.sheet(isPresented: $levelsViewIsShowing) {
 			LevelsView(
-				viewModel: viewModel,
 				levelsViewIsShowing: $levelsViewIsShowing,
 				showInstruction: $showInstruction,
 				showDeletionAlert: $showDeletionAlert
@@ -182,7 +182,13 @@ struct BottomView: View {
 
 #Preview {
 	BackgroundView(
-		viewModel: GameViewModel(
+		showFirstMenuItem: .constant(true),
+		showSecondMenuItem: .constant(true),
+		showInstruction: .constant(false),
+		showDeletionAlert: .constant(false)
+	)
+	.environmentObject(
+		GameViewModel(
 			gameManager: GameManager(
 				gameRepository: GameRepository(
 					levelRepository: LevelRepository(
@@ -194,10 +200,6 @@ struct BottomView: View {
 				),
 				levelService: LevelService()
 			)
-		),
-		showFirstMenuItem: .constant(true),
-		showSecondMenuItem: .constant(true),
-		showInstruction: .constant(false),
-		showDeletionAlert: .constant(false)
+		)
 	)
 }
