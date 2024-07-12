@@ -15,6 +15,9 @@ struct WelcomeView: View {
 	var body: some View {
 		NavigationView {
 			ZStack {
+				Theme.backgroundColor
+					.ignoresSafeArea()
+
 				BigBoldText(text: "Monochrome")
 
 				NavigationLink(
