@@ -9,20 +9,7 @@
 import SwiftUI
 
 struct GameView: View {
-	@StateObject private var viewModel = GameViewModel(
-		gameManager:
-			GameManager(
-				gameRepository: GameRepository(
-					levelRepository: LevelRepository(
-						levelsJsonUrl: Endpoints.levelsJsonUrl
-					)
-				),
-				levelRepository: LevelRepository(
-					levelsJsonUrl: Endpoints.levelsJsonUrl
-				),
-				levelService: LevelService()
-			)
-	)
+	@EnvironmentObject var viewModel: GameViewModel
 
 	@State private var showFirstMenuItem = false
 	@State private var showSecondMenuItem = false
@@ -41,7 +28,6 @@ struct GameView: View {
 
 			if !viewModel.isTutorialLevel {
 				BackgroundView(
-					viewModel: viewModel,
 					showFirstMenuItem: $showFirstMenuItem,
 					showSecondMenuItem: $showSecondMenuItem,
 					showInstruction: $showInstruction,
@@ -53,21 +39,17 @@ struct GameView: View {
 
 			if showDeletionAlert {
 				DeleteGameView(
-					viewModel: viewModel,
 					viewIsShowing: $showDeletionAlert,
 					showInstruction: $showInstruction
 				)
 				.zIndex(2)
 				.transition(.scale)
 			} else if showResult {
-				ResultView(
-					viewModel: viewModel
-				)
+				ResultView()
 				.zIndex(1)
 				.transition(.scale)
 			} else {
 				FieldView(
-					viewModel: viewModel,
 					showFirstMenuItem: $showFirstMenuItem,
 					showSecondMenuItem: $showSecondMenuItem,
 					showInstruction: $showInstruction

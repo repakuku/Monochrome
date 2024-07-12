@@ -9,7 +9,8 @@
 import SwiftUI
 
 struct FieldView: View {
-	@ObservedObject var viewModel: GameViewModel
+	@EnvironmentObject var viewModel: GameViewModel
+
 	@Binding var showFirstMenuItem: Bool
 	@Binding var showSecondMenuItem: Bool
 	@Binding var showInstruction: Bool
@@ -88,7 +89,12 @@ struct FieldView: View {
 
 #Preview {
 	FieldView(
-		viewModel: GameViewModel(
+		showFirstMenuItem: .constant(false),
+		showSecondMenuItem: .constant(false),
+		showInstruction: .constant(false)
+	)
+	.environmentObject(
+		GameViewModel(
 			gameManager: GameManager(
 				gameRepository: GameRepository(
 					levelRepository: LevelRepository(
@@ -100,9 +106,6 @@ struct FieldView: View {
 				),
 				levelService: LevelService()
 			)
-		),
-		showFirstMenuItem: .constant(false),
-		showSecondMenuItem: .constant(false),
-		showInstruction: .constant(false)
+		)
 	)
 }
