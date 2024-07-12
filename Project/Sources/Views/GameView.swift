@@ -100,4 +100,19 @@ struct InstructionView: View {
 
 #Preview {
 	GameView()
+		.environmentObject(
+			GameViewModel(
+				gameManager: GameManager(
+					gameRepository: GameRepository(
+						levelRepository: LevelRepository(
+							levelsJsonUrl: Endpoints.levelsJsonUrl
+						)
+					),
+					levelRepository: LevelRepository(
+						levelsJsonUrl: Endpoints.levelsJsonUrl
+					),
+					levelService: LevelService()
+				)
+			)
+		)
 }
