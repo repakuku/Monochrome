@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct WelcomeView: View {
+
 	@State private var isActive = false
 
 	var body: some View {
@@ -17,7 +18,8 @@ struct WelcomeView: View {
 				BigBoldText(text: "Monochrome")
 
 				NavigationLink(
-					destination: GameView().transition(.scale),
+					destination: GameView()
+							.transition(.scale),
 					isActive: $isActive
 				) {
 					EmptyView()

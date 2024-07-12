@@ -9,7 +9,8 @@
 import SwiftUI
 
 struct LevelsView: View {
-	@ObservedObject var viewModel: GameViewModel
+	@EnvironmentObject var viewModel: GameViewModel
+
 	@Binding var levelsViewIsShowing: Bool
 	@Binding var showInstruction: Bool
 	@Binding var showDeletionAlert: Bool
@@ -20,7 +21,6 @@ struct LevelsView: View {
 				.ignoresSafeArea()
 			VStack(spacing: Sizes.Spacing.normal) {
 				LevelsHeaderView(
-					viewModel: viewModel,
 					viewIsShowing: $levelsViewIsShowing,
 					showInstruction: $showInstruction,
 					showDeletionAlert: $showDeletionAlert
@@ -108,8 +108,6 @@ struct RowView: View {
 }
 
 struct LevelsHeaderView: View {
-	@ObservedObject var viewModel: GameViewModel
-
 	@Binding var viewIsShowing: Bool
 	@Binding var showInstruction: Bool
 	@Binding var showDeletionAlert: Bool
@@ -174,7 +172,12 @@ struct StarsView: View {
 
 #Preview {
 	LevelsView(
-		viewModel: GameViewModel(
+		levelsViewIsShowing: .constant(true),
+		showInstruction: .constant(false),
+		showDeletionAlert: .constant(false)
+	)
+	.environmentObject(
+		GameViewModel(
 			gameManager: GameManager(
 				gameRepository: GameRepository(
 					levelRepository: LevelRepository(
@@ -186,9 +189,6 @@ struct StarsView: View {
 				),
 				levelService: LevelService()
 			)
-		),
-		levelsViewIsShowing: .constant(true),
-		showInstruction: .constant(false),
-		showDeletionAlert: .constant(false)
+		)
 	)
 }

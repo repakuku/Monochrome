@@ -9,9 +9,25 @@ import SwiftUI
 
 @main
 struct MonochromeApp: App {
+	@StateObject private var viewModel = GameViewModel(
+		gameManager:
+			GameManager(
+				gameRepository: GameRepository(
+					levelRepository: LevelRepository(
+						levelsJsonUrl: Endpoints.levelsJsonUrl
+					)
+				),
+				levelRepository: LevelRepository(
+					levelsJsonUrl: Endpoints.levelsJsonUrl
+				),
+				levelService: LevelService()
+			)
+	)
+
 	var body: some Scene {
 		WindowGroup {
 			WelcomeView()
+				.environmentObject(viewModel)
 		}
 	}
 }
