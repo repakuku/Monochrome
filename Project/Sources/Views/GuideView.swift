@@ -41,7 +41,7 @@ struct GuideHeaderView: View {
 				Spacer()
 				RoundedImageView(
 					systemName: Images.xmark.rawValue,
-					isFilled: true
+					isFilled: false
 				) {
 					withAnimation {
 						viewIsShowing = false
