@@ -60,11 +60,6 @@ struct RoundedRowView: View {
 			action()
 		} label: {
 			ZStack {
-				RoundedRectangle(cornerRadius: Sizes.General.cornerRadius)
-					.fill(Theme.foregroundColor)
-					.frame(height: Sizes.General.roundedViewLength)
-					.offset(y: 4)
-
 				RowView(
 					index: index,
 					stars: stars,
