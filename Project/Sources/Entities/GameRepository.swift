@@ -9,23 +9,22 @@
 import Foundation
 
 protocol IGameRepository {
-	func saveGame(_ game: Game, to gameUrl: URL?)
-	func getGame(from savedGameUrl: URL?) -> Game
-	func deleteSavedGame(from savedGameUrl: URL?)
+	func saveGame(_ game: Game)
+	func getGame() async -> Game
+	func deleteSavedGame()
 }
 
 final class GameRepository: IGameRepository {
 
 	private var levelRepository: ILevelRepository
+	private var levels: [Level] = []
 
 	init(levelRepository: ILevelRepository) {
 		self.levelRepository = levelRepository
 	}
 
-	func saveGame(_ game: Game, to gameUrl: URL?) {
-		guard let gameUrl = gameUrl else {
-			return
-		}
+	func saveGame(_ game: Game) {
+		let gameUrl = Endpoints.gameUrl
 
 		let encoder = JSONEncoder()
 		encoder.outputFormatting = .prettyPrinted
@@ -35,17 +34,15 @@ final class GameRepository: IGameRepository {
 		}
 	}
 
-	func getGame(from savedGameUrl: URL? = nil) -> Game {
-		guard let savedGameUrl = savedGameUrl else {
-			return getNewGame()
-		}
+	func getGame() async -> Game {
+		let savedGameUrl = Endpoints.gameUrl
 
 		let decoder = JSONDecoder()
 
 		if let savedGameData = try? Data(contentsOf: savedGameUrl),
 		   let savedGame = try? decoder.decode(Game.self, from: savedGameData) {
 
-			let newGame = getNewGame()
+			let newGame = await getNewGame()
 
 			if newGame.levelsHash != savedGame.levelsHash {
 				return newGame
@@ -54,33 +51,38 @@ final class GameRepository: IGameRepository {
 					level: savedGame.level,
 					taps: savedGame.taps,
 					levels: savedGame.levels,
+					originLevels: savedGame.originLevels,
 					levelsHash: savedGame.levelsHash
 				)
 			}
 		} else {
-			return getNewGame()
+			return await getNewGame()
 		}
 	}
 
-	func deleteSavedGame(from savedGameUrl: URL?) {
-		guard let savedGameUrl = savedGameUrl else {
-			return
-		}
+	func deleteSavedGame() {
+		let savedGameUrl = Endpoints.gameUrl
 
 		try? FileManager.default.removeItem(at: savedGameUrl)
 	}
 
-	private func getNewGame() -> Game {
-		let newLevels = levelRepository.getLevels()
-		let firstLevel = newLevels[0]
+	private func getNewGame() async -> Game {
 
-		let newLevelsHash = HashService.calculateHash(of: newLevels)
+		levels = levelRepository.getLevels()
+
+		if let newLevels = await levelRepository.fetchLevels() {
+			levels.append(contentsOf: newLevels)
+		}
+
+		let firstLevel = levels[0]
+		let levelsHash = HashService.calculateHash(of: levels)
 
 		return Game(
 			level: firstLevel,
 			taps: [],
-			levels: newLevels,
-			levelsHash: newLevelsHash
+			levels: levels,
+			originLevels: levels,
+			levelsHash: levelsHash
 		)
 	}
 }
@@ -93,26 +95,29 @@ final class StubGameRepository: IGameRepository {
 	var game = Game(
 		level: Level(id: 0, cellsMatrix: [[0]]),
 		taps: [],
-		levels: [
-			Level(id: 0, cellsMatrix: [[0]]),
-			Level(id: 1, cellsMatrix: [[0, 0], [1, 0]]),
-			Level(id: 2, cellsMatrix: [[0, 0], [1, 1]]),
-			Level(id: 3, cellsMatrix: [[1, 0], [1, 1]]),
-			Level(id: 4, cellsMatrix: [[1, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 1]]),
-			Level(id: 5, cellsMatrix: [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]])
-		],
+		levels: levels,
+		originLevels: levels,
 		levelsHash: "hash"
 	)
 
-	func saveGame(_ game: Game, to gameUrl: URL?) {
+	private static let levels = [
+		Level(id: 0, cellsMatrix: [[0]]),
+		Level(id: 1, cellsMatrix: [[0, 0], [1, 0]]),
+		Level(id: 2, cellsMatrix: [[0, 0], [1, 1]]),
+		Level(id: 3, cellsMatrix: [[1, 0], [1, 1]]),
+		Level(id: 4, cellsMatrix: [[1, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 1]]),
+		Level(id: 5, cellsMatrix: [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]])
+	]
+
+	func saveGame(_ game: Game) {
 		saveGameCalled = true
 	}
 
-	func getGame(from savedGameUrl: URL?) -> Game {
+	func getGame() async -> Game {
 		game
 	}
 
-	func deleteSavedGame(from savedGameUrl: URL?) {
+	func deleteSavedGame() {
 		deleteSavedGameCalled = true
 	}
 }
