@@ -10,22 +10,36 @@ import Foundation
 
 protocol ILevelRepository {
 	func getLevels() -> [Level]
+	func fetchLevels() async -> [Level]?
 }
 
 final class LevelRepository: ILevelRepository {
 
 	private var levels: [Level] = []
 
-	init(levelsJsonUrl: URL?) {
-		self.levels = loadJsonLevels(from: levelsJsonUrl)
+	init() {
+		self.levels = loadDefaultLevels()
 	}
 
 	func getLevels() -> [Level] {
 		levels.sortedById()
 	}
 
-	private func loadJsonLevels(from url: URL?) -> [Level] {
-		guard let url = url else {
+	func fetchLevels() async -> [Level]? {
+		guard let url = Endpoints.levelsUrl else {
+			return nil
+		}
+
+		do {
+			let (data, _) = try await URLSession.shared.data(from: url)
+			return try JSONDecoder().decode([Level].self, from: data)
+		} catch {
+			return nil
+		}
+	}
+
+	private func loadDefaultLevels() -> [Level] {
+		guard let url = Endpoints.defaultLevelsUrl else {
 			return [Level(id: 0, cellsMatrix: [[0]])]
 		}
 
@@ -50,5 +64,9 @@ final class StubLevelRepository: ILevelRepository {
 
 	func getLevels() -> [Level] {
 		levels.sortedById()
+	}
+
+	func fetchLevels() async -> [Level]? {
+		[]
 	}
 }

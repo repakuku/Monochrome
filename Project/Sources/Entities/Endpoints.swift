@@ -20,7 +20,11 @@ enum Endpoints {
 		)
 	}()
 
-	static var levelsJsonUrl: URL? = {
+	static var defaultLevelsUrl: URL? = {
 		Bundle.main.url(forResource: "Levels", withExtension: "json")
+	}()
+
+	static var levelsUrl: URL? = {
+		URL(string: "https://repakuku.github.io/monochrome-web/levels.json")
 	}()
 }

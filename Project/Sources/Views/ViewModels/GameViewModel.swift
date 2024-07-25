@@ -15,15 +15,16 @@ enum CellState: Int {
 	case hintFilled
 }
 
+@MainActor
 final class GameViewModel: ObservableObject {
-	@Published var isTutorialLevel: Bool
 	@Published var levelId: Int
 	@Published var cells: [[CellState]]
 	@Published var taps: Int
 	@Published var isLevelCompleted: Bool
+	@Published var isTutorialLevel: Bool
 
 	var numberOfLevels: Int {
-		gameManager.numberOfLevels
+		gameManager.game.levels.count
 	}
 
 	var levelSize: Int {
@@ -32,25 +33,34 @@ final class GameViewModel: ObservableObject {
 
 	private let gameManager: IGameManager
 
+	private var game: Game {
+		gameManager.game
+	}
+
 	init(gameManager: IGameManager) {
 		self.gameManager = gameManager
 
-		isTutorialLevel = gameManager.currentLevelId == 0
-		levelId = gameManager.currentLevelId
-		cells = GameViewModel.mapCells(gameManager.currentLevelCells)
-		taps = gameManager.tapsCount
-		isLevelCompleted = false
+		self.levelId = gameManager.game.level.id
+		self.cells = GameViewModel.mapCells(gameManager.game.level.cellsMatrix)
+		self.taps = gameManager.game.taps.count
+		self.isLevelCompleted = false
+		self.isTutorialLevel = gameManager.game.level.id == 0
+
+		Task {
+			await gameManager.fetchGame()
+			updateViewModel()
+		}
 	}
 
 	func cellTapped(atX x: Int, atY y: Int) {
-		guard x >= 0 && x < gameManager.currentLevelSize && y >= 0 && y < gameManager.currentLevelSize else {
+		guard x >= 0 && x < game.level.levelSize && y >= 0 && y < game.level.levelSize else {
 			return
 		}
 
 		gameManager.toggleColors(atX: x, atY: y)
-		updateLevel()
+		updateViewModel()
 
-		switch gameManager.currentlevelStatus {
+		switch game.level.status {
 		case .completed:
 			isLevelCompleted = true
 		case .incompleted:
@@ -60,20 +70,20 @@ final class GameViewModel: ObservableObject {
 
 	func nextLevel() {
 		gameManager.nextLevel()
-		updateLevel()
-		isTutorialLevel = gameManager.currentLevelId == 0
+		updateViewModel()
+		isTutorialLevel = game.level.id == 0
 		isLevelCompleted = false
 	}
 
 	func restartLevel() {
 		gameManager.restartLevel()
-		updateLevel()
+		updateViewModel()
 		isLevelCompleted = false
 	}
 
 	func getHint() {
 		gameManager.getHint()
-		updateLevel()
+		updateViewModel()
 	}
 
 	func selectLevel(id: Int) {
@@ -82,7 +92,7 @@ final class GameViewModel: ObservableObject {
 		}
 
 		gameManager.selectLevel(id: id)
-		updateLevel()
+		updateViewModel()
 	}
 
 	func getTapsForLevel(id: Int) -> Int {
@@ -111,17 +121,14 @@ final class GameViewModel: ObservableObject {
 
 	func undoButtonTapped() {
 		gameManager.undoLastTap()
-		updateLevel()
+		updateViewModel()
 	}
 
 	func eraserButtonTapped() {
-		gameManager.resetProgress()
-
-		isTutorialLevel = true
-		levelId = gameManager.currentLevelId
-		cells = GameViewModel.mapCells(gameManager.currentLevelCells)
-		taps = gameManager.tapsCount
-		isLevelCompleted = false
+		Task {
+			await gameManager.resetProgress()
+			updateViewModel()
+		}
 	}
 
 	private static func mapCells(_ cells: [[Int]]) -> [[CellState]] {
@@ -132,9 +139,11 @@ final class GameViewModel: ObservableObject {
 		}
 	}
 
-	private func updateLevel() {
-		levelId = gameManager.currentLevelId
-		cells = GameViewModel.mapCells(gameManager.currentLevelCells)
-		taps = gameManager.tapsCount
+	private func updateViewModel() {
+		self.levelId = game.level.id
+		self.cells = GameViewModel.mapCells(game.level.cellsMatrix)
+		self.taps = game.taps.count
+		self.isLevelCompleted = false
+		self.isTutorialLevel = gameManager.game.level.id == 0
 	}
 }
