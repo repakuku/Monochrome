@@ -191,12 +191,7 @@ struct BottomView: View {
 		GameViewModel(
 			gameManager: GameManager(
 				gameRepository: GameRepository(
-					levelRepository: LevelRepository(
-						levelsJsonUrl: Endpoints.levelsJsonUrl
-					)
-				),
-				levelRepository: LevelRepository(
-					levelsJsonUrl: Endpoints.levelsJsonUrl
+					levelRepository: LevelRepository()
 				),
 				levelService: LevelService()
 			)
