@@ -9,24 +9,18 @@
 import Foundation
 
 protocol ILevelRepository {
-	func getLevels() -> [Level]
-	func fetchLevels() async -> [Level]?
+	func getDefaultLevels(from: URL?) -> [Level]
+	func fetchLevels(from: URL?) async -> [Level]?
 }
 
 final class LevelRepository: ILevelRepository {
 
-	private var levels: [Level] = []
-
-	init() {
-		self.levels = loadDefaultLevels()
+	func getDefaultLevels(from url: URL?) -> [Level] {
+		loadDefaultLevels(from: url)
 	}
 
-	func getLevels() -> [Level] {
-		levels.sortedById()
-	}
-
-	func fetchLevels() async -> [Level]? {
-		guard let url = Endpoints.levelsUrl else {
+	func fetchLevels(from url: URL?) async -> [Level]? {
+		guard let url = url else {
 			return nil
 		}
 
@@ -38,8 +32,8 @@ final class LevelRepository: ILevelRepository {
 		}
 	}
 
-	private func loadDefaultLevels() -> [Level] {
-		guard let url = Endpoints.defaultLevelsUrl else {
+	private func loadDefaultLevels(from url: URL?) -> [Level] {
+		guard let url = url else {
 			return [Level(id: 0, cellsMatrix: [[0]])]
 		}
 
@@ -62,11 +56,11 @@ final class StubLevelRepository: ILevelRepository {
 		Level(id: 5, cellsMatrix: [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]])
 	]
 
-	func getLevels() -> [Level] {
+	func getDefaultLevels(from: URL?) -> [Level] {
 		levels.sortedById()
 	}
 
-	func fetchLevels() async -> [Level]? {
-		[]
+	func fetchLevels(from: URL?) async -> [Level]? {
+		levels.sortedById()
 	}
 }

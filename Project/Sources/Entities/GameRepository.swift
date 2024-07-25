@@ -68,9 +68,9 @@ final class GameRepository: IGameRepository {
 
 	private func getNewGame() async -> Game {
 
-		levels = levelRepository.getLevels()
+		levels = levelRepository.getDefaultLevels(from: Endpoints.defaultLevelsUrl)
 
-		if let newLevels = await levelRepository.fetchLevels() {
+		if let newLevels = await levelRepository.fetchLevels(from: Endpoints.levelsUrl) {
 			levels.append(contentsOf: newLevels)
 		}
 
