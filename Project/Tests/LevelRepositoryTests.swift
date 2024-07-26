@@ -98,7 +98,6 @@ final class LevelRepositoryTests: XCTestCase {
 
 		let sut = makeSut()
 
-		let expectation = self.expectation(description: "Fetch Levels")
 		let validUrl = Endpoints.levelsUrl
 
 		let fetchedLevels = await sut.fetchLevels(from: validUrl)
@@ -106,40 +105,26 @@ final class LevelRepositoryTests: XCTestCase {
 		XCTAssertNotNil(fetchedLevels, "Expected fetched levels to be not-nil.")
 		XCTAssertEqual(fetchedLevels?.count, 1, "Expected fetched levels count to be 1.")
 		XCTAssertEqual(fetchedLevels?.first?.id, 11, "Expected first fetched levels id to be 11.")
-
-		expectation.fulfill()
-
-		await fulfillment(of: [expectation], timeout: 5)
 	}
 
 	func test_fetchLevels_withInvalidUrl_shouldReturnFetchedLevels() async {
 
 		let sut = makeSut()
 
-		let expectation = self.expectation(description: "Fetch Levels")
 		let invalidUrl = URL(string: "https://invalid-url")
 
 		let fetchedLevels = await sut.fetchLevels(from: invalidUrl)
 		XCTAssertNil(fetchedLevels, "Expected fetched levels to be nil for an invalid URL.")
-
-		expectation.fulfill()
-
-		await fulfillment(of: [expectation], timeout: 5)
 	}
 
 	func test_fetchLevels_withNildUrl_shouldReturnFetchedLevels() async {
 
 		let sut = makeSut()
 
-		let expectation = self.expectation(description: "Fetch Levels")
 		let nilUrl: URL? = nil
 
 		let fetchedLevels = await sut.fetchLevels(from: nilUrl)
 		XCTAssertNil(fetchedLevels, "Expected fetched levels to be nil for an invalid URL.")
-
-		expectation.fulfill()
-
-		await fulfillment(of: [expectation], timeout: 5)
 	}
 }
 

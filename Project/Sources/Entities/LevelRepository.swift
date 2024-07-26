@@ -61,6 +61,6 @@ final class StubLevelRepository: ILevelRepository {
 	}
 
 	func fetchLevels(from: URL?) async -> [Level]? {
-		levels.sortedById()
+		nil
 	}
 }
