@@ -13,7 +13,7 @@ enum Endpoints {
 		FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
 	}()
 
-	static var gameUrl: URL = {
+	static var savedGameUrl: URL = {
 		URL(
 			fileURLWithPath: "Game.json",
 			relativeTo: Endpoints.documents

@@ -32,6 +32,7 @@ final class GameManager: IGameManager {
 	private let levelService: ILevelService
 
 	private(set) var game: Game
+	private let savedGameUrl = Endpoints.savedGameUrl
 
 	init(
 		gameRepository: IGameRepository,
@@ -51,7 +52,7 @@ final class GameManager: IGameManager {
 	}
 
 	func fetchGame() async {
-		self.game = await gameRepository.getGame()
+		self.game = await gameRepository.getGame(from: Endpoints.savedGameUrl)
 	}
 
 	func toggleColors(atX x: Int, atY y: Int) {
@@ -67,7 +68,7 @@ final class GameManager: IGameManager {
 			completeLevel()
 		}
 
-		gameRepository.saveGame(game)
+		gameRepository.saveGame(game, toUrl: savedGameUrl)
 	}
 
 	func nextLevel() {
@@ -75,14 +76,14 @@ final class GameManager: IGameManager {
 		game.level = game.originLevels[nextLevelId]
 		game.taps = []
 
-		gameRepository.saveGame(game)
+		gameRepository.saveGame(game, toUrl: savedGameUrl)
 	}
 
 	func restartLevel() {
 		game.taps = []
 		game.level = game.originLevels[game.level.id]
 
-		gameRepository.saveGame(game)
+		gameRepository.saveGame(game, toUrl: savedGameUrl)
 	}
 
 	func selectLevel(id: Int) {
@@ -94,7 +95,7 @@ final class GameManager: IGameManager {
 		game.level.status = .incompleted
 		game.taps = []
 
-		gameRepository.saveGame(game)
+		gameRepository.saveGame(game, toUrl: savedGameUrl)
 	}
 
 	func getHint() {
@@ -165,8 +166,8 @@ final class GameManager: IGameManager {
 	}
 
 	func resetProgress() async {
-		gameRepository.deleteSavedGame()
-		self.game = await gameRepository.getGame()
+		gameRepository.deleteSavedGame(from: savedGameUrl)
+		self.game = await gameRepository.getGame(from: savedGameUrl)
 	}
 
 	private func completeLevel() {
@@ -190,6 +191,7 @@ final class MockGameManager: IGameManager {
 		levelsHash: "hash"
 	)
 
+	var fetchGameCalled = false
 	var toggleColorsCalled = false
 	var nextLevelCalled = false
 	var restartLevelCalled = false
@@ -204,7 +206,7 @@ final class MockGameManager: IGameManager {
 	var resetProgressCalled = false
 
 	func fetchGame() async {
-		// TODO: complete
+		fetchGameCalled = true
 	}
 
 	func toggleColors(atX x: Int, atY y: Int) {

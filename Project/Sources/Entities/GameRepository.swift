@@ -9,33 +9,23 @@
 import Foundation
 
 protocol IGameRepository {
-	func saveGame(_ game: Game)
-	func getGame() async -> Game
-	func deleteSavedGame()
+	func getGame(from: URL?) async -> Game
+	func saveGame(_: Game, toUrl: URL?)
+	func deleteSavedGame(from: URL?)
 }
 
 final class GameRepository: IGameRepository {
 
 	private var levelRepository: ILevelRepository
-	private var levels: [Level] = []
 
 	init(levelRepository: ILevelRepository) {
 		self.levelRepository = levelRepository
 	}
 
-	func saveGame(_ game: Game) {
-		let gameUrl = Endpoints.gameUrl
-
-		let encoder = JSONEncoder()
-		encoder.outputFormatting = .prettyPrinted
-
-		if let gameData = try? encoder.encode(game) {
-			try? gameData.write(to: gameUrl, options: .atomic)
+	func getGame(from url: URL?) async -> Game {
+		guard let savedGameUrl = url else {
+			return await getNewGame()
 		}
-	}
-
-	func getGame() async -> Game {
-		let savedGameUrl = Endpoints.gameUrl
 
 		let decoder = JSONDecoder()
 
@@ -60,15 +50,30 @@ final class GameRepository: IGameRepository {
 		}
 	}
 
-	func deleteSavedGame() {
-		let savedGameUrl = Endpoints.gameUrl
+	func saveGame(_ game: Game, toUrl url: URL?) {
+		guard let gameUrl = url else {
+			return
+		}
+
+		let encoder = JSONEncoder()
+		encoder.outputFormatting = .prettyPrinted
+
+		if let gameData = try? encoder.encode(game) {
+			try? gameData.write(to: gameUrl, options: .atomic)
+		}
+	}
+
+	func deleteSavedGame(from url: URL?) {
+		guard let savedGameUrl = url else {
+			return
+		}
 
 		try? FileManager.default.removeItem(at: savedGameUrl)
 	}
 
 	private func getNewGame() async -> Game {
 
-		levels = levelRepository.getDefaultLevels(from: Endpoints.defaultLevelsUrl)
+		var levels = levelRepository.getDefaultLevels(from: Endpoints.defaultLevelsUrl)
 
 		if let newLevels = await levelRepository.fetchLevels(from: Endpoints.levelsUrl) {
 			levels.append(contentsOf: newLevels)
@@ -109,15 +114,15 @@ final class StubGameRepository: IGameRepository {
 		Level(id: 5, cellsMatrix: [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]])
 	]
 
-	func saveGame(_ game: Game) {
-		saveGameCalled = true
-	}
-
-	func getGame() async -> Game {
+	func getGame(from: URL?) async -> Game {
 		game
 	}
 
-	func deleteSavedGame() {
+	func saveGame(_: Game, toUrl: URL?) {
+		saveGameCalled = true
+	}
+
+	func deleteSavedGame(from: URL?) {
 		deleteSavedGameCalled = true
 	}
 }
