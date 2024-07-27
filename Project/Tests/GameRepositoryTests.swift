@@ -18,7 +18,7 @@ final class GameRepositoryTests: XCTestCase {
 		super.setUp()
 
 		stubLevelRepository = StubLevelRepository()
-		sut = GameRepository(levelRepository: stubLevelRepository)
+		sut = GameRepository()
 	}
 
 	override func tearDown() {
@@ -28,57 +28,37 @@ final class GameRepositoryTests: XCTestCase {
 		super.tearDown()
 	}
 
-	// MARK: - Get Game
+	// MARK: - Get New Game
 
-	func test_getGame_forTheFirstRun_shouldReturnNewGame() async {
+	func test_getNewGame_withValidLevels_shouldReturnNewGame() {
 
 		let expectedGame = createNewGame()
-		let game = await sut.getGame(from: nil)
+		let game = sut.getNewGame(with: expectedGame.levels)
 
 		XCTAssertEqual(game, expectedGame, "Expected game to be \(expectedGame), but got \(game).")
 	}
 
-	func test_getGame_withInvalidUrl_shouldReturnNewGame() async {
-		let invalidUrl = URL(string: "")
-		let game = await sut.getGame(from: invalidUrl)
+	// MARK: - Get Saved Game
 
-		let expectedGame = createNewGame()
+	func test_getSavedGame_fromSavedGameUrl_shouldReturnSavedGame() {
 
-		XCTAssertEqual(game, expectedGame, "Expected game to be \(expectedGame), but got \(game).")
-	}
-
-	func test_getGame_fromSavedGameUrl_shouldReturnSavedGame() async {
 		let savedGame = createSavedGame()
-		
+
 		let savedGameData = try! JSONEncoder().encode(savedGame)
 		let savedGameUrl = createTemporaryFile(with: savedGameData)
 
-		let game = await sut.getGame(from: savedGameUrl)
+		let game = sut.getSavedGame(from: savedGameUrl)!
 
 		XCTAssertEqual(game.levels[0].status, .completed(1))
 	}
 
-	func test_getGame_withChangedOriginLevels_shouldReturnNewGame() async {
-		let savedGame = createSavedGame()
-		let savedGameData = try! JSONEncoder().encode(savedGame)
-		let savedgameUrl = createTemporaryFile(with: savedGameData)
+	func test_getSavedGame_withInvalidUrl_shouldReturnNil() {
 
-		let newOriginLevels = [Level(id: 1, cellsMatrix: [[1, 0], [0, 1]])]
-		stubLevelRepository.levels = newOriginLevels
+		let invalidUrl = URL(string: "")
 
-		let newOriginLevelsHash = HashService.calculateHash(of: newOriginLevels)
+		let game = sut.getSavedGame(from: invalidUrl)
 
-		let expectedGame = Game(
-			level: newOriginLevels[0],
-			taps: [],
-			levels: newOriginLevels,
-			originLevels: newOriginLevels,
-			levelsHash: newOriginLevelsHash
-		)
-
-		let game = await sut.getGame(from: savedgameUrl)
-
-		XCTAssertEqual(game, expectedGame, "Expected game to be \(expectedGame), but got \(game).")
+		XCTAssertNil(game, "Expected game to be nil.")
 	}
 
 	// MARK: - Save Game
@@ -103,24 +83,24 @@ final class GameRepositoryTests: XCTestCase {
 		XCTAssertFalse(FileManager.default.fileExists(atPath: nilUrl?.path ?? ""), "Expected file not to be saved when URL is nil.")
 	}
 
-	// MARK: - Delete Saved Game
+	// MARK: - Delete Game
 
-	func test_deleteSavedGame_withNilUrl_shouldHandleGracefully() {
+	func test_deleteGame_withNilUrl_shouldHandleGracefully() {
 		let game = createNewGame()
 
 		let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
 
 		sut.saveGame(game, toUrl: tempUrl)
 
-		sut.deleteSavedGame(from: tempUrl)
+		sut.deleteGame(from: tempUrl)
 
 		XCTAssertFalse(FileManager.default.fileExists(atPath: tempUrl.path), "Expected file to exist at path \(tempUrl.path).")
 	}
 
-	func test_deleteSavedGame_withNilUrl_shouldDeleteGame() {
+	func test_deleteGame_withNilUrl_shouldDeleteGame() {
 		let nilUrl: URL? = nil
 
-		sut.deleteSavedGame(from: nilUrl)
+		sut.deleteGame(from: nilUrl)
 
 		XCTAssert(true, "Expected deleteSavedGame to handle nil URL without errors.")
 	}

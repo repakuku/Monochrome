@@ -26,7 +26,7 @@ struct Game: Codable, Equatable {
 	var level: Level
 	var taps: [Tap]
 	var levels: [Level]
-	let originLevels: [Level]
+	var originLevels: [Level]
 	var levelsHash: String
 
 	static func == (lhs: Game, rhs: Game) -> Bool {

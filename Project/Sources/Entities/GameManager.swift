@@ -12,7 +12,7 @@ protocol IGameManager {
 
 	var game: Game { get }
 
-	func fetchGame() async
+	func updateGame() async
 
 	func toggleColors(atX x: Int, atY y: Int)
 	func nextLevel()
@@ -23,36 +23,47 @@ protocol IGameManager {
 	func getStatusForLevel(id: Int) -> Bool
 	func getStarsForLevel(id: Int, forCurrentGame: Bool) -> Int
 	func undoLastTap()
-	func resetProgress() async
+	func resetProgress()
 }
 
 final class GameManager: IGameManager {
 
+	private(set) var game: Game
+
 	private let gameRepository: IGameRepository
+	private let levelRepository: ILevelRepository
 	private let levelService: ILevelService
 
-	private(set) var game: Game
 	private let savedGameUrl = Endpoints.savedGameUrl
+	private let defaultLevelsUrl = Endpoints.defaultLevelsUrl
+	private let newLevelsUrl = Endpoints.levelsUrl
 
 	init(
 		gameRepository: IGameRepository,
+		levelRepository: ILevelRepository,
 		levelService: ILevelService
 	) {
 		self.gameRepository = gameRepository
+		self.levelRepository = levelRepository
 		self.levelService = levelService
 
-		let startedlevel = Level(id: 0, cellsMatrix: [[0]])
-		self.game = Game(
-			level: startedlevel,
-			taps: [],
-			levels: [startedlevel],
-			originLevels: [startedlevel],
-			levelsHash: "hash"
-		)
+		if let savedGame = gameRepository.getSavedGame(from: savedGameUrl) {
+			self.game = savedGame
+		} else {
+			let defaultLevels = levelRepository.getDefaultLevels(from: defaultLevelsUrl)
+			self.game = gameRepository.getNewGame(with: defaultLevels)
+		}
 	}
 
-	func fetchGame() async {
-		self.game = await gameRepository.getGame(from: Endpoints.savedGameUrl)
+	func updateGame() async {
+		if let newLevels = await levelRepository.fetchLevels(from: newLevelsUrl) {
+			let allLevels = game.originLevels + newLevels
+			let allLevelsHash = HashService.calculateHash(of: allLevels)
+
+			self.game.levels.append(contentsOf: newLevels)
+			self.game.originLevels.append(contentsOf: newLevels)
+			self.game.levelsHash = allLevelsHash
+		}
 	}
 
 	func toggleColors(atX x: Int, atY y: Int) {
@@ -165,9 +176,10 @@ final class GameManager: IGameManager {
 		levelService.toggleColors(level: &game.level, atX: removedTap.row, atY: removedTap.col)
 	}
 
-	func resetProgress() async {
-		gameRepository.deleteSavedGame(from: savedGameUrl)
-		self.game = await gameRepository.getGame(from: savedGameUrl)
+	func resetProgress() {
+		gameRepository.deleteGame(from: savedGameUrl)
+		let newLevels = levelRepository.getDefaultLevels(from: defaultLevelsUrl)
+		self.game = gameRepository.getNewGame(with: newLevels)
 	}
 
 	private func completeLevel() {
@@ -191,7 +203,7 @@ final class MockGameManager: IGameManager {
 		levelsHash: "hash"
 	)
 
-	var fetchGameCalled = false
+	var updateGameCalled = false
 	var toggleColorsCalled = false
 	var nextLevelCalled = false
 	var restartLevelCalled = false
@@ -205,8 +217,8 @@ final class MockGameManager: IGameManager {
 	var undoLastTapCalled = false
 	var resetProgressCalled = false
 
-	func fetchGame() async {
-		fetchGameCalled = true
+	func updateGame() async {
+		updateGameCalled = true
 	}
 
 	func toggleColors(atX x: Int, atY y: Int) {
@@ -245,7 +257,7 @@ final class MockGameManager: IGameManager {
 		undoLastTapCalled = true
 	}
 
-	func resetProgress() async {
+	func resetProgress() {
 		resetProgressCalled = true
 	}
 }
