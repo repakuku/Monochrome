@@ -47,7 +47,7 @@ final class GameViewModel: ObservableObject {
 		self.isTutorialLevel = gameManager.game.level.id == 0
 
 		Task {
-			await gameManager.fetchGame()
+			await gameManager.updateGame()
 			updateViewModel()
 		}
 	}
@@ -126,7 +126,8 @@ final class GameViewModel: ObservableObject {
 
 	func eraserButtonTapped() {
 		Task {
-			await gameManager.resetProgress()
+			gameManager.resetProgress()
+			await gameManager.updateGame()
 			updateViewModel()
 		}
 	}

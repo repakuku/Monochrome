@@ -10,13 +10,11 @@ import SwiftUI
 @main
 struct MonochromeApp: App {
 	@StateObject private var viewModel = GameViewModel(
-		gameManager:
-			GameManager(
-				gameRepository: GameRepository(
-					levelRepository: LevelRepository()
-				),
-				levelService: LevelService()
-			)
+		gameManager: GameManager(
+			gameRepository: GameRepository(),
+			levelRepository: LevelRepository(),
+			levelService: LevelService()
+		)
 	)
 
 	var body: some Scene {
