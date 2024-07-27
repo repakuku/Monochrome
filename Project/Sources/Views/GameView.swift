@@ -103,9 +103,8 @@ struct InstructionView: View {
 		.environmentObject(
 			GameViewModel(
 				gameManager: GameManager(
-					gameRepository: GameRepository(
-						levelRepository: LevelRepository()
-					),
+					gameRepository: GameRepository(),
+					levelRepository: LevelRepository(),
 					levelService: LevelService()
 				)
 			)
