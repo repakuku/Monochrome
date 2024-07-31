@@ -56,13 +56,21 @@ final class GameManager: IGameManager {
 	}
 
 	func updateGame() async {
-		if let newLevels = await levelRepository.fetchLevels(from: newLevelsUrl) {
-			let allLevels = game.originLevels + newLevels
-			let allLevelsHash = HashService.calculateHash(of: allLevels)
+		if let fetchedLevels = await levelRepository.fetchLevels(from: newLevelsUrl) {
+			let fetchedLevelsHash = HashService.calculateHash(of: fetchedLevels)
 
-			self.game.levels.append(contentsOf: newLevels)
-			self.game.originLevels.append(contentsOf: newLevels)
-			self.game.levelsHash = allLevelsHash
+			if fetchedLevelsHash != game.levelsHash {
+
+				let newGame = Game(
+					level: fetchedLevels[0],
+					taps: [],
+					levels: fetchedLevels,
+					levelsHash: fetchedLevelsHash
+				)
+
+				self.game = newGame
+				gameRepository.saveGame(game, toUrl: savedGameUrl)
+			}
 		}
 	}
 
@@ -84,15 +92,16 @@ final class GameManager: IGameManager {
 
 	func nextLevel() {
 		let nextLevelId = min(game.levels.count - 1, game.level.id + 1)
-		game.level = game.originLevels[nextLevelId]
+		game.level = game.levels[nextLevelId]
 		game.taps = []
+		game.level.status = .incompleted
 
 		gameRepository.saveGame(game, toUrl: savedGameUrl)
 	}
 
 	func restartLevel() {
 		game.taps = []
-		game.level = game.originLevels[game.level.id]
+		game.level = game.levels[game.level.id]
 
 		gameRepository.saveGame(game, toUrl: savedGameUrl)
 	}
@@ -178,8 +187,8 @@ final class GameManager: IGameManager {
 
 	func resetProgress() {
 		gameRepository.deleteGame(from: savedGameUrl)
-		let newLevels = levelRepository.getDefaultLevels(from: defaultLevelsUrl)
-		self.game = gameRepository.getNewGame(with: newLevels)
+		let defaultLevels = levelRepository.getDefaultLevels(from: defaultLevelsUrl)
+		self.game = gameRepository.getNewGame(with: defaultLevels)
 	}
 
 	private func completeLevel() {
@@ -199,7 +208,6 @@ final class MockGameManager: IGameManager {
 		level: Level(id: 0, cellsMatrix: [[0]]),
 		taps: [],
 		levels: [Level(id: 0, cellsMatrix: [[0]])],
-		originLevels: [Level(id: 0, cellsMatrix: [[0]])],
 		levelsHash: "hash"
 	)
 
