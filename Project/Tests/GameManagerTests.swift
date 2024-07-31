@@ -59,7 +59,7 @@ final class GameManagerTests: XCTestCase {
 		)
 
 		let savedGame = Game(
-			level: savedLevel,
+			currentLevelId: savedLevel.id,
 			taps: [Tap(row: 0, col: 0)],
 			levels: [savedLevel],
 			levelsHash: "savedHash"
@@ -82,7 +82,7 @@ final class GameManagerTests: XCTestCase {
 	func test_updateGame_withSameFetchedLevels_shouldNotUpdateGame() async {
 
 		var savedGame = createGame()
-		var savedLevelsHash = HashService.calculateHash(of: savedGame.levels)
+		let savedLevelsHash = HashService.calculateHash(of: savedGame.levels)
 		savedGame.levelsHash = savedLevelsHash
 
 		let fetchedLevels = savedGame.levels
@@ -114,8 +114,7 @@ final class GameManagerTests: XCTestCase {
 		stubLevelRepository.fetchedLevels = fetchedLevels
 
 		let expectedGame = Game(
-			level: fetchedLevels[0],
-			taps: [],
+			currentLevelId: 0,
 			levels: fetchedLevels,
 			levelsHash: fetchedLevelsHash
 		)
@@ -545,8 +544,7 @@ private extension GameManagerTests {
 		]
 
 		return Game(
-			level: levels[0],
-			taps: [],
+			currentLevelId: 0,
 			levels: levels,
 			levelsHash: "hash"
 		)

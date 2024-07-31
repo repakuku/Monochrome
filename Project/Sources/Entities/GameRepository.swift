@@ -22,8 +22,7 @@ final class GameRepository: IGameRepository {
 		let levelsHash = HashService.calculateHash(of: levels)
 
 		return Game(
-			level: levels[0],
-			taps: [],
+			currentLevelId: 0,
 			levels: levels,
 			levelsHash: levelsHash
 		)
@@ -39,7 +38,7 @@ final class GameRepository: IGameRepository {
 			let savedGame = try JSONDecoder().decode(Game.self, from: savedGameData)
 
 			return Game(
-				level: savedGame.level,
+				currentLevelId: savedGame.level.id,
 				taps: savedGame.taps,
 				levels: savedGame.levels,
 				levelsHash: savedGame.levelsHash
@@ -77,8 +76,7 @@ final class StubGameRepository: IGameRepository {
 	var deleteSavedGameCalled = false
 
 	var game = Game(
-		level: levels[0],
-		taps: [],
+		currentLevelId: 0,
 		levels: levels,
 		levelsHash: "hash"
 	)

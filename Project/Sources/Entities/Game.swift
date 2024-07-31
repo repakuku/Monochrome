@@ -27,6 +27,13 @@ struct Game: Codable, Equatable {
 	var levels: [Level]
 	var levelsHash: String
 
+	init(currentLevelId: Int = 0, taps: [Tap] = [], levels: [Level], levelsHash: String) {
+		self.level = levels[currentLevelId]
+		self.taps = taps
+		self.levels = levels
+		self.levelsHash = levelsHash
+	}
+
 	static func == (lhs: Game, rhs: Game) -> Bool {
 		if lhs.taps == rhs.taps
 			&& lhs.levels == rhs.levels

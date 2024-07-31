@@ -62,8 +62,7 @@ final class GameManager: IGameManager {
 			if fetchedLevelsHash != game.levelsHash {
 
 				let newGame = Game(
-					level: fetchedLevels[0],
-					taps: [],
+					currentLevelId: 0,
 					levels: fetchedLevels,
 					levelsHash: fetchedLevelsHash
 				)
@@ -205,8 +204,7 @@ final class GameManager: IGameManager {
 final class MockGameManager: IGameManager {
 
 	var game = Game(
-		level: Level(id: 0, cellsMatrix: [[0]]),
-		taps: [],
+		currentLevelId: 0,
 		levels: [Level(id: 0, cellsMatrix: [[0]])],
 		levelsHash: "hash"
 	)

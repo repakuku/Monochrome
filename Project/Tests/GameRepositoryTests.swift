@@ -136,8 +136,7 @@ private extension GameRepositoryTests {
 		let levelsHash = HashService.calculateHash(of: levels)
 
 		let game = Game(
-			level: levels[0],
-			taps: [],
+			currentLevelId: 0,
 			levels: levels,
 			levelsHash: levelsHash
 		)
