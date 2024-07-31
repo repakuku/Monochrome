@@ -103,8 +103,8 @@ final class LevelRepositoryTests: XCTestCase {
 		let fetchedLevels = await sut.fetchLevels(from: validUrl)
 		print(fetchedLevels ?? [])
 		XCTAssertNotNil(fetchedLevels, "Expected fetched levels to be not-nil.")
-		XCTAssertEqual(fetchedLevels?.count, 1, "Expected fetched levels count to be 1.")
-		XCTAssertEqual(fetchedLevels?.first?.id, 11, "Expected first fetched levels id to be 11.")
+		XCTAssertEqual(fetchedLevels?.count, 12, "Expected fetched levels count to be 12.")
+		XCTAssertEqual(fetchedLevels?.first?.id, 0, "Expected first fetched levels id to be 0.")
 	}
 
 	func test_fetchLevels_withInvalidUrl_shouldReturnFetchedLevels() async {

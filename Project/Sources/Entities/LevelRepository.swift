@@ -56,11 +56,13 @@ final class StubLevelRepository: ILevelRepository {
 		Level(id: 5, cellsMatrix: [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]])
 	]
 
+	var fetchedLevels: [Level]?
+
 	func getDefaultLevels(from: URL?) -> [Level] {
 		levels.sortedById()
 	}
 
 	func fetchLevels(from: URL?) async -> [Level]? {
-		nil
+		fetchedLevels
 	}
 }
