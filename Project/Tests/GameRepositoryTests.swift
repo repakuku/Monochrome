@@ -139,7 +139,6 @@ private extension GameRepositoryTests {
 			level: levels[0],
 			taps: [],
 			levels: levels,
-			originLevels: levels,
 			levelsHash: levelsHash
 		)
 

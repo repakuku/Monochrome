@@ -25,7 +25,6 @@ final class GameRepository: IGameRepository {
 			level: levels[0],
 			taps: [],
 			levels: levels,
-			originLevels: levels,
 			levelsHash: levelsHash
 		)
 	}
@@ -43,7 +42,6 @@ final class GameRepository: IGameRepository {
 				level: savedGame.level,
 				taps: savedGame.taps,
 				levels: savedGame.levels,
-				originLevels: savedGame.originLevels,
 				levelsHash: savedGame.levelsHash
 			)
 		} catch {
@@ -82,17 +80,16 @@ final class StubGameRepository: IGameRepository {
 		level: levels[0],
 		taps: [],
 		levels: levels,
-		originLevels: levels,
 		levelsHash: "hash"
 	)
+
+	var savedGame: Game?
 
 	private static let levels = [
 		Level(id: 0, cellsMatrix: [[0]]),
 		Level(id: 1, cellsMatrix: [[0, 0], [1, 0]]),
 		Level(id: 2, cellsMatrix: [[0, 0], [1, 1]]),
-		Level(id: 3, cellsMatrix: [[1, 0], [1, 1]]),
-		Level(id: 4, cellsMatrix: [[1, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 1]]),
-		Level(id: 5, cellsMatrix: [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]])
+		Level(id: 3, cellsMatrix: [[1, 0], [1, 1]])
 	]
 
 	func getNewGame(with levels: [Level]) -> Game {
@@ -100,7 +97,7 @@ final class StubGameRepository: IGameRepository {
 	}
 
 	func getSavedGame(from: URL?) -> Game? {
-		game
+		savedGame
 	}
 
 	func saveGame(_: Game, toUrl: URL?) {

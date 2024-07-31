@@ -22,11 +22,9 @@ struct Tap: Codable, Equatable {
 }
 
 struct Game: Codable, Equatable {
-	// TODO: Change to Int (level id)
 	var level: Level
 	var taps: [Tap]
 	var levels: [Level]
-	var originLevels: [Level]
 	var levelsHash: String
 
 	static func == (lhs: Game, rhs: Game) -> Bool {
