@@ -97,7 +97,7 @@ final class GameManagerTests: XCTestCase {
 	func test_updateGame_withChangedFetchedLevels_shouldUpdateGameWithNewLevels() async {
 
 		var savedGame = createGame()
-		var savedLevelsHash = HashService.calculateHash(of: savedGame.levels)
+		let savedLevelsHash = HashService.calculateHash(of: savedGame.levels)
 		savedGame.levelsHash = savedLevelsHash
 
 		let fetchedLevels = [
