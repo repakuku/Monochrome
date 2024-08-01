@@ -11,8 +11,8 @@ import XCTest
 
 final class GameRepositoryTests: XCTestCase {
 
-	private var stubLevelRepository: StubLevelRepository!
-	private var sut: GameRepository!
+	private var stubLevelRepository: StubLevelRepository! // swiftlint:disable:this implicitly_unwrapped_optional
+	private var sut: GameRepository! // swiftlint:disable:this implicitly_unwrapped_optional
 
 	override func setUp() {
 		super.setUp()
@@ -40,16 +40,19 @@ final class GameRepositoryTests: XCTestCase {
 
 	// MARK: - Get Saved Game
 
-	func test_getSavedGame_fromSavedGameUrl_shouldReturnSavedGame() {
+	func test_getSavedGame_fromSavedGameUrl_shouldReturnSavedGame() throws {
 
 		let savedGame = createSavedGame()
 
-		let savedGameData = try! JSONEncoder().encode(savedGame)
+		let savedGameData = try JSONEncoder().encode(savedGame)
 		let savedGameUrl = createTemporaryFile(with: savedGameData)
 
-		let game = sut.getSavedGame(from: savedGameUrl)!
+		guard let game = sut.getSavedGame(from: savedGameUrl) else {
+			XCTFail("Missing saved game.")
+			return
+		}
 
-		XCTAssertEqual(game.levels[0].status, .completed(1))
+		XCTAssertEqual(game.levels[0].status, .completed(1), "Expected level status to be completed.")
 	}
 
 	func test_getSavedGame_withInvalidUrl_shouldReturnNil() {
@@ -80,7 +83,10 @@ final class GameRepositoryTests: XCTestCase {
 
 		sut.saveGame(game, toUrl: nilUrl)
 
-		XCTAssertFalse(FileManager.default.fileExists(atPath: nilUrl?.path ?? ""), "Expected file not to be saved when URL is nil.")
+		XCTAssertFalse(
+			FileManager.default.fileExists(atPath: nilUrl?.path ?? ""),
+			"Expected file not to be saved when URL is nil."
+		)
 	}
 
 	// MARK: - Delete Game
@@ -94,7 +100,10 @@ final class GameRepositoryTests: XCTestCase {
 
 		sut.deleteGame(from: tempUrl)
 
-		XCTAssertFalse(FileManager.default.fileExists(atPath: tempUrl.path), "Expected file to exist at path \(tempUrl.path).")
+		XCTAssertFalse(
+			FileManager.default.fileExists(atPath: tempUrl.path),
+			"Expected file to exist at path \(tempUrl.path)."
+		)
 	}
 
 	func test_deleteGame_withNilUrl_shouldDeleteGame() {

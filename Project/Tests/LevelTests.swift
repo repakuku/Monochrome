@@ -10,7 +10,7 @@ import XCTest
 @testable import Monochrome
 
 final class LevelTests: XCTestCase {
-	
+
 	func test_init_incompletedLevel_shouldImplementCorrectInstance() {
 		let sut = Level(
 			id: 1,
@@ -123,6 +123,12 @@ private extension LevelTests {
 		XCTAssertEqual(level.id, expectedId, "Expected level ID to be \(expectedId).", file: file, line: line)
 		XCTAssertEqual(level.cellsMatrix, expectedMatrix, "Expected cells matrix to match.", file: file, line: line)
 		XCTAssertEqual(level.status, expectedStatus, "Expected status to be \(expectedStatus).", file: file, line: line)
-		XCTAssertEqual(level.levelSize, expectedMatrix.count, "Expected level size to be \(expectedMatrix.count).", file: file, line: line)
+		XCTAssertEqual(
+			level.levelSize,
+			expectedMatrix.count,
+			"Expected level size to be \(expectedMatrix.count).",
+			file: file,
+			line: line
+		)
 	}
 }
