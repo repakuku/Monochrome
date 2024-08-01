@@ -15,10 +15,6 @@ protocol ILevelRepository {
 
 final class LevelRepository: ILevelRepository {
 
-	func getDefaultLevels(from url: URL?) -> [Level] {
-		loadDefaultLevels(from: url)
-	}
-
 	func fetchLevels(from url: URL?) async -> [Level]? {
 		guard let url = url else {
 			return nil
@@ -32,7 +28,7 @@ final class LevelRepository: ILevelRepository {
 		}
 	}
 
-	private func loadDefaultLevels(from url: URL?) -> [Level] {
+	func getDefaultLevels(from url: URL?) -> [Level] {
 		guard let url = url else {
 			return [Level(id: 0, cellsMatrix: [[0]])]
 		}
