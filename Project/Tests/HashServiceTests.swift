@@ -27,6 +27,10 @@ final class HashServiceTests: XCTestCase {
 		let levels1hash = HashService.calculateHash(of: levels1)
 		let levels2hash = HashService.calculateHash(of: levels2)
 
-		XCTAssertNotEqual(levels1hash, levels2hash, "Expected hashes to be different, but got \(levels1hash) and \(levels2hash).")
+		XCTAssertNotEqual(
+			levels1hash,
+			levels2hash,
+			"Expected hashes to be different, but got \(levels1hash) and \(levels2hash)."
+		)
 	}
 }

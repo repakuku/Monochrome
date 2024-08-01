@@ -31,79 +31,47 @@ final class LevelServiceTests: XCTestCase {
 
 		sut.toggleColors(level: &testLevel, atX: 0, atY: 0)
 
-		XCTAssertEqual(testLevel.cellsMatrix, expectedMatrix, "Expected cells matrix to toggle correctly when toggling at (0, 0).")
+		XCTAssertEqual(
+			testLevel.cellsMatrix,
+			expectedMatrix,
+			"Expected cells matrix to toggle correctly when toggling at (0, 0)."
+		)
 	}
 
 	func test_toggleColors_shouldClearHintMarkers() {
 		let sut = makeSut()
 
-		var testLevel = Level(
-			id: 1,
-			cellsMatrix: [
-				[2, 1],
-				[1, 0]
-			]
-		)
+		var testLevel = Level(id: 1, cellsMatrix: [[2, 1], [1, 0]])
 
 		sut.toggleColors(level: &testLevel, atX: 0, atY: 0)
 
 		XCTAssertEqual(testLevel.cellsMatrix[0][0], 1, "Expected hint marker to be cleared and cell to be toggled.")
 
-		testLevel = Level(
-			id: 1,
-			cellsMatrix: [
-				[3, 1],
-				[1, 0]
-			]
-		)
+		testLevel = Level(id: 1, cellsMatrix: [[3, 1], [1, 0]])
 
 		sut.toggleColors(level: &testLevel, atX: 0, atY: 0)
 
 		XCTAssertEqual(testLevel.cellsMatrix[0][0], 0, "Expected hint marker to be cleared and cell to be toggled.")
 
-		testLevel = Level(
-			id: 1,
-			cellsMatrix: [
-				[2, 1],
-				[1, 0]
-			]
-		)
+		testLevel = Level(id: 1, cellsMatrix: [[2, 1], [1, 0]])
 
 		sut.toggleColors(level: &testLevel, atX: 0, atY: 1)
 
 		XCTAssertEqual(testLevel.cellsMatrix[0][0], 1, "Expected hint marker to be cleared and cell to be toggled.")
 
-		testLevel = Level(
-			id: 1,
-			cellsMatrix: [
-				[3, 1],
-				[1, 0]
-			]
-		)
+		testLevel = Level(id: 1, cellsMatrix: [[3, 1], [1, 0]])
 
 		sut.toggleColors(level: &testLevel, atX: 0, atY: 1)
 
 		XCTAssertEqual(testLevel.cellsMatrix[0][0], 0, "Expected hint marker to be cleared and cell to be toggled.")
 
-		testLevel = Level(
-			id: 1,
-			cellsMatrix: [
-				[2, 1],
-				[1, 0]
-			]
-		)
+		testLevel = Level(id: 1, cellsMatrix: [[2, 1], [1, 0]])
 
 		sut.toggleColors(level: &testLevel, atX: 1, atY: 1)
 
 		XCTAssertEqual(testLevel.cellsMatrix[0][0], 0, "Expected hint marker to be cleared and cell to remain untoggled.")
 
-		testLevel = Level(
-			id: 1,
-			cellsMatrix: [
-				[3, 1],
-				[1, 0]
-			]
-		)
+		testLevel = Level(id: 1, cellsMatrix: [[3, 1], [1, 0]])
 
 		sut.toggleColors(level: &testLevel, atX: 1, atY: 1)
 
@@ -167,7 +135,7 @@ final class LevelServiceTests: XCTestCase {
 		XCTAssertEqual(testLevel.cellsMatrix[0][0], 3, "Expected cell at (0, 0) to be marked as a hint.")
 	}
 
-	func test_getHint_withouttogglingAnyCell_shouldMarktheSameCell() {
+	func test_getHint_withouttogglingAnyCell_shouldMarkTheSameCell() {
 		let sut = makeSut()
 
 		var testLevel = Level(
@@ -190,7 +158,11 @@ final class LevelServiceTests: XCTestCase {
 		sut.getHint(level: &testLevel)
 		sut.getHint(level: &testLevel)
 
-		XCTAssertEqual(testLevel.cellsMatrix, expectedlevel.cellsMatrix)
+		XCTAssertEqual(
+			testLevel.cellsMatrix,
+			expectedlevel.cellsMatrix,
+			"Expected cellsmatrix to be \(expectedlevel.cellsMatrix), but got \(testLevel.cellsMatrix)"
+		)
 	}
 
 	// MARK: - Count Target Taps
@@ -209,7 +181,11 @@ final class LevelServiceTests: XCTestCase {
 		let targetTaps = sut.countTargetTaps(for: testLevel)
 		let expectedTargetTaps = 2
 
-		XCTAssertEqual(targetTaps, expectedTargetTaps, "Expected target taps count to be \(expectedTargetTaps) for solving the level.")
+		XCTAssertEqual(
+			targetTaps,
+			expectedTargetTaps,
+			"Expected target taps count to be \(expectedTargetTaps) for solving the level."
+		)
 	}
 }
 

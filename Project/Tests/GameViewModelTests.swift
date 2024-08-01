@@ -12,8 +12,8 @@ import XCTest
 @MainActor
 final class GameViewModelTests: XCTestCase {
 
-	private var mockGameManager: MockGameManager!
-	private var sut: GameViewModel!
+	private var mockGameManager: MockGameManager! // swiftlint:disable:this implicitly_unwrapped_optional
+	private var sut: GameViewModel! // swiftlint:disable:this implicitly_unwrapped_optional
 
 	override func setUp() {
 		super.setUp()
@@ -33,8 +33,16 @@ final class GameViewModelTests: XCTestCase {
 		XCTAssertEqual(sut.levelId, 0, "Expected initial level ID to be 0, but got \(sut.levelId).")
 		XCTAssertEqual(sut.taps, 0, "Expected initial taps to be 0, but got \(sut.taps).")
 		XCTAssertFalse(sut.isLevelCompleted, "Expected initial isLevelCompleted to be false, but it was true.")
-		XCTAssertEqual(sut.isTutorialLevel, true, "Expected initial isTutorialLevel to be true, but got \(sut.isTutorialLevel).")
-		XCTAssertEqual(sut.cells, [[.empty]], "Expected initial cells matrix to match the first level's cells matrix, but got \(sut.cells).")
+		XCTAssertEqual(
+			sut.isTutorialLevel,
+			true,
+			"Expected initial isTutorialLevel to be true, but got \(sut.isTutorialLevel)."
+		)
+		XCTAssertEqual(
+			sut.cells,
+			[[.empty]],
+			"Expected initial cells matrix to match the first level's cells matrix, but got \(sut.cells)."
+		)
 		XCTAssertEqual(sut.numberOfLevels, 1, "Expected number of levels to be 1, but got \(sut.numberOfLevels).")
 	}
 
@@ -53,7 +61,10 @@ final class GameViewModelTests: XCTestCase {
 
 		sut.cellTapped(atX: 0, atY: 0)
 
-		XCTAssertTrue(sut.isLevelCompleted, "Expected isLevelCompleted to be true after completing the level, but it was false.")
+		XCTAssertTrue(
+			sut.isLevelCompleted,
+			"Expected isLevelCompleted to be true after completing the level, but it was false."
+		)
 	}
 
 	func test_cellTapped_forIncompleteLevel_isLevelCompletedShouldRemainFalse() {
@@ -61,14 +72,20 @@ final class GameViewModelTests: XCTestCase {
 
 		sut.cellTapped(atX: 0, atY: 0)
 
-		XCTAssertFalse(sut.isLevelCompleted, "Expected isLevelCompleted to be false for an incomplete level, but it was true.")
+		XCTAssertFalse(
+			sut.isLevelCompleted,
+			"Expected isLevelCompleted to be false for an incomplete level, but it was true."
+		)
 	}
 
 	func test_cellTapped_withInvalidCoordinates_shouldNotCalltoggleColors() {
 
 		sut.cellTapped(atX: -1, atY: 0)
 
-		XCTAssertFalse(mockGameManager.toggleColorsCalled, "Expected toggleColors not to be called for invalid coordinates, but it was.")
+		XCTAssertFalse(
+			mockGameManager.toggleColorsCalled,
+			"Expected toggleColors not to be called for invalid coordinates, but it was."
+		)
 	}
 
 	// MARK: - Next Level
@@ -78,7 +95,10 @@ final class GameViewModelTests: XCTestCase {
 		sut.nextLevel()
 
 		XCTAssertTrue(mockGameManager.nextLevelCalled, "Expected nextLevel to be called, but it wasn't.")
-		XCTAssertFalse(sut.isLevelCompleted, "Expected isLevelCompleted to be false after calling nextLevel, but it was true.")
+		XCTAssertFalse(
+			sut.isLevelCompleted,
+			"Expected isLevelCompleted to be false after calling nextLevel, but it was true."
+		)
 	}
 
 	// MARK: - Restart Level
@@ -88,7 +108,10 @@ final class GameViewModelTests: XCTestCase {
 		sut.restartLevel()
 
 		XCTAssertTrue(mockGameManager.restartLevelCalled, "Expected restartLevel to be called, but it wasn't.")
-		XCTAssertFalse(sut.isLevelCompleted, "Expected isLevelCompleted to be false after calling restartLevel, but it was true.")
+		XCTAssertFalse(
+			sut.isLevelCompleted,
+			"Expected isLevelCompleted to be false after calling restartLevel, but it was true."
+		)
 	}
 
 	// MARK: - Get Hint
@@ -112,11 +135,16 @@ final class GameViewModelTests: XCTestCase {
 	func test_selectLevel_withInvalidId_shouldNotCallSelectLevel() {
 		sut.selectLevel(id: -1)
 
-		XCTAssertFalse(mockGameManager.selectLevelCalled, "Expected selectLevel to not be called for invalid ID, but it was.")
+		XCTAssertFalse(
+			mockGameManager.selectLevelCalled,
+			"Expected selectLevel to not be called for invalid ID, but it was."
+		)
 
 		sut.selectLevel(id: Int.max)
 
-		XCTAssertFalse(mockGameManager.selectLevelCalled, "Expected selectLevel to not be called for invalid ID, but it was.")
+		XCTAssertFalse(
+			mockGameManager.selectLevelCalled, "Expected selectLevel to not be called for invalid ID, but it was."
+		)
 	}
 
 	// MARK: - Get Taps For Level
@@ -210,8 +238,15 @@ final class GameViewModelTests: XCTestCase {
 			XCTAssertEqual(sut.levelId, 0, "Expected initial level ID to be 0, but got \(sut.levelId).")
 			XCTAssertEqual(sut.taps, 0, "Expected initial taps to be 0, but got \(sut.taps).")
 			XCTAssertFalse(sut.isLevelCompleted, "Expected initial isLevelCompleted to be false, but it was true.")
-			XCTAssertTrue(sut.isTutorialLevel, "Expected initial isTutorialLevel to be true, but got \(sut.isTutorialLevel).")
-			XCTAssertEqual(sut.cells, [[.empty]], "Expected initial cells matrix to match the first level's cells matrix, but got \(sut.cells).")
+			XCTAssertTrue(
+				sut.isTutorialLevel,
+				"Expected initial isTutorialLevel to be true, but got \(sut.isTutorialLevel)."
+			)
+			XCTAssertEqual(
+				sut.cells,
+				[[.empty]],
+				"Expected initial cells matrix to match the first level's cells matrix, but got \(sut.cells)."
+			)
 			XCTAssertEqual(sut.numberOfLevels, 1, "Expected number of levels to be 1, but got \(sut.numberOfLevels).")
 
 			expectation.fulfill()
@@ -219,5 +254,4 @@ final class GameViewModelTests: XCTestCase {
 
 		waitForExpectations(timeout: 5)
 	}
-
 }
