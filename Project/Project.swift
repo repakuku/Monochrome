@@ -1,4 +1,4 @@
-import ProjectDescription
+@preconcurrency import ProjectDescription
 
 // MARK: - Project Settings
 
@@ -12,15 +12,16 @@ enum ProjectSettings {
 	public static var bundleId: String { "\(organizationName).\(projectName)" }
 }
 
-let swiftLintScriptBody = "SwiftLint/swiftlint --fix && SwiftLint/swiftlint"
-let swiftLintScript = TargetScript.post(
-	script: swiftLintScriptBody,
-	name: "SwiftLint",
-	basedOnDependencyAnalysis: false
-)
+public enum TargetScripts {
+    public static let swiftLint: TargetScript = .post(
+        script: "SwiftLint/swiftlint lint",
+        name: "SwiftLint",
+        basedOnDependencyAnalysis: false
+    )
+}
 
 private let scripts: [TargetScript] = [
-	swiftLintScript
+    TargetScripts.swiftLint
 ]
 
 private let infoPlistExtension: [String: Plist.Value] = [
@@ -118,7 +119,10 @@ let project = Project(
 		scheme,
 		testScheme
 	],
-	resourceSynthesizers: []
+    resourceSynthesizers: [
+        .strings(),
+        .assets()
+    ]
 )
 
 

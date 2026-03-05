@@ -18,7 +18,7 @@ struct WelcomeView: View {
 				Theme.backgroundColor
 					.ignoresSafeArea()
 
-				BigBoldText(text: "Monochrome")
+                BigBoldText(text: L10n.WelcomeView.text)
 
 				NavigationLink(
 					destination: GameView()
