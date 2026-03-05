@@ -10,8 +10,8 @@ import SwiftUI
 
 struct LevelsView: View {
 	@EnvironmentObject var viewModel: GameViewModel
+	@Environment(\.dismiss) private var dismiss
 
-	@Binding var levelsViewIsShowing: Bool
 	@Binding var showInstruction: Bool
 	@Binding var showDeletionAlert: Bool
 
@@ -21,7 +21,6 @@ struct LevelsView: View {
 				.ignoresSafeArea()
 			VStack(spacing: Sizes.Spacing.normal) {
 				LevelsHeaderView(
-					viewIsShowing: $levelsViewIsShowing,
 					showInstruction: $showInstruction,
 					showDeletionAlert: $showDeletionAlert
 				)
@@ -38,7 +37,7 @@ struct LevelsView: View {
 								isFilled: viewModel.getStatusForLevel(id: index)
 							) {
 								viewModel.selectLevel(id: index)
-								levelsViewIsShowing = false
+								dismiss()
 							}
 						}
 					}
@@ -103,7 +102,8 @@ struct RowView: View {
 }
 
 struct LevelsHeaderView: View {
-	@Binding var viewIsShowing: Bool
+	@Environment(\.dismiss) private var dismiss
+
 	@Binding var showInstruction: Bool
 	@Binding var showDeletionAlert: Bool
 
@@ -115,7 +115,7 @@ struct LevelsHeaderView: View {
 					isFilled: false
 				) {
 					withAnimation {
-						viewIsShowing = false
+						dismiss()
 						showDeletionAlert = true
 					}
 				}
@@ -127,7 +127,7 @@ struct LevelsHeaderView: View {
 					isFilled: false
 				) {
 					withAnimation {
-						viewIsShowing = false
+						dismiss()
 					}
 				}
 			}
@@ -153,6 +153,7 @@ struct LabelView: View {
 }
 
 struct StarsView: View {
+
 	let stars: Int
 
 	var body: some View {
@@ -167,7 +168,6 @@ struct StarsView: View {
 
 #Preview {
 	LevelsView(
-		levelsViewIsShowing: .constant(true),
 		showInstruction: .constant(false),
 		showDeletionAlert: .constant(false)
 	)

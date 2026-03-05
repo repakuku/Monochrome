@@ -300,6 +300,30 @@ final class GameManagerTests: XCTestCase {
 			"Expected level to not be completed, but got \(sut.game.level.status)."
 		)
 	}
+	func test_restartLevel_immediatelyAfterLevelCompletion_shouldResetStateToInitial() {
+
+		sut.selectLevel(id: 1)
+
+		performTogglesForLevelCompletion(sut: sut, toggles: 1)
+
+		XCTAssertEqual(sut.game.level.status, .completed(1))
+
+		sut.restartLevel()
+
+		let expectedMatrix = [[0, 0], [1, 0]]
+
+		XCTAssertEqual(
+			sut.game.level.cellsMatrix,
+			expectedMatrix,
+			"Expected cells matrix to reset to initial state, but got \(sut.game.level.cellsMatrix)."
+		)
+		XCTAssertEqual(sut.game.taps.count, 0, "Expected taps to reset to 0, but got \(sut.game.taps.count).")
+		XCTAssertEqual(
+			sut.game.level.status,
+			.incompleted,
+			"Expected level to not be completed, but got \(sut.game.level.status)."
+		)
+	}
 
 	func test_restartLevel_withMultipleActions_shouldResetToInitialState() {
 

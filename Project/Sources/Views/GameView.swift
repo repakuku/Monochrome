@@ -46,8 +46,8 @@ struct GameView: View {
 				.transition(.scale)
 			} else if showResult {
 				ResultView()
-				.zIndex(1)
-				.transition(.scale)
+					.zIndex(1)
+					.transition(.scale)
 			} else {
 				FieldView(
 					showFirstMenuItem: $showFirstMenuItem,

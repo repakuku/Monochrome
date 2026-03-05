@@ -126,8 +126,9 @@ final class LevelRepositoryTests: XCTestCase {
 		let validUrl = Endpoints.levelsUrl
 
 		let fetchedLevels = await sut.fetchLevels(from: validUrl)
+
 		XCTAssertNotNil(fetchedLevels, "Expected fetched levels to be not-nil.")
-		XCTAssertEqual(fetchedLevels?.count, 12, "Expected fetched levels count to be 12.")
+		XCTAssertEqual(fetchedLevels?.count, 21, "Expected fetched levels count to be 21.")
 		XCTAssertEqual(fetchedLevels?.first?.id, 0, "Expected first fetched levels id to be 0.")
 	}
 
@@ -138,6 +139,7 @@ final class LevelRepositoryTests: XCTestCase {
 		let invalidUrl = URL(string: "https://invalid-url")
 
 		let fetchedLevels = await sut.fetchLevels(from: invalidUrl)
+
 		XCTAssertNil(fetchedLevels, "Expected fetched levels to be nil for an invalid URL.")
 	}
 

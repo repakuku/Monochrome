@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+// import Firebase
 
 @main
 struct MonochromeApp: App {
@@ -16,6 +17,11 @@ struct MonochromeApp: App {
 			levelService: LevelService()
 		)
 	)
+
+	init() {
+		// TODO: Add dependencies fot Tuist
+		// FirebaseApp.configure()
+	}
 
 	var body: some Scene {
 		WindowGroup {
