@@ -1,0 +1,30 @@
+/* 
+  Monochrome.Localizable.strings
+  Monochrome
+
+  Created by Alexey Turulin on 3/5/26.
+  Copyright © 2026 com.repakuku. All rights reserved.
+*/
+
+"Level.title" = "Level %d";
+
+"DeleteGameView.title" = "Delete Game Progress?";
+"DeleteGameView.message" = "Do you really want to delete the game progress?";
+"DeleteGameView.cancel" = "Cancel";
+"DeleteGameView.delete" = "Delete";
+
+"GameView.InstructionView.text" = "Tap on the cell";
+
+"GuideView.text" = "In Monochrome, your goal is to make all cells the same color by tapping to flip their colors. Each tap affects the selected cell and its row and column. Solve each puzzle with the fewest taps. \n\nGood luck!";
+
+"LevelsView.LabelView.level" = "Level";
+"LevelsView.LabelView.stars" = "Stars";
+"LevelsView.LabelView.best" = "Best";
+
+"ResultView.ResultAlertView.startTitle" = "Great Start!";
+"ResultView.ResultAlertView.doneTitle" = "Level Done!";
+"ResultView.ResultAlertView.message" = "Level %d mastered in %d taps!";
+"ResultView.ResultAlertView.replayTitle" = "Replay";
+"ResultView.ResultAlertView.nextTitle" = "Next Level";
+
+"WelcomeView.text" = "Monochrome";

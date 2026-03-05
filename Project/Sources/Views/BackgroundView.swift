@@ -59,7 +59,7 @@ struct TopView: View {
 
 				Spacer()
 
-				BigBoldText(text: "Level \(viewModel.levelId)")
+                BigBoldText(text: L10n.Level.title(viewModel.levelId))
 
 				Spacer()
 
@@ -196,4 +196,3 @@ struct BottomView: View {
 		)
 	)
 }
-

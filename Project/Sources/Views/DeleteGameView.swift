@@ -16,10 +16,10 @@ struct DeleteGameView: View {
 
 	var body: some View {
 		VStack {
-			InstructionText(text: "Delete Game Progress?")
+            InstructionText(text: L10n.DeleteGameView.title)
 				.padding(.bottom)
 
-			BodyText(text: "Do you really want to delete the game progress?")
+            BodyText(text: L10n.DeleteGameView.message)
 				.padding(.bottom)
 			HStack {
 				Button {
@@ -27,7 +27,7 @@ struct DeleteGameView: View {
 						viewIsShowing = false
 					}
 				} label: {
-					ButtonTextStroked(text: "Cancel")
+                    ButtonTextStroked(text: L10n.DeleteGameView.cancel)
 				}
 
 				Button {
@@ -38,9 +38,9 @@ struct DeleteGameView: View {
 					}
 				} label: {
 					ButtonTextFilled(
-						text: "Delete",
-						backgroundColor: Theme.accentColor,
-						foregroundColor: Theme.foregroundColor
+                        text: L10n.DeleteGameView.delete,
+                        backgroundColor: Theme.accentColor,
+                        foregroundColor: Theme.foregroundColor
 					)
 				}
 			}
