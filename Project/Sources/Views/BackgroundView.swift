@@ -172,7 +172,6 @@ struct BottomView: View {
 		}
 		.sheet(isPresented: $levelsViewIsShowing) {
 			LevelsView(
-				levelsViewIsShowing: $levelsViewIsShowing,
 				showInstruction: $showInstruction,
 				showDeletionAlert: $showDeletionAlert
 			)
@@ -197,3 +196,4 @@ struct BottomView: View {
 		)
 	)
 }
+

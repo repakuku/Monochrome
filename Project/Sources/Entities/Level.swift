@@ -54,7 +54,7 @@ enum LevelStatus: Equatable, Codable {
 	}
 }
 
-struct Level: Codable, Equatable {
+struct Level: Codable, Equatable, Identifiable {
 	let id: Int
 	var cellsMatrix: [[Int]]
 	var status: LevelStatus

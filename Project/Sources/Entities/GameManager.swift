@@ -53,6 +53,9 @@ final class GameManager: IGameManager {
 			let defaultLevels = levelRepository.getDefaultLevels(from: defaultLevelsUrl)
 			self.game = gameRepository.getNewGame(with: defaultLevels)
 		}
+
+		// TODO: Sort levels by target taps
+		game.levels = game.levels.sorted { levelService.countTargetTaps(for: $0) < levelService.countTargetTaps(for: $1) }
 	}
 
 	func updateGame() async {
@@ -100,7 +103,8 @@ final class GameManager: IGameManager {
 
 	func restartLevel() {
 		game.taps = []
-		game.level = game.levels[game.level.id]
+		game.level.cellsMatrix = game.levels[game.level.id].cellsMatrix
+		game.level.status = .incompleted
 
 		gameRepository.saveGame(game, toUrl: savedGameUrl)
 	}
