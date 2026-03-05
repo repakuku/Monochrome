@@ -139,12 +139,12 @@ struct LevelsHeaderView: View {
 struct LabelView: View {
 	var body: some View {
 		HStack {
-			LabelText(title: "Level")
+            LabelText(title: L10n.LevelsView.LabelView.level)
 				.frame(width: Sizes.General.roundedViewLength)
 			Spacer()
-			LabelText(title: "Stars")
+            LabelText(title: L10n.LevelsView.LabelView.stars)
 			Spacer()
-			LabelText(title: "Best")
+            LabelText(title: L10n.LevelsView.LabelView.best)
 				.frame(width: Sizes.General.roundedViewLength)
 		}
 		.padding(.horizontal)
@@ -159,7 +159,7 @@ struct StarsView: View {
 	var body: some View {
 		HStack {
 			ForEach(0..<3, id: \.self) { index in
-				Image(systemName: index < stars ? Images.starFilled.rawValue : Images.star.rawValue)
+                Image(systemName: index < stars ? Images.starFilled.rawValue : Images.star.rawValue)
 			}
 		}
 		.foregroundColor(Theme.foregroundColor)

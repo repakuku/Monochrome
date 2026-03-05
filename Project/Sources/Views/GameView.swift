@@ -91,7 +91,7 @@ struct InstructionView: View {
 	var body: some View {
 		VStack {
 			InstructionText(
-				text: "Tap on the cell"
+                text: L10n.GameView.InstructionView.text
 			)
 			.padding(.bottom, Sizes.Padding.large)
 		}
