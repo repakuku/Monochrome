@@ -2,24 +2,37 @@ name: Monochrome
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: [ "dev", "main" ]
 
-jobs: 
-  build-and-test:
-    name: Build and Test
-    runs-on: macos-13
+jobs:
+  build:
+    name: Build app
+    runs-on: macos-latest
     steps:
       - name: List Xcode installations
         run: sudo ls -1 /Applications | grep "Xcode"
 
-      - name: Select Xcode 15.1
-        run: sudo xcode-select -s /Applications/Xcode_15.1.app/Contents/Developer
+      - name: Select Xcode 26.3
+        run: sudo xcode-select -s /Applications/Xcode_26.3.app/Contents/Developer
         
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Cache mise
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.local/share/mise
+            ~/.config/mise
+          key: ${{ runner.os }}-mise-${{ hashFiles('**/.tuist-version') }}
+          restore-keys: |
+            ${{ runner.os }}-mise-
+
       - name: Build App
         run: ./.github/build.sh
+
+      - name: Run SwiftLint
+        run: ./.github/lint.sh
 
       - name: Run Unit Tests
         run: ./.github/test.sh
