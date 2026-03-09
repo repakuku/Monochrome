@@ -6,35 +6,23 @@ on:
 
 jobs:
   build:
-    name: Build app
+    name: Build and Test
     runs-on: macos-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
     steps:
-      - name: List Xcode installations
-        run: sudo ls -1 /Applications | grep "Xcode"
+      - uses: actions/checkout@v4
 
-      - name: Select Xcode 26.3
-        run: sudo xcode-select -s /Applications/Xcode_26.3.app/Contents/Developer
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Cache mise
-        uses: actions/cache@v4
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.local/share/mise
             ~/.config/mise
           key: ${{ runner.os }}-mise-${{ hashFiles('**/.tuist-version') }}
-          restore-keys: |
-            ${{ runner.os }}-mise-
+          restore-keys: ${{ runner.os }}-mise-
 
-      - name: Build App
-        run: ./.github/build.sh
-
-      - name: Run SwiftLint
-        run: ./.github/lint.sh
-
-      - name: Run Unit Tests
-        run: ./.github/test.sh
+      - run: |
+          ./.github/build.sh
+          ./.github/lint.sh
+          ./.github/test.sh
