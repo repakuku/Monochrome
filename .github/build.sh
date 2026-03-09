@@ -18,6 +18,6 @@ tuist generate
 xcodebuild build-for-testing \
     -workspace 'Monochrome.xcworkspace' \
     -scheme 'Monochrome' \
-    -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' \
+    -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
     -quiet \
     CODE_SIGNING_ALLOWED=NO
