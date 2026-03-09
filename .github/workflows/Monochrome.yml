@@ -22,7 +22,11 @@ jobs:
           key: ${{ runner.os }}-mise-${{ hashFiles('**/.tuist-version') }}
           restore-keys: ${{ runner.os }}-mise-
 
-      - run: |
-          ./.github/build.sh
-          ./.github/lint.sh
-          ./.github/test.sh
+      - name: Build App
+        run: ./.github/build.sh
+
+      - name: Run SwiftLint
+        run: ./.github/lint.sh
+
+      - name: Run Unit Tests
+        run: ./.github/test.sh
