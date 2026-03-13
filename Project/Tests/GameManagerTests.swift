@@ -613,6 +613,17 @@ final class GameManagerTests: XCTestCase {
 		)
 	}
 
+    func test_undoLastTap_shouldCallSaveGame() {
+        moveToLevel(sut, levelId: 5)
+
+        sut.toggleColors(atX: 0, atY: 0)
+        stubGameRepository.saveGameCalled = false
+
+        sut.undoLastTap()
+
+        XCTAssertTrue(stubGameRepository.saveGameCalled, "Expected saveGame to be called, but it wasn't.")
+    }
+
 	// MARK: - Reset Progress
 
 	func test_resetProgress_shouldCallDeleteSavedGameAndResetProgress() {

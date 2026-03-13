@@ -54,7 +54,6 @@ final class GameManager: IGameManager {
 			self.game = gameRepository.getNewGame(with: defaultLevels)
 		}
 
-		// TODO: Sort levels by target taps
 		game.levels = game.levels.sorted { levelService.countTargetTaps(for: $0) < levelService.countTargetTaps(for: $1) }
 	}
 
@@ -63,10 +62,13 @@ final class GameManager: IGameManager {
 			let fetchedLevelsHash = HashService.calculateHash(of: fetchedLevels)
 
 			if fetchedLevelsHash != game.levelsHash {
+				let sortedLevels = fetchedLevels.sorted {
+					levelService.countTargetTaps(for: $0) < levelService.countTargetTaps(for: $1)
+				}
 
 				let newGame = Game(
 					currentLevelId: 0,
-					levels: fetchedLevels,
+					levels: sortedLevels,
 					levelsHash: fetchedLevelsHash
 				)
 
@@ -186,6 +188,7 @@ final class GameManager: IGameManager {
 
 		let removedTap = game.taps.removeLast()
 		levelService.toggleColors(level: &game.level, atX: removedTap.row, atY: removedTap.col)
+        gameRepository.saveGame(game, toUrl: savedGameUrl)
 	}
 
 	func resetProgress() {
@@ -223,6 +226,7 @@ final class MockGameManager: IGameManager {
 	var getTapsForLevelResult = 0
 	var getStatusForLevelResult = false
 	var getStarsForLevelResult = 0
+    var lastGetStarsForLevelForCurrentGame: Bool?
 
 	var undoLastTapCalled = false
 	var resetProgressCalled = false
@@ -260,7 +264,8 @@ final class MockGameManager: IGameManager {
 	}
 
 	func getStarsForLevel(id: Int, forCurrentGame: Bool) -> Int {
-		getStarsForLevelResult
+		lastGetStarsForLevelForCurrentGame = forCurrentGame
+        return getStarsForLevelResult
 	}
 
 	func undoLastTap() {

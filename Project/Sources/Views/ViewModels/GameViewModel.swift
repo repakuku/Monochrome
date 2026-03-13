@@ -116,7 +116,7 @@ final class GameViewModel: ObservableObject {
 			return .zero
 		}
 
-		return gameManager.getStarsForLevel(id: id, forCurrentGame: false)
+		return gameManager.getStarsForLevel(id: id, forCurrentGame: forCurrentGame)
 	}
 
 	func undoButtonTapped() {
