@@ -99,14 +99,14 @@ struct InstructionView: View {
 }
 
 #Preview {
-	GameView()
-		.environmentObject(
-			GameViewModel(
-				gameManager: GameManager(
-					gameRepository: GameRepository(),
-					levelRepository: LevelRepository(),
-					levelService: LevelService()
-				)
-			)
-		)
+    GameView()
+        .environmentObject(
+            GameViewModel(
+                gameManager: GameManager(
+                    gameRepository: GameRepository(),
+                    levelService: LevelService(),
+                    levelGenerator: LevelGenerator()
+                )
+            )
+        )
 }

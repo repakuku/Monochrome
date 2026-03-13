@@ -10,213 +10,202 @@ import Foundation
 
 protocol IGameManager {
 
-	var game: Game { get }
+    var game: Game { get }
 
-	func updateGame() async
-
-	func toggleColors(atX x: Int, atY y: Int)
-	func nextLevel()
-	func restartLevel()
-	func selectLevel(id: Int)
-	func getHint()
-	func getTapsForLevel(id: Int) -> Int
-	func getStatusForLevel(id: Int) -> Bool
-	func getStarsForLevel(id: Int, forCurrentGame: Bool) -> Int
-	func undoLastTap()
-	func resetProgress()
+    func toggleColors(atX x: Int, atY y: Int)
+    func nextLevel(size: Int)
+    func restartLevel()
+    func selectLevel(id: Int)
+    func getHint()
+    func getTapsForLevel(id: Int) -> Int
+    func getStatusForLevel(id: Int) -> Bool
+    func getStarsForLevel(id: Int, forCurrentGame: Bool) -> Int
+    func undoLastTap()
+    func resetProgress()
 }
 
 final class GameManager: IGameManager {
 
-	private(set) var game: Game
+    private(set) var game: Game
 
-	private let gameRepository: IGameRepository
-	private let levelRepository: ILevelRepository
-	private let levelService: ILevelService
+    private let gameRepository: IGameRepository
+    private let levelService: ILevelService
 
-	private let savedGameUrl = Endpoints.savedGameUrl
-	private let defaultLevelsUrl = Endpoints.defaultLevelsUrl
-	private let newLevelsUrl = Endpoints.levelsUrl
+    private let levelGenerator: ILevelGenerator
 
-	init(
-		gameRepository: IGameRepository,
-		levelRepository: ILevelRepository,
-		levelService: ILevelService
-	) {
-		self.gameRepository = gameRepository
-		self.levelRepository = levelRepository
-		self.levelService = levelService
+    private let savedGameUrl = Endpoints.savedGameUrl
+    private let defaultLevelsUrl = Endpoints.defaultLevelsUrl
+    private let newLevelsUrl = Endpoints.levelsUrl
 
-		if let savedGame = gameRepository.getSavedGame(from: savedGameUrl) {
-			self.game = savedGame
-		} else {
-			let defaultLevels = levelRepository.getDefaultLevels(from: defaultLevelsUrl)
-			self.game = gameRepository.getNewGame(with: defaultLevels)
-		}
+    init(
+        gameRepository: IGameRepository,
+        levelService: ILevelService,
+        levelGenerator: ILevelGenerator
+    ) {
+        self.gameRepository = gameRepository
+        self.levelService = levelService
+        self.levelGenerator = levelGenerator
 
-		game.levels = game.levels.sorted { levelService.countTargetTaps(for: $0) < levelService.countTargetTaps(for: $1) }
-	}
+        if let savedGame = gameRepository.getSavedGame(from: savedGameUrl) {
+            self.game = savedGame
+        } else {
+            self.game = gameRepository.getNewGame()
+        }
+    }
 
-	func updateGame() async {
-		if let fetchedLevels = await levelRepository.fetchLevels(from: newLevelsUrl) {
-			let fetchedLevelsHash = HashService.calculateHash(of: fetchedLevels)
+    func toggleColors(atX x: Int, atY y: Int) {
+        guard x >= 0 && x < game.level.levelSize && y >= 0 && y < game.level.levelSize else {
+            return
+        }
 
-			if fetchedLevelsHash != game.levelsHash {
-				let sortedLevels = fetchedLevels.sorted {
-					levelService.countTargetTaps(for: $0) < levelService.countTargetTaps(for: $1)
-				}
+        levelService.toggleColors(level: &game.level, atX: x, atY: y)
 
-				let newGame = Game(
-					currentLevelId: 0,
-					levels: sortedLevels,
-					levelsHash: fetchedLevelsHash
-				)
+        game.taps.append(Tap(row: x, col: y))
 
-				self.game = newGame
-				gameRepository.saveGame(game, toUrl: savedGameUrl)
-			}
-		}
-	}
+        if levelService.checkMatrix(level: game.level) {
+            completeLevel()
+        }
 
-	func toggleColors(atX x: Int, atY y: Int) {
-		guard x >= 0 && x < game.level.levelSize && y >= 0 && y < game.level.levelSize else {
-			return
-		}
-
-		levelService.toggleColors(level: &game.level, atX: x, atY: y)
-
-		game.taps.append(Tap(row: x, col: y))
-
-		if levelService.checkMatrix(level: game.level) {
-			completeLevel()
-		}
-
-		gameRepository.saveGame(game, toUrl: savedGameUrl)
-	}
-
-	func nextLevel() {
-		let nextLevelId = min(game.levels.count - 1, game.level.id + 1)
-		game.level = game.levels[nextLevelId]
-		game.taps = []
-		game.level.status = .incompleted
-
-		gameRepository.saveGame(game, toUrl: savedGameUrl)
-	}
-
-	func restartLevel() {
-		game.taps = []
-		game.level.cellsMatrix = game.levels[game.level.id].cellsMatrix
-		game.level.status = .incompleted
-
-		gameRepository.saveGame(game, toUrl: savedGameUrl)
-	}
-
-	func selectLevel(id: Int) {
-		guard id >= 0 && id < game.levels.count else {
-			return
-		}
-
-		game.level = game.levels[id]
-		game.level.status = .incompleted
-		game.taps = []
-
-		gameRepository.saveGame(game, toUrl: savedGameUrl)
-	}
-
-	func getHint() {
-		levelService.getHint(level: &game.level)
-	}
-
-	func getTapsForLevel(id: Int) -> Int {
-		guard id >= 0 && id < game.levels.count else {
-			return .zero
-		}
-
-		if case let .completed(taps) = game.levels[id].status {
-			return taps
-		}
-
-		return .zero
-	}
-
-	func getStatusForLevel(id: Int) -> Bool {
-		guard id >= 0 && id < game.levels.count else {
-			return false
-		}
-
-		if case .completed = game.levels[id].status {
-			return true
-		}
-
-		return false
-	}
-
-	func getStarsForLevel(id: Int, forCurrentGame: Bool = false) -> Int {
-		guard id >= 0 && id < game.levels.count else {
-			return .zero
-		}
-
-		let perfectScoreStars = 3
-		let goodScoreStars = 2
-		let basicScoreStars = 1
-		let zeroScoreStars = 0
-
-		let targetTaps = levelService.countTargetTaps(for: game.levels[id])
-		let actualTaps: Int
-
-		if forCurrentGame {
-			actualTaps = game.taps.count
-		} else if case let .completed(levelTaps) = game.levels[id].status {
-			actualTaps = levelTaps
-		} else {
-			return zeroScoreStars
-		}
-
-		if actualTaps == targetTaps {
-			return perfectScoreStars
-		} else if actualTaps <= targetTaps * 2 {
-			return goodScoreStars
-		} else {
-			return basicScoreStars
-		}
-	}
-
-	func undoLastTap() {
-		guard !game.taps.isEmpty else {
-			return
-		}
-
-		let removedTap = game.taps.removeLast()
-		levelService.toggleColors(level: &game.level, atX: removedTap.row, atY: removedTap.col)
         gameRepository.saveGame(game, toUrl: savedGameUrl)
-	}
+    }
 
-	func resetProgress() {
-		gameRepository.deleteGame(from: savedGameUrl)
-		let defaultLevels = levelRepository.getDefaultLevels(from: defaultLevelsUrl)
-		self.game = gameRepository.getNewGame(with: defaultLevels)
-	}
+    func nextLevel(size: Int) {
+        if game.level.id == game.levels.count - 1 {
+            let nextLevelId = game.levels.count
+            let nextLevel = levelGenerator.generateRandomLevel(id: nextLevelId, size: size)
 
-	private func completeLevel() {
-		game.level.status = .completed(game.taps.count)
+            game.levels.append(nextLevel)
+            game.level = nextLevel
+        } else {
+            game.level = game.levels[game.levels.count - 1]
+        }
 
-		if case let .completed(prevTaps) = game.levels[game.level.id].status {
-			game.levels[game.level.id].status = .completed(min(game.taps.count, prevTaps))
-		} else {
-			game.levels[game.level.id].status = .completed(game.taps.count)
-		}
-	}
+        game.taps = []
+        game.level.status = .incompleted
+
+        gameRepository.saveGame(game, toUrl: savedGameUrl)
+    }
+
+    func restartLevel() {
+        game.taps = []
+        game.level.cellsMatrix = game.levels[game.level.id].cellsMatrix
+        game.level.status = .incompleted
+
+        gameRepository.saveGame(game, toUrl: savedGameUrl)
+    }
+
+    func selectLevel(id: Int) {
+        guard id >= 0 && id < game.levels.count else {
+            return
+        }
+
+        game.level = game.levels[id]
+        game.level.status = .incompleted
+        game.taps = []
+
+        gameRepository.saveGame(game, toUrl: savedGameUrl)
+    }
+
+    func getHint() {
+        levelService.getHint(level: &game.level)
+    }
+
+    func getTapsForLevel(id: Int) -> Int {
+        guard id >= 0 && id < game.levels.count else {
+            return .zero
+        }
+
+        if case let .completed(taps) = game.levels[id].status {
+            return taps
+        }
+
+        return .zero
+    }
+
+    func getStatusForLevel(id: Int) -> Bool {
+        guard id >= 0 && id < game.levels.count else {
+            return false
+        }
+
+        if case .completed = game.levels[id].status {
+            return true
+        }
+
+        return false
+    }
+
+    func getStarsForLevel(id: Int, forCurrentGame: Bool = false) -> Int {
+        guard id >= 0 && id < game.levels.count else {
+            return .zero
+        }
+
+        let perfectScoreStars = 3
+        let goodScoreStars = 2
+        let basicScoreStars = 1
+        let zeroScoreStars = 0
+
+        let targetTaps = levelService.countTargetTaps(for: game.levels[id])
+        let actualTaps: Int
+
+        if forCurrentGame {
+            actualTaps = game.taps.count
+        } else if case let .completed(levelTaps) = game.levels[id].status {
+            actualTaps = levelTaps
+        } else {
+            return zeroScoreStars
+        }
+
+        if actualTaps == targetTaps {
+            return perfectScoreStars
+        } else if actualTaps <= targetTaps * 2 {
+            return goodScoreStars
+        } else {
+            return basicScoreStars
+        }
+    }
+
+    func undoLastTap() {
+        guard !game.taps.isEmpty else {
+            return
+        }
+
+        let removedTap = game.taps.removeLast()
+        levelService.toggleColors(level: &game.level, atX: removedTap.row, atY: removedTap.col)
+        gameRepository.saveGame(game, toUrl: savedGameUrl)
+    }
+
+    func resetProgress() {
+        gameRepository.deleteGame(from: savedGameUrl)
+        self.game = gameRepository.getNewGame()
+    }
+
+    private func completeLevel() {
+        game.level.status = .completed(game.taps.count)
+
+        if case let .completed(prevTaps) = game.levels[game.level.id].status {
+            game.levels[game.level.id].status = .completed(min(game.taps.count, prevTaps))
+        } else {
+            game.levels[game.level.id].status = .completed(game.taps.count)
+        }
+    }
 }
 
 final class MockGameManager: IGameManager {
 
 	var game = Game(
-		currentLevelId: 0,
-		levels: [Level(id: 0, cellsMatrix: [[0]])],
-		levelsHash: "hash"
-	)
+        level: Level(
+            id: 0,
+            cellsMatrix: [[0]]
+        ),
+        taps: [],
+        levels: [
+            Level(
+                id: 0,
+                cellsMatrix: [[0]]
+            )
+        ]
+    )
 
-	var updateGameCalled = false
 	var toggleColorsCalled = false
 	var nextLevelCalled = false
 	var restartLevelCalled = false
@@ -231,15 +220,11 @@ final class MockGameManager: IGameManager {
 	var undoLastTapCalled = false
 	var resetProgressCalled = false
 
-	func updateGame() async {
-		updateGameCalled = true
-	}
-
 	func toggleColors(atX x: Int, atY y: Int) {
 		toggleColorsCalled = true
 	}
 
-	func nextLevel() {
+    func nextLevel(size: Int) {
 		nextLevelCalled = true
 	}
 

@@ -38,14 +38,14 @@ struct WelcomeView: View {
 }
 
 #Preview {
-	WelcomeView()
-		.environmentObject(
-			GameViewModel(
-				gameManager: GameManager(
-					gameRepository: GameRepository(),
-					levelRepository: LevelRepository(),
-					levelService: LevelService()
-				)
-			)
-		)
+    WelcomeView()
+        .environmentObject(
+            GameViewModel(
+                gameManager: GameManager(
+                    gameRepository: GameRepository(),
+                    levelService: LevelService(),
+                    levelGenerator: LevelGenerator()
+                )
+            )
+        )
 }

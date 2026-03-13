@@ -88,18 +88,18 @@ struct FieldView: View {
  }
 
 #Preview {
-	FieldView(
-		showFirstMenuItem: .constant(false),
-		showSecondMenuItem: .constant(false),
-		showInstruction: .constant(false)
-	)
-	.environmentObject(
-		GameViewModel(
-			gameManager: GameManager(
-				gameRepository: GameRepository(),
-				levelRepository: LevelRepository(),
-				levelService: LevelService()
-			)
-		)
-	)
+    FieldView(
+        showFirstMenuItem: .constant(false),
+        showSecondMenuItem: .constant(false),
+        showInstruction: .constant(false)
+    )
+    .environmentObject(
+        GameViewModel(
+            gameManager: GameManager(
+                gameRepository: GameRepository(),
+                levelService: LevelService(),
+                levelGenerator: LevelGenerator()
+            )
+        )
+    )
 }

@@ -45,11 +45,6 @@ final class GameViewModel: ObservableObject {
 		self.taps = gameManager.game.taps.count
 		self.isLevelCompleted = false
 		self.isTutorialLevel = gameManager.game.level.id == 0
-
-		Task {
-			await gameManager.updateGame()
-			updateViewModel()
-		}
 	}
 
 	func cellTapped(atX x: Int, atY y: Int) {
@@ -69,7 +64,7 @@ final class GameViewModel: ObservableObject {
 	}
 
 	func nextLevel() {
-		gameManager.nextLevel()
+        gameManager.nextLevel(size: 2)
 		updateViewModel()
 		isTutorialLevel = game.level.id == 0
 		isLevelCompleted = false
@@ -127,7 +122,7 @@ final class GameViewModel: ObservableObject {
 	func eraserButtonTapped() {
 		Task {
 			gameManager.resetProgress()
-			await gameManager.updateGame()
+//			await gameManager.updateGame()
 			updateViewModel()
 		}
 	}
