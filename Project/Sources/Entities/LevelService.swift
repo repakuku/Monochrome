@@ -72,11 +72,11 @@ final class LevelService: ILevelService {
 
 	private func clearHint(level: inout Level) {
 		for row in 0..<level.levelSize {
-			for con in 0..<level.levelSize {
-				if level.cellsMatrix[row][con] == 2 {
-					level.cellsMatrix[row][con] = 0
-				} else if level.cellsMatrix[row][con] == 3 {
-					level.cellsMatrix[row][con] = 1
+			for col in 0..<level.levelSize {
+				if level.cellsMatrix[row][col] == 2 {
+					level.cellsMatrix[row][col] = 0
+				} else if level.cellsMatrix[row][col] == 3 {
+					level.cellsMatrix[row][col] = 1
 				}
 			}
 		}

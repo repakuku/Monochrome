@@ -204,6 +204,33 @@ final class GameViewModelTests: XCTestCase {
 		XCTAssertEqual(stars, expectedStars, "Expected stars to be \(expectedStars), but got \(stars).")
 	}
 
+    func test_getStarsForLevel_forCurrentGame_shouldPassTrueToGameManager() {
+
+        mockGameManager.getStarsForLevelResult = 2
+
+        let stars = sut.getStarsForLevel(id: 0, forCurrentGame: true)
+
+        XCTAssertEqual(stars, 2, "Expected stars to be 2, but got \(stars).")
+        XCTAssertEqual(
+            mockGameManager.lastGetStarsForLevelForCurrentGame,
+            true,
+            "Expected forCurrentGame to be passed as true, but it wasn't."
+        )
+    }
+
+    func test_getStarsForLevel_shouldPassFalseToGameManagerByDefault() {
+        mockGameManager.getStarsForLevelResult = 3
+
+        let stars = sut.getStarsForLevel(id: 0)
+
+        XCTAssertEqual(stars, 3, "Expected stars to be 3, but got \(stars).")
+        XCTAssertEqual(
+            mockGameManager.lastGetStarsForLevelForCurrentGame,
+            false,
+            "Expected forCurrentGame to be passed as false by default, but it wasn't."
+        )
+    }
+
 	func test_getStarsForLevel_withInvalidId_shouldReturnZeroStars() {
 
 		var stars = sut.getStarsForLevel(id: -1)
