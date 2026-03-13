@@ -167,17 +167,17 @@ struct StarsView: View {
 }
 
 #Preview {
-	LevelsView(
-		showInstruction: .constant(false),
-		showDeletionAlert: .constant(false)
-	)
-	.environmentObject(
-		GameViewModel(
-			gameManager: GameManager(
-				gameRepository: GameRepository(),
-				levelRepository: LevelRepository(),
-				levelService: LevelService()
-			)
-		)
-	)
+    LevelsView(
+        showInstruction: .constant(false),
+        showDeletionAlert: .constant(false)
+    )
+    .environmentObject(
+        GameViewModel(
+            gameManager: GameManager(
+                gameRepository: GameRepository(),
+                levelService: LevelService(),
+                levelGenerator: LevelGenerator()
+            )
+        )
+    )
 }

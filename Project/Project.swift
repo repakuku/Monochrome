@@ -14,7 +14,7 @@ enum ProjectSettings {
 
 public enum TargetScripts {
     public static let swiftLint: TargetScript = .post(
-        script: "SwiftLint/swiftlint lint",
+        script: "SwiftLint/swiftlint --fix && SwiftLint/swiftlint lint",
         name: "SwiftLint",
         basedOnDependencyAnalysis: false
     )
@@ -119,10 +119,7 @@ let project = Project(
 		scheme,
 		testScheme
 	],
-    resourceSynthesizers: [
-        .strings(),
-        .assets()
-    ]
+    resourceSynthesizers: .default
 )
 
 
