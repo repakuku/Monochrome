@@ -95,4 +95,13 @@ final class LevelGeneratorTests: XCTestCase {
         XCTAssertEqual(level.id, 0, "Expected default level with id 0")
         XCTAssertEqual(level.cellsMatrix, [[0]], "Expected default matrix [[0]]")
     }
+
+    func test_generateRandomLevel_shouldNotgenerateAlreadySolvedLevel() {
+        let stubRandomSource = StubRandomSource(values: [1, 1, 1, 1, 0, 1, 1, 0])
+        let level = sut.generateRandomLevel(id: 1, size: 2, randomSource: stubRandomSource)
+
+        let isSolved = level.cellsMatrix.allSatisfy { row in row.allSatisfy { $0 == 1 } }
+
+        XCTAssertFalse(isSolved, "Expected generated level not to be already solved")
+    }
 }

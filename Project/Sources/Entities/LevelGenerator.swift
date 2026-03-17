@@ -9,11 +9,11 @@
 import Foundation
 
 protocol ILevelGenerator {
-    func generateRandomLevel(id: Int, size: Int) -> Level
+    func generateRandomLevel(id: Int, size: Int, randomSource: IRandomSource) -> Level
 }
 
 final class LevelGenerator: ILevelGenerator {
-    func generateRandomLevel(id: Int, size: Int) -> Level {
+    func generateRandomLevel(id: Int, size: Int, randomSource: IRandomSource = RandomSource()) -> Level {
         guard id >= 0, size > 0 else {
             return Level(id: 0, cellsMatrix: [[0]])
         }
@@ -21,18 +21,28 @@ final class LevelGenerator: ILevelGenerator {
         var correctSize = size % 2 == 0 ? size : size + 1
         correctSize = max(2, correctSize)
 
-        let row = Array(repeating: 0, count: correctSize)
-        var cellsMatrix = Array(repeating: row, count: correctSize)
+        var level: Level
 
-        for row in 0..<correctSize {
-            for col in 0..<correctSize {
-                cellsMatrix[row][col] = Int.random(in: 0...1)
+        repeat {
+            let row = Array(repeating: 0, count: correctSize)
+            var cellsMatrix = Array(repeating: row, count: correctSize)
+
+            for row in 0..<correctSize {
+                for col in 0..<correctSize {
+                    cellsMatrix[row][col] = randomSource.next()
+                }
             }
-        }
 
-        let level = Level(id: id, cellsMatrix: cellsMatrix)
+            level = Level(id: id, cellsMatrix: cellsMatrix)
+        } while level.isCompleted
 
         return level
+    }
+}
+
+extension ILevelGenerator {
+    func generateRandomLevel(id: Int, size: Int) -> Level {
+        generateRandomLevel(id: id, size: size, randomSource: RandomSource())
     }
 }
 
@@ -43,7 +53,7 @@ final class MockLevelGenerator: ILevelGenerator {
     var lastGeneratedId: Int?
     var lastGeneratedSize: Int?
 
-    func generateRandomLevel(id: Int, size: Int) -> Level {
+    func generateRandomLevel(id: Int, size: Int, randomSource: IRandomSource = RandomSource()) -> Level {
         generateRandomLevelCalled = true
         lastGeneratedId = id
         lastGeneratedSize = size
