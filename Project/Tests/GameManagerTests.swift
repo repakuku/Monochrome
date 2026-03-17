@@ -197,6 +197,17 @@ final class GameManagerTests: XCTestCase {
         XCTAssertEqual(sut.game.level.status, .incompleted, "Expected new level status to be incompleted")
     }
 
+    func test_nextLevel_shouldPassExistingLevelsTogenerator() {
+        sut.nextLevel(size: 2)
+        sut.nextLevel(size: 2)
+
+        XCTAssertEqual(
+            mockLevelGenerator.lastExistingLevels?.count,
+            2,
+            "Expected existing levels to be passed to generator"
+        )
+    }
+
 	// MARK: - Restart Level
 
 	func test_restartLevel_shouldResetStateToInitial() {

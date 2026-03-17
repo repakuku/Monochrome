@@ -72,7 +72,11 @@ final class GameManager: IGameManager {
     func nextLevel(size: Int) {
         if game.level.id == game.levels.count - 1 {
             let nextLevelId = game.levels.count
-            let nextLevel = levelGenerator.generateRandomLevel(id: nextLevelId, size: size)
+            let nextLevel = levelGenerator.generateRandomLevel(
+                id: nextLevelId,
+                size: size,
+                existingLevels: game.levels
+            )
 
             game.levels.append(nextLevel)
             game.level = nextLevel
