@@ -12,7 +12,6 @@ struct DeleteGameView: View {
 	@EnvironmentObject var viewModel: GameViewModel
 
 	@Binding var viewIsShowing: Bool
-	@Binding var showInstruction: Bool
 
 	var body: some View {
 		VStack {
@@ -34,7 +33,6 @@ struct DeleteGameView: View {
 					withAnimation {
 						viewModel.eraserButtonTapped()
 						viewIsShowing = false
-						showInstruction = true
 					}
 				} label: {
 					ButtonTextFilled(
@@ -59,8 +57,7 @@ struct DeleteGameView: View {
 
 #Preview {
     DeleteGameView(
-        viewIsShowing: .constant(true),
-        showInstruction: .constant(false)
+        viewIsShowing: .constant(true)
     )
     .environmentObject(
         GameViewModel(

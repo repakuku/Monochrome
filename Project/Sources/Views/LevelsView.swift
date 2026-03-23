@@ -12,7 +12,6 @@ struct LevelsView: View {
 	@EnvironmentObject var viewModel: GameViewModel
 	@Environment(\.dismiss) private var dismiss
 
-	@Binding var showInstruction: Bool
 	@Binding var showDeletionAlert: Bool
 
 	var body: some View {
@@ -20,10 +19,7 @@ struct LevelsView: View {
 			Theme.backgroundColor
 				.ignoresSafeArea()
 			VStack(spacing: Sizes.Spacing.normal) {
-				LevelsHeaderView(
-					showInstruction: $showInstruction,
-					showDeletionAlert: $showDeletionAlert
-				)
+				LevelsHeaderView(showDeletionAlert: $showDeletionAlert)
 
 				LabelView()
 
@@ -104,7 +100,6 @@ struct RowView: View {
 struct LevelsHeaderView: View {
 	@Environment(\.dismiss) private var dismiss
 
-	@Binding var showInstruction: Bool
 	@Binding var showDeletionAlert: Bool
 
 	var body: some View {
@@ -168,7 +163,6 @@ struct StarsView: View {
 
 #Preview {
     LevelsView(
-        showInstruction: .constant(false),
         showDeletionAlert: .constant(false)
     )
     .environmentObject(

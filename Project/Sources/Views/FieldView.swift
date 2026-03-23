@@ -13,7 +13,6 @@ struct FieldView: View {
 
 	@Binding var showFirstMenuItem: Bool
 	@Binding var showSecondMenuItem: Bool
-	@Binding var showInstruction: Bool
 
 	var body: some View {
 		VStack {
@@ -25,7 +24,6 @@ struct FieldView: View {
 								viewModel.cellTapped(atX: x, atY: y)
 								showFirstMenuItem = false
 								showSecondMenuItem = false
-								showInstruction = false
 							}
 						}
 					}
@@ -90,8 +88,7 @@ struct FieldView: View {
 #Preview {
     FieldView(
         showFirstMenuItem: .constant(false),
-        showSecondMenuItem: .constant(false),
-        showInstruction: .constant(false)
+        showSecondMenuItem: .constant(false)
     )
     .environmentObject(
         GameViewModel(

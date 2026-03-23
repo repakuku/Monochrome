@@ -14,7 +14,7 @@ struct GameView: View {
 	@State private var showFirstMenuItem = false
 	@State private var showSecondMenuItem = false
 	@State private var showResult = false
-	@State private var showInstruction = true
+//	@State private var showInstruction = true
 	@State private var showDeletionAlert = false
 
 	var body: some View {
@@ -22,42 +22,38 @@ struct GameView: View {
 			Theme.backgroundColor
 				.ignoresSafeArea()
 
-			if showInstruction {
+            if viewModel.isTutorialLevel {
 				InstructionView()
-			}
+                    .zIndex(2)
+            } else {
+                BackgroundView(
+                    showFirstMenuItem: $showFirstMenuItem,
+                    showSecondMenuItem: $showSecondMenuItem,
+                    showDeletionAlert: $showDeletionAlert
+                )
+                .blur(radius: (showResult || showDeletionAlert) ? Sizes.Blur.max : Sizes.Blur.min)
+                .disabled((showResult || showDeletionAlert))
+            }
 
-			if !viewModel.isTutorialLevel {
-				BackgroundView(
-					showFirstMenuItem: $showFirstMenuItem,
-					showSecondMenuItem: $showSecondMenuItem,
-					showInstruction: $showInstruction,
-					showDeletionAlert: $showDeletionAlert
-				)
-				.blur(radius: (showResult || showDeletionAlert) ? Sizes.Blur.max : Sizes.Blur.min)
-				.disabled((showResult || showDeletionAlert))
-			}
+            FieldView(
+                showFirstMenuItem: $showFirstMenuItem,
+                showSecondMenuItem: $showSecondMenuItem
+            )
+            .transition(.scale)
+            .zIndex(1)
+            .disabled(viewModel.isLevelCompleted || showResult || showDeletionAlert)
 
-			if showDeletionAlert {
-				DeleteGameView(
-					viewIsShowing: $showDeletionAlert,
-					showInstruction: $showInstruction
-				)
-				.zIndex(2)
-				.transition(.scale)
-			} else if showResult {
-				ResultView()
-					.zIndex(1)
-					.transition(.scale)
-			} else {
-				FieldView(
-					showFirstMenuItem: $showFirstMenuItem,
-					showSecondMenuItem: $showSecondMenuItem,
-					showInstruction: $showInstruction
-				)
-				.transition(.scale)
-				.zIndex(1)
-				.disabled(viewModel.isLevelCompleted)
-			}
+            if showResult {
+                ResultView()
+                    .zIndex(3)
+                    .transition(.scale)
+            }
+
+            if showDeletionAlert {
+                DeleteGameView(viewIsShowing: $showDeletionAlert)
+                .zIndex(4)
+                .transition(.scale)
+            }
 		}
 		.onChange(
 			of: viewModel.isLevelCompleted

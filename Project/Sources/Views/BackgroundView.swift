@@ -13,7 +13,6 @@ struct BackgroundView: View {
 
     @Binding var showFirstMenuItem: Bool
     @Binding var showSecondMenuItem: Bool
-    @Binding var showInstruction: Bool
     @Binding var showDeletionAlert: Bool
 
     var body: some View {
@@ -28,7 +27,6 @@ struct BackgroundView: View {
             BottomView(
                 showFirstMenuItem: $showFirstMenuItem,
                 showSecondMenuItem: $showSecondMenuItem,
-                showInstruction: $showInstruction,
                 showDeletionAlert: $showDeletionAlert
             )
         }
@@ -139,7 +137,6 @@ struct BottomView: View {
     @State private var levelsViewIsShowing = false
     @Binding var showFirstMenuItem: Bool
     @Binding var showSecondMenuItem: Bool
-    @Binding var showInstruction: Bool
     @Binding var showDeletionAlert: Bool
 
     var body: some View {
@@ -171,10 +168,7 @@ struct BottomView: View {
             }
         }
         .sheet(isPresented: $levelsViewIsShowing) {
-            LevelsView(
-                showInstruction: $showInstruction,
-                showDeletionAlert: $showDeletionAlert
-            )
+            LevelsView(showDeletionAlert: $showDeletionAlert)
         }
     }
 }
@@ -183,7 +177,6 @@ struct BottomView: View {
     BackgroundView(
         showFirstMenuItem: .constant(true),
         showSecondMenuItem: .constant(true),
-        showInstruction: .constant(false),
         showDeletionAlert: .constant(false)
     )
     .environmentObject(
