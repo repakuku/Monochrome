@@ -25,7 +25,7 @@ final class LevelGenerator: ILevelGenerator {
         randomSource: IRandomSource = RandomSource()
     ) -> Level {
         guard id >= 0, size > 0 else {
-            return Level(id: 0, cellsMatrix: [[0]])
+            return Level(id: id, cellsMatrix: [[0]])
         }
 
         var correctSize = size % 2 == 0 ? size : size + 1
@@ -34,7 +34,7 @@ final class LevelGenerator: ILevelGenerator {
         let maxAttempts = maxUniqueLevels(for: correctSize)
 
         guard existingLevels.count < maxAttempts else {
-            return Level(id: 0, cellsMatrix: [[0]])
+            return Level(id: id, cellsMatrix: [[0]])
         }
 
         var level: Level

@@ -208,6 +208,17 @@ final class GameManagerTests: XCTestCase {
         )
     }
 
+    func test_nextLevel_shouldPassSequentialIdsToGenerator() {
+        sut.nextLevel(size: 2)
+        XCTAssertEqual(mockLevelGenerator.lastGeneratedId, 1, "Expected generated id to be 1")
+
+        sut.nextLevel(size: 2)
+        XCTAssertEqual(mockLevelGenerator.lastGeneratedId, 2, "Expected generated id to be 2")
+
+        sut.nextLevel(size: 2)
+        XCTAssertEqual(mockLevelGenerator.lastGeneratedId, 3, "Expected generated id to be 3")
+    }
+
 	// MARK: - Restart Level
 
 	func test_restartLevel_shouldResetStateToInitial() {

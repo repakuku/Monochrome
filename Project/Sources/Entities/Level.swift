@@ -63,6 +63,10 @@ struct Level: Codable, Equatable, Identifiable {
 		cellsMatrix.count
 	}
 
+    var isTutorial: Bool {
+        id == 0
+    }
+
     var isCompleted: Bool {
         cellsMatrix.allSatisfy { row in row.allSatisfy { $0 == 1 } }
     }
