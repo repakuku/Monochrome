@@ -63,6 +63,10 @@ struct Level: Codable, Equatable, Identifiable {
 		cellsMatrix.count
 	}
 
+    var isCompleted: Bool {
+        cellsMatrix.allSatisfy { row in row.allSatisfy { $0 == 1 } }
+    }
+
 	init(id: Int, cellsMatrix: [[Int]], status: LevelStatus = .incompleted) {
 
 		let isIncorrectMatrix = cellsMatrix.isEmpty || cellsMatrix.contains { $0.count != cellsMatrix.count }

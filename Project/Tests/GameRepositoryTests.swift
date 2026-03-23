@@ -11,18 +11,15 @@ import XCTest
 
 final class GameRepositoryTests: XCTestCase {
 
-	private var stubLevelRepository: StubLevelRepository! // swiftlint:disable:this implicitly_unwrapped_optional
 	private var sut: GameRepository! // swiftlint:disable:this implicitly_unwrapped_optional
 
 	override func setUp() {
 		super.setUp()
 
-		stubLevelRepository = StubLevelRepository()
 		sut = GameRepository()
 	}
 
 	override func tearDown() {
-		stubLevelRepository = nil
 		sut = nil
 
 		super.tearDown()
@@ -30,18 +27,19 @@ final class GameRepositoryTests: XCTestCase {
 
 	// MARK: - Get New Game
 
-	func test_getNewGame_withValidLevels_shouldReturnNewGame() {
+	func test_getNewGame_withValidLevels_shouldReturnNewGameWithTutoriallevel() {
+		let game = sut.getNewGame()
+        let expectedLevel = Level(id: 0, cellsMatrix: [[0]])
 
-		let expectedGame = createNewGame()
-		let game = sut.getNewGame(with: expectedGame.levels)
-
-		XCTAssertEqual(game, expectedGame, "Expected game to be \(expectedGame), but got \(game).")
-	}
+        XCTAssertEqual(game.level, expectedLevel, "Expected current level to be tutorial level")
+        XCTAssertEqual(game.levels.count, 1, "Expected only one level initially")
+        XCTAssertEqual(game.levels[0], expectedLevel, "Expected first level to be tutorial level")
+        XCTAssertTrue(game.taps.isEmpty, "Expected taps to be empty")
+    }
 
 	// MARK: - Get Saved Game
 
 	func test_getSavedGame_fromSavedGameUrl_shouldReturnSavedGame() throws {
-
 		let savedGame = createSavedGame()
 
 		let savedGameData = try JSONEncoder().encode(savedGame)
@@ -52,17 +50,26 @@ final class GameRepositoryTests: XCTestCase {
 			return
 		}
 
-		XCTAssertEqual(game.levels[0].status, .completed(1), "Expected level status to be completed.")
+        XCTAssertEqual(game.level.id, 1, "Expected current level to be level 1")
+        XCTAssertEqual(game.levels.count, 2, "Expected 2 levels in saved game")
+        XCTAssertEqual(game.levels[0].status, .completed(1), "Expected level 0 status to be completed")
 	}
 
 	func test_getSavedGame_withInvalidUrl_shouldReturnNil() {
-
 		let invalidUrl = URL(string: "")
 
 		let game = sut.getSavedGame(from: invalidUrl)
 
 		XCTAssertNil(game, "Expected game to be nil.")
 	}
+
+    func test_getSavedGame_withNilUrl_shouldReturnNil() {
+        let nilUrl: URL? = nil
+
+        let game = sut.getSavedGame(from: nilUrl)
+
+        XCTAssertNil(game, "Expected game to be nil for nil URL")
+    }
 
 	// MARK: - Save Game
 
@@ -74,7 +81,24 @@ final class GameRepositoryTests: XCTestCase {
 		sut.saveGame(game, toUrl: tempUrl)
 
 		XCTAssertTrue(FileManager.default.fileExists(atPath: tempUrl.path), "Expected file to exist at path \(tempUrl.path).")
+
+        try? FileManager.default.removeItem(at: tempUrl)
 	}
+
+    func test_saveGame_shouldSaveCorrectData() throws {
+        let game = createSavedGame()
+
+        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+
+        sut.saveGame(game, toUrl: tempUrl)
+
+        let savedData = try Data(contentsOf: tempUrl)
+        let decodedGame = try JSONDecoder().decode(Game.self, from: savedData)
+
+        XCTAssertEqual(decodedGame, game, "Expected saved game to match original game")
+
+        try? FileManager.default.removeItem(at: tempUrl)
+    }
 
 	func test_saveGame_withNilUrl_shouldNotSaveGame() {
 		let game = createNewGame()
@@ -89,30 +113,59 @@ final class GameRepositoryTests: XCTestCase {
 		)
 	}
 
+    func test_saveGame_shouldOverwriteExistingFile() throws {
+        let game1 = createNewGame()
+        let game2 = createSavedGame()
+
+        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+
+        sut.saveGame(game1, toUrl: tempUrl)
+        sut.saveGame(game2, toUrl: tempUrl)
+
+        let savedData = try Data(contentsOf: tempUrl)
+        let decodedGame = try JSONDecoder().decode(Game.self, from: savedData)
+
+        XCTAssertEqual(decodedGame, game2, "Expected saved game to be the second game")
+        XCTAssertNotEqual(decodedGame, game1, "Expected saved game not to be the first game")
+
+        try? FileManager.default.removeItem(at: tempUrl)
+    }
+
 	// MARK: - Delete Game
 
-	func test_deleteGame_withNilUrl_shouldHandleGracefully() {
-		let game = createNewGame()
+    func test_deleteGame_shouldDeleteExistingFile() {
+        let game = createNewGame()
 
-		let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
 
-		sut.saveGame(game, toUrl: tempUrl)
+        sut.saveGame(game, toUrl: tempUrl)
 
-		sut.deleteGame(from: tempUrl)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: tempUrl.path), "Expected file to exist before deletion")
 
-		XCTAssertFalse(
-			FileManager.default.fileExists(atPath: tempUrl.path),
-			"Expected file to exist at path \(tempUrl.path)."
-		)
-	}
+        sut.deleteGame(from: tempUrl)
 
-	func test_deleteGame_withNilUrl_shouldDeleteGame() {
-		let nilUrl: URL? = nil
+        XCTAssertFalse(
+            FileManager.default.fileExists(atPath: tempUrl.path),
+            "Expected file not to exist after deletion"
+        )
+    }
 
-		sut.deleteGame(from: nilUrl)
+    func test_deleteGame_withNilUrl_shouldHandleGracefully() {
+        let nilUrl: URL? = nil
 
-		XCTAssert(true, "Expected deleteSavedGame to handle nil URL without errors.")
-	}
+        sut.deleteGame(from: nilUrl)
+
+        XCTAssert(true, "Expected deleteGame to handle nil URL without errors.")
+    }
+
+    func test_deleteGame_withNonExistentFile_shouldHandleGracefully() {
+        let nonExistentUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString)
+
+        sut.deleteGame(from: nonExistentUrl)
+
+        XCTAssert(true, "Expected deleteGame to handle non-existent file without errors")
+    }
 }
 
 private extension GameRepositoryTests {
@@ -124,31 +177,27 @@ private extension GameRepositoryTests {
 	}
 
 	func createSavedGame() -> Game {
-		var game = createNewGame()
+        let level0 = Level(id: 0, cellsMatrix: [[0]], status: .completed(1))
+        let level1 = Level(id: 1, cellsMatrix: [[0, 0], [1, 1]])
 
-		game.levels[0].status = .completed(1)
-		game.level = game.levels[1]
-
-		return game
+		return Game(
+            level: level1,
+            taps: [],
+            levels: [level0, level1]
+        )
 	}
 
 	func createNewGame() -> Game {
-		let levels = [
-			Level(id: 0, cellsMatrix: [[0]]),
-			Level(id: 1, cellsMatrix: [[0, 0], [1, 0]]),
-			Level(id: 2, cellsMatrix: [[0, 0], [1, 1]]),
-			Level(id: 3, cellsMatrix: [[1, 0], [1, 1]]),
-			Level(id: 4, cellsMatrix: [[1, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 1]]),
-			Level(id: 5, cellsMatrix: [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]])
-		]
-
-		let levelsHash = HashService.calculateHash(of: levels)
+		let tutorialLevel = Level(
+            id: 0,
+            cellsMatrix: [[0]]
+        )
 
 		let game = Game(
-			currentLevelId: 0,
-			levels: levels,
-			levelsHash: levelsHash
-		)
+            level: tutorialLevel,
+            taps: [],
+            levels: [tutorialLevel]
+        )
 
 		return game
 	}

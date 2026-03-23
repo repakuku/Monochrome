@@ -54,14 +54,14 @@ struct GuideHeaderView: View {
 }
 
 #Preview {
-	GuideView(
-		viewModel: GameViewModel(
-				gameManager: GameManager(
-					gameRepository: GameRepository(),
-					levelRepository: LevelRepository(),
-					levelService: LevelService()
-				)
-			),
-		viewisShowing: .constant(true)
-	)
+    GuideView(
+        viewModel: GameViewModel(
+            gameManager: GameManager(
+                gameRepository: GameRepository(),
+                levelService: LevelService(),
+                levelGenerator: LevelGenerator()
+            )
+        ),
+        viewisShowing: .constant(true)
+    )
 }

@@ -29,13 +29,7 @@ final class LevelService: ILevelService {
 	}
 
 	func checkMatrix(level: Level) -> Bool {
-		for row in level.cellsMatrix {
-			for cell in row where cell == 0 {
-				return false
-			}
-		}
-
-		return true
+        level.isCompleted
 	}
 
 	func getHint(level: inout Level) {

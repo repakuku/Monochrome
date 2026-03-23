@@ -89,8 +89,8 @@ struct ResultAlertView: View {
             GameViewModel(
                 gameManager: GameManager(
                     gameRepository: GameRepository(),
-                    levelRepository: LevelRepository(),
-                    levelService: LevelService()
+                    levelService: LevelService(),
+                    levelGenerator: LevelGenerator()
                 )
             )
         )

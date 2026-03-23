@@ -58,17 +58,17 @@ struct DeleteGameView: View {
 }
 
 #Preview {
-	DeleteGameView(
-		viewIsShowing: .constant(true),
-		showInstruction: .constant(false)
-	)
-	.environmentObject(
-		GameViewModel(
-			gameManager: GameManager(
-				gameRepository: GameRepository(),
-				levelRepository: LevelRepository(),
-				levelService: LevelService()
-			)
-		)
-	)
+    DeleteGameView(
+        viewIsShowing: .constant(true),
+        showInstruction: .constant(false)
+    )
+    .environmentObject(
+        GameViewModel(
+            gameManager: GameManager(
+                gameRepository: GameRepository(),
+                levelService: LevelService(),
+                levelGenerator: LevelGenerator()
+            )
+        )
+    )
 }

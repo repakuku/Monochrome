@@ -9,7 +9,7 @@
 import Foundation
 
 protocol IGameRepository {
-	func getNewGame(with levels: [Level]) -> Game
+	func getNewGame() -> Game
 	func getSavedGame(from: URL?) -> Game?
 	func saveGame(_: Game, toUrl: URL?)
 	func deleteGame(from: URL?)
@@ -17,15 +17,13 @@ protocol IGameRepository {
 
 final class GameRepository: IGameRepository {
 
-	func getNewGame(with levels: [Level]) -> Game {
-
-		let levelsHash = HashService.calculateHash(of: levels)
-
+	func getNewGame() -> Game {
+        let tutorialLevel = Level(id: 0, cellsMatrix: [[0]])
 		return Game(
-			currentLevelId: 0,
-			levels: levels,
-			levelsHash: levelsHash
-		)
+            level: tutorialLevel,
+            taps: [],
+            levels: [tutorialLevel]
+        )
 	}
 
 	func getSavedGame(from url: URL?) -> Game? {
@@ -36,13 +34,7 @@ final class GameRepository: IGameRepository {
 		do {
 			let savedGameData = try Data(contentsOf: savedGameUrl)
 			let savedGame = try JSONDecoder().decode(Game.self, from: savedGameData)
-
-			return Game(
-				currentLevelId: savedGame.level.id,
-				taps: savedGame.taps,
-				levels: savedGame.levels,
-				levelsHash: savedGame.levelsHash
-			)
+			return savedGame
 		} catch {
 			return nil
 		}
@@ -75,23 +67,16 @@ final class StubGameRepository: IGameRepository {
 	var saveGameCalled = false
 	var deleteSavedGameCalled = false
 
-	var game = Game(
-		currentLevelId: 0,
-		levels: levels,
-		levelsHash: "hash"
-	)
-
 	var savedGame: Game?
 
-	private static let levels = [
-		Level(id: 0, cellsMatrix: [[0]]),
-		Level(id: 1, cellsMatrix: [[0, 0], [1, 0]]),
-		Level(id: 2, cellsMatrix: [[0, 0], [1, 1]]),
-		Level(id: 3, cellsMatrix: [[1, 0], [1, 1]])
-	]
+	func getNewGame() -> Game {
+		let tutorialLevel = Level(id: 0, cellsMatrix: [[0]])
 
-	func getNewGame(with levels: [Level]) -> Game {
-		game
+        return Game(
+            level: tutorialLevel,
+            taps: [],
+            levels: [tutorialLevel]
+        )
 	}
 
 	func getSavedGame(from: URL?) -> Game? {
