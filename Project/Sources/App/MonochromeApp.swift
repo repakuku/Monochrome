@@ -19,7 +19,7 @@ struct MonochromeApp: App {
 
     var body: some Scene {
         WindowGroup {
-            WelcomeView()
+            GameView()
                 .environmentObject(viewModel)
         }
     }
