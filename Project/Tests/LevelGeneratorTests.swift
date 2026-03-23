@@ -110,14 +110,14 @@ final class LevelGeneratorTests: XCTestCase {
         XCTAssertEqual(level.levelSize, 2, "Expected size 1 to be rounded up to 2")
     }
 
-    func test_generateRandomLevel_withZeroSize_shouldReturnDefaultLevel() {
+    func test_generateRandomLevel_withZeroSize_shouldReturnDefaultLevelWithPassedId() {
         let level = sut.generateRandomLevel(
             id: 1,
             size: 0,
             existingLevels: []
         )
 
-        XCTAssertEqual(level.id, 0, "Expected default level with id 0")
+        XCTAssertEqual(level.id, 1, "Expected default level with id 1")
         XCTAssertEqual(level.cellsMatrix, [[0]], "Expected default matrix [[0]]")
     }
 
@@ -128,7 +128,7 @@ final class LevelGeneratorTests: XCTestCase {
             existingLevels: []
         )
 
-        XCTAssertEqual(level.id, 0, "Expected default level with id 0")
+        XCTAssertEqual(level.id, 1, "Expected default level with id 1")
         XCTAssertEqual(level.cellsMatrix, [[0]], "Expected default matrix [[0]]")
     }
 
@@ -177,7 +177,7 @@ final class LevelGeneratorTests: XCTestCase {
             existingLevels: existingLevels
         )
 
-        XCTAssertEqual(level.id, 0, "Expected default level when all variants exhausted")
+        XCTAssertEqual(level.id, 15, "Expected default level to keep passed id when all variants are exhausted")
         XCTAssertEqual(level.cellsMatrix, [[0]], "Expected default matrix [[0]]")
     }
 }
