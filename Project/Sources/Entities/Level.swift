@@ -86,13 +86,70 @@ struct Level: Codable, Equatable, Identifiable {
 		self.status = status
 	}
 
-	static func == (lhs: Level, rhs: Level) -> Bool {
-		if lhs.id == rhs.id
-			&& lhs.cellsMatrix == rhs.cellsMatrix
-			&& lhs.status == rhs.status {
-			return true
-		} else {
-			return false
-		}
-	}
+    func isEquivalent(to other: Level) -> Bool {
+        let reflectedLevel = self.reflectedVertically()
+        return self.cellsMatrix == other.cellsMatrix
+        || self.rotated90().cellsMatrix == other.cellsMatrix
+        || self.rotated180().cellsMatrix == other.cellsMatrix
+        || self.rotated270().cellsMatrix == other.cellsMatrix
+
+        || reflectedLevel.cellsMatrix == other.cellsMatrix
+        || reflectedLevel.rotated90().cellsMatrix == other.cellsMatrix
+        || reflectedLevel.rotated180().cellsMatrix == other.cellsMatrix
+        || reflectedLevel.rotated270().cellsMatrix == other.cellsMatrix
+    }
+
+    func rotated90() -> Level {
+        let row = Array(repeating: 0, count: levelSize)
+        var rotatedMatrix = Array(repeating: row, count: levelSize)
+
+        for row in 0..<cellsMatrix.count {
+            for col in 0..<cellsMatrix.count {
+                rotatedMatrix[col][levelSize - 1 - row] = cellsMatrix[row][col]
+            }
+        }
+
+        return Level(
+            id: self.id,
+            cellsMatrix: rotatedMatrix,
+            status: self.status
+        )
+    }
+
+    func rotated180() -> Level {
+        self.rotated90().rotated90()
+    }
+
+    func rotated270() -> Level {
+        self.rotated180().rotated90()
+    }
+
+    func reflectedVertically() -> Level {
+        let row = Array(repeating: 0, count: levelSize)
+        var reflectedMatrix = Array(repeating: row, count: levelSize)
+
+        for row in 0..<cellsMatrix.count {
+            for col in 0..<cellsMatrix.count {
+                reflectedMatrix[row][levelSize - 1 - col] = cellsMatrix[row][col]
+            }
+        }
+
+        return Level(
+            id: self.id,
+            cellsMatrix: reflectedMatrix,
+            status: self.status
+        )
+    }
+}
+
+extension Level {
+    static func == (lhs: Level, rhs: Level) -> Bool {
+        if lhs.id == rhs.id
+            && lhs.cellsMatrix == rhs.cellsMatrix
+            && lhs.status == rhs.status {
+            return true
+        } else {
+            return false
+        }
+    }
 }
