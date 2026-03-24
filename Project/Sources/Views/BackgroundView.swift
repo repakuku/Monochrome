@@ -11,25 +11,18 @@ import SwiftUI
 struct BackgroundView: View {
     @EnvironmentObject var viewModel: GameViewModel
 
-    @Binding var showFirstMenuItem: Bool
-    @Binding var showSecondMenuItem: Bool
-    @Binding var showInstruction: Bool
-    @Binding var showDeletionAlert: Bool
+    @Binding var isMenuOpen: Bool
+    @Binding var activeOverlay: ActiveOverlay
 
     var body: some View {
         VStack {
-            TopView(
-                showFirstMenuItem: $showFirstMenuItem,
-                showSecondMenuItem: $showSecondMenuItem
-            )
+            TopView(isMenuOpen: $isMenuOpen)
 
             Spacer()
 
             BottomView(
-                showFirstMenuItem: $showFirstMenuItem,
-                showSecondMenuItem: $showSecondMenuItem,
-                showInstruction: $showInstruction,
-                showDeletionAlert: $showDeletionAlert
+                isMenuOpen: $isMenuOpen,
+                activeOverlay: $activeOverlay
             )
         }
         .padding()
@@ -39,9 +32,16 @@ struct BackgroundView: View {
 struct TopView: View {
     @EnvironmentObject var viewModel: GameViewModel
 
-    @Binding var showFirstMenuItem: Bool
-    @Binding var showSecondMenuItem: Bool
+    @Binding var isMenuOpen: Bool
+
+    @State private var menuPhase: MenuPhase = .closed
     @State private var guideViewIsShowing = false
+
+    private enum MenuPhase {
+        case closed
+        case hintOnly
+        case expanded
+    }
 
     var body: some View {
         VStack {
@@ -52,9 +52,8 @@ struct TopView: View {
                 ) {
                     withAnimation {
                         viewModel.restartLevel()
-                        showFirstMenuItem = false
-                        showSecondMenuItem = false
                     }
+                    closeMenu()
                 }
 
                 Spacer()
@@ -65,16 +64,18 @@ struct TopView: View {
 
                 RoundedImageView(
                     systemName: Images.list.rawValue,
-                    isFilled: showFirstMenuItem
+                    isFilled: isMenuOpen
                 ) {
-                    withAnimation {
-                        showFirstMenuItem.toggle()
+                    if isMenuOpen {
+                        isMenuOpen = false
+                    } else {
+                        openMenu()
                     }
                 }
             }
             .zIndex(2)
 
-            if showFirstMenuItem {
+            if menuPhase == .hintOnly || menuPhase == .expanded {
                 HStack {
                     Spacer()
 
@@ -85,28 +86,16 @@ struct TopView: View {
                         ) {
                             withAnimation {
                                 viewModel.getHint()
-                                showFirstMenuItem.toggle()
                             }
+                            closeMenu()
                         }
                     }
                 }
                 .zIndex(1)
                 .transition(.offset(y: -Sizes.General.roundedViewLength - Sizes.Spacing.small))
-                .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        withAnimation {
-                            showSecondMenuItem = true
-                        }
-                    }
-                }
-                .onDisappear {
-                    withAnimation {
-                        showSecondMenuItem = false
-                    }
-                }
             }
 
-            if showSecondMenuItem {
+            if menuPhase == .expanded {
                 HStack {
                     Spacer()
 
@@ -116,8 +105,8 @@ struct TopView: View {
                     ) {
                         withAnimation {
                             guideViewIsShowing = true
-                            showFirstMenuItem.toggle()
                         }
+                        closeMenu()
                     }
                 }
                 .zIndex(0)
@@ -130,17 +119,50 @@ struct TopView: View {
                 viewisShowing: $guideViewIsShowing
             )
         }
+        .onChange(of: isMenuOpen) { isOpen in
+            if !isOpen, menuPhase != .closed {
+                closeMenu()
+            }
+        }
+    }
+
+    private func openMenu() {
+        isMenuOpen = true
+
+        withAnimation {
+            menuPhase = .hintOnly
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            guard isMenuOpen, menuPhase == .hintOnly else { return }
+
+            withAnimation {
+                menuPhase = .expanded
+            }
+        }
+    }
+
+    private func closeMenu() {
+        withAnimation {
+            menuPhase = .hintOnly
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            guard menuPhase == .hintOnly else { return }
+
+            withAnimation {
+                menuPhase = .closed
+            }
+        }
     }
 }
 
 struct BottomView: View {
     @EnvironmentObject var viewModel: GameViewModel
 
+    @Binding var isMenuOpen: Bool
+    @Binding var activeOverlay: ActiveOverlay
     @State private var levelsViewIsShowing = false
-    @Binding var showFirstMenuItem: Bool
-    @Binding var showSecondMenuItem: Bool
-    @Binding var showInstruction: Bool
-    @Binding var showDeletionAlert: Bool
 
     var body: some View {
         HStack {
@@ -165,26 +187,20 @@ struct BottomView: View {
             ) {
                 withAnimation {
                     levelsViewIsShowing = true
-                    showFirstMenuItem = false
-                    showSecondMenuItem = false
+                    isMenuOpen = false
                 }
             }
         }
         .sheet(isPresented: $levelsViewIsShowing) {
-            LevelsView(
-                showInstruction: $showInstruction,
-                showDeletionAlert: $showDeletionAlert
-            )
+            LevelsView(activeOverlay: $activeOverlay)
         }
     }
 }
 
 #Preview {
     BackgroundView(
-        showFirstMenuItem: .constant(true),
-        showSecondMenuItem: .constant(true),
-        showInstruction: .constant(false),
-        showDeletionAlert: .constant(false)
+        isMenuOpen: .constant(true),
+        activeOverlay: .constant(.none)
     )
     .environmentObject(
         GameViewModel(

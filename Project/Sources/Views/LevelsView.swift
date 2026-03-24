@@ -12,18 +12,14 @@ struct LevelsView: View {
 	@EnvironmentObject var viewModel: GameViewModel
 	@Environment(\.dismiss) private var dismiss
 
-	@Binding var showInstruction: Bool
-	@Binding var showDeletionAlert: Bool
+    @Binding var activeOverlay: ActiveOverlay
 
 	var body: some View {
 		ZStack {
 			Theme.backgroundColor
 				.ignoresSafeArea()
 			VStack(spacing: Sizes.Spacing.normal) {
-				LevelsHeaderView(
-					showInstruction: $showInstruction,
-					showDeletionAlert: $showDeletionAlert
-				)
+				LevelsHeaderView(activeOverlay: $activeOverlay)
 
 				LabelView()
 
@@ -104,8 +100,7 @@ struct RowView: View {
 struct LevelsHeaderView: View {
 	@Environment(\.dismiss) private var dismiss
 
-	@Binding var showInstruction: Bool
-	@Binding var showDeletionAlert: Bool
+	@Binding var activeOverlay: ActiveOverlay
 
 	var body: some View {
 		ZStack {
@@ -116,7 +111,7 @@ struct LevelsHeaderView: View {
 				) {
 					withAnimation {
 						dismiss()
-						showDeletionAlert = true
+                        activeOverlay = .deleteConfirmation
 					}
 				}
 
@@ -168,8 +163,7 @@ struct StarsView: View {
 
 #Preview {
     LevelsView(
-        showInstruction: .constant(false),
-        showDeletionAlert: .constant(false)
+        activeOverlay: .constant(.none)
     )
     .environmentObject(
         GameViewModel(

@@ -11,53 +11,42 @@ import SwiftUI
 struct GameView: View {
 	@EnvironmentObject var viewModel: GameViewModel
 
-	@State private var showFirstMenuItem = false
-	@State private var showSecondMenuItem = false
-	@State private var showResult = false
-	@State private var showInstruction = true
-	@State private var showDeletionAlert = false
+	@State private var isMenuOpen = false
+    @State private var activeOverlay: ActiveOverlay = .none
 
 	var body: some View {
 		ZStack {
 			Theme.backgroundColor
 				.ignoresSafeArea()
 
-			if showInstruction {
+            if viewModel.isTutorialLevel {
 				InstructionView()
-			}
+                    .zIndex(2)
+            } else {
+                BackgroundView(
+                    isMenuOpen: $isMenuOpen,
+                    activeOverlay: $activeOverlay
+                )
+                .blur(radius: activeOverlay == .none ? Sizes.Blur.min : Sizes.Blur.max)
+                .disabled(activeOverlay != .none)
+            }
 
-			if !viewModel.isTutorialLevel {
-				BackgroundView(
-					showFirstMenuItem: $showFirstMenuItem,
-					showSecondMenuItem: $showSecondMenuItem,
-					showInstruction: $showInstruction,
-					showDeletionAlert: $showDeletionAlert
-				)
-				.blur(radius: (showResult || showDeletionAlert) ? Sizes.Blur.max : Sizes.Blur.min)
-				.disabled((showResult || showDeletionAlert))
-			}
+            FieldView(isMenuOpen: $isMenuOpen)
+            .transition(.scale)
+            .zIndex(1)
+            .disabled(viewModel.isLevelCompleted || activeOverlay != .none)
 
-			if showDeletionAlert {
-				DeleteGameView(
-					viewIsShowing: $showDeletionAlert,
-					showInstruction: $showInstruction
-				)
-				.zIndex(2)
-				.transition(.scale)
-			} else if showResult {
-				ResultView()
-					.zIndex(1)
-					.transition(.scale)
-			} else {
-				FieldView(
-					showFirstMenuItem: $showFirstMenuItem,
-					showSecondMenuItem: $showSecondMenuItem,
-					showInstruction: $showInstruction
-				)
-				.transition(.scale)
-				.zIndex(1)
-				.disabled(viewModel.isLevelCompleted)
-			}
+            if activeOverlay == .result {
+                ResultView()
+                    .zIndex(3)
+                    .transition(.scale)
+            }
+
+            if activeOverlay == .deleteConfirmation {
+                DeleteGameView(activeOverlay: $activeOverlay)
+                .zIndex(4)
+                .transition(.scale)
+            }
 		}
 		.onChange(
 			of: viewModel.isLevelCompleted
@@ -67,20 +56,17 @@ struct GameView: View {
 					deadline: .now() + 0.6
 				) {
 					withAnimation {
-						showResult = true
+						activeOverlay = .result
 					}
 				}
-			} else {
+            } else if activeOverlay == .result {
 				withAnimation {
-					showResult = false
+                    activeOverlay = .none
 				}
 			}
 		}
 		.onTapGesture {
-			withAnimation {
-				showFirstMenuItem = false
-				showSecondMenuItem = false
-			}
+            isMenuOpen = false
 		}
 		.statusBarHidden()
 		.navigationBarHidden(true)

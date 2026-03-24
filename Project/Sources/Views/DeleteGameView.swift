@@ -11,8 +11,7 @@ import SwiftUI
 struct DeleteGameView: View {
 	@EnvironmentObject var viewModel: GameViewModel
 
-	@Binding var viewIsShowing: Bool
-	@Binding var showInstruction: Bool
+    @Binding var activeOverlay: ActiveOverlay
 
 	var body: some View {
 		VStack {
@@ -24,7 +23,7 @@ struct DeleteGameView: View {
 			HStack {
 				Button {
 					withAnimation {
-						viewIsShowing = false
+                        activeOverlay = .none
 					}
 				} label: {
                     ButtonTextStroked(text: L10n.DeleteGameView.cancel)
@@ -33,8 +32,7 @@ struct DeleteGameView: View {
 				Button {
 					withAnimation {
 						viewModel.eraserButtonTapped()
-						viewIsShowing = false
-						showInstruction = true
+                        activeOverlay = .none
 					}
 				} label: {
 					ButtonTextFilled(
@@ -59,8 +57,7 @@ struct DeleteGameView: View {
 
 #Preview {
     DeleteGameView(
-        viewIsShowing: .constant(true),
-        showInstruction: .constant(false)
+        activeOverlay: .constant(.deleteConfirmation)
     )
     .environmentObject(
         GameViewModel(

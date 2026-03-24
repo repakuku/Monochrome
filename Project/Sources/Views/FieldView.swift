@@ -11,9 +11,7 @@ import SwiftUI
 struct FieldView: View {
 	@EnvironmentObject var viewModel: GameViewModel
 
-	@Binding var showFirstMenuItem: Bool
-	@Binding var showSecondMenuItem: Bool
-	@Binding var showInstruction: Bool
+	@Binding var isMenuOpen: Bool
 
 	var body: some View {
 		VStack {
@@ -23,9 +21,7 @@ struct FieldView: View {
 						cellView(for: viewModel.cells[x][y]) {
 							withAnimation {
 								viewModel.cellTapped(atX: x, atY: y)
-								showFirstMenuItem = false
-								showSecondMenuItem = false
-								showInstruction = false
+                                isMenuOpen = false
 							}
 						}
 					}
@@ -88,11 +84,7 @@ struct FieldView: View {
  }
 
 #Preview {
-    FieldView(
-        showFirstMenuItem: .constant(false),
-        showSecondMenuItem: .constant(false),
-        showInstruction: .constant(false)
-    )
+    FieldView(isMenuOpen: .constant(false))
     .environmentObject(
         GameViewModel(
             gameManager: GameManager(
