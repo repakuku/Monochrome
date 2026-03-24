@@ -11,6 +11,8 @@ import XCTest
 
 final class LevelTests: XCTestCase {
 
+    // MARK: init
+
 	func test_init_incompletedLevel_shouldImplementCorrectInstance() {
 		let sut = Level(
 			id: 1,
@@ -109,6 +111,241 @@ final class LevelTests: XCTestCase {
 			expectedStatus: .incompleted
 		)
 	}
+
+    // MARK: isEquivalent
+
+    func test_isEquivalent_shouldReturnTrueForLevelsWithSameMatrix() {
+        let original = Level(
+            id: 0,
+            cellsMatrix: [
+                [1, 1],
+                [1, 0]
+            ]
+        )
+
+        let same = Level(
+            id: 1,
+            cellsMatrix: [
+                [1, 1],
+                [1, 0]
+            ],
+            status: .completed(2)
+        )
+
+        let result = original.isEquivalent(to: same)
+
+        XCTAssertTrue(result, "Expected levels to be equivalent.")
+    }
+
+    func test_isEquivalent_shouldReturnFalseForDifferentLevels() {
+        let original = Level(
+            id: 0,
+            cellsMatrix: [
+                [1, 1],
+                [1, 0]
+            ]
+        )
+
+        let different = Level(
+            id: 1,
+            cellsMatrix: [
+                [0, 1],
+                [1, 0]
+            ]
+        )
+
+        let result = original.isEquivalent(to: different)
+
+        XCTAssertFalse(result, "Expected levels to be not equivalent.")
+    }
+
+    func test_isEquivalent_shouldReturnTrueForRotated90DegreesLevel() {
+        let original = Level(
+            id: 0,
+            cellsMatrix: [
+                [1, 1],
+                [1, 0]
+            ]
+        )
+
+        let rotated = Level(
+            id: 1,
+            cellsMatrix: [
+                [1, 1],
+                [0, 1]
+            ]
+        )
+
+        let result = original.isEquivalent(to: rotated)
+
+        XCTAssertTrue(result, "Expected levels to be equivalent under 90 degree rotation")
+    }
+
+    func test_isEquivalent_shouldReturnTrueForRotated180DegreesLevel() {
+        let original = Level(
+            id: 0,
+            cellsMatrix: [
+                [1, 1],
+                [1, 0]
+            ]
+        )
+
+        let rotated = Level(
+            id: 1,
+            cellsMatrix: [
+                [0, 1],
+                [1, 1]
+            ]
+        )
+
+        let result = original.isEquivalent(to: rotated)
+
+        XCTAssertTrue(result, "Expected levels to be equivalent under 180 degree rotation")
+    }
+
+    func test_isEquivalent_shouldReturnTrueForRotated270DegreesLevel() {
+        let original = Level(
+            id: 0,
+            cellsMatrix: [
+                [1, 1],
+                [1, 0]
+            ]
+        )
+
+        let rotated = Level(
+            id: 1,
+            cellsMatrix: [
+                [1, 0],
+                [1, 1]
+            ]
+        )
+
+        let result = original.isEquivalent(to: rotated)
+
+        XCTAssertTrue(result, "Expected levels to be equivalent under 270 degree rotation")
+    }
+
+    func test_isEquivalent_shouldReturnTrueForReflectedLevel() {
+        let original = Level(
+            id: 0,
+            cellsMatrix: [
+                [1, 0],
+                [1, 1]
+            ]
+        )
+
+        let reflected = Level(
+            id: 0,
+            cellsMatrix: [
+                [0, 1],
+                [1, 1]
+            ]
+        )
+
+        let result = original.isEquivalent(to: reflected)
+
+        XCTAssertTrue(result, "Expected levels to be equivalent under reflection")
+    }
+
+    // MARK: rotated90
+
+    func test_rotated90_shouldReturnLevelRotatedBy90Degrees() {
+        let original = Level(
+            id: 0,
+            cellsMatrix: [
+                [1, 1],
+                [1, 0]
+            ]
+        )
+
+        let rotated = Level(
+            id: 0,
+            cellsMatrix: [
+                [1, 1],
+                [0, 1]
+            ]
+        )
+
+        let sut = original.rotated90()
+
+        XCTAssertEqual(sut, rotated, "Expected level rotated by 90 degrees to match expected level.")
+    }
+
+    // MARK: rotated180
+
+    func test_rotated180_shouldReturnLevelRotatedBy180Degrees() {
+        let original = Level(
+            id: 0,
+            cellsMatrix: [
+                [1, 1],
+                [1, 0]
+            ]
+        )
+
+        let rotated = Level(
+            id: 0,
+            cellsMatrix: [
+                [0, 1],
+                [1, 1]
+            ]
+        )
+
+        let sut = original.rotated180()
+
+        XCTAssertEqual(sut, rotated, "Expected level rotated by 180 degrees to match expected level.")
+    }
+
+    // MARK: rotated270
+
+    func test_rotated270_shouldReturnLevelRotatedBy270Degrees() {
+        let original = Level(
+            id: 0,
+            cellsMatrix: [
+                [1, 1],
+                [1, 0]
+            ]
+        )
+
+        let rotated = Level(
+            id: 0,
+            cellsMatrix: [
+                [1, 0],
+                [1, 1]
+            ]
+        )
+
+        let sut = original.rotated270()
+
+        XCTAssertEqual(sut, rotated, "Expected level rotated by 270 degrees to match expected level.")
+    }
+
+    // MARK: reflectedVertically
+
+    func test_reflectedVertically_shouldReturnReflectedVerticallyLevel() {
+        let original = Level(
+            id: 0,
+            cellsMatrix: [
+                [1, 1, 0, 0],
+                [1, 1, 1, 0],
+                [0, 0, 0, 1],
+                [1, 0, 1, 0]
+            ]
+        )
+
+        let reflected = Level(
+            id: 0,
+            cellsMatrix: [
+                [0, 0, 1, 1],
+                [0, 1, 1, 1],
+                [1, 0, 0, 0],
+                [0, 1, 0, 1]
+            ]
+        )
+
+        let sut = original.reflectedVertically()
+
+        XCTAssertEqual(sut, reflected, "Expected level reflected vertically to match expected level.")
+    }
 }
 
 private extension LevelTests {

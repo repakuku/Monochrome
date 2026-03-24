@@ -110,29 +110,29 @@ final class LevelGeneratorTests: XCTestCase {
         XCTAssertEqual(level.levelSize, 2, "Expected size 1 to be rounded up to 2")
     }
 
-    func test_generateRandomLevel_withZeroSize_shouldReturnDefaultLevelWithPassedId() {
+    func test_generateRandomLevel_withZeroSize_shouldReturnFallbackLevelWithPassedId() {
         let level = sut.generateRandomLevel(
             id: 1,
             size: 0,
             existingLevels: []
         )
 
-        XCTAssertEqual(level.id, 1, "Expected default level with id 1")
-        XCTAssertEqual(level.cellsMatrix, [[0]], "Expected default matrix [[0]]")
+        XCTAssertEqual(level.id, 1, "Expected fallback level with id 1")
+        XCTAssertEqual(level.cellsMatrix, [[0]], "Expected fallback matrix [[0]]")
     }
 
-    func test_generateRandomLevel_withNegativeSize_shouldReturnDefaultLevel() {
+    func test_generateRandomLevel_withNegativeSize_shouldReturnFallbackLevelWithPassedId() {
         let level = sut.generateRandomLevel(
             id: 1,
             size: -5,
             existingLevels: []
         )
 
-        XCTAssertEqual(level.id, 1, "Expected default level with id 1")
-        XCTAssertEqual(level.cellsMatrix, [[0]], "Expected default matrix [[0]]")
+        XCTAssertEqual(level.id, 1, "Expected fallback level with id 1")
+        XCTAssertEqual(level.cellsMatrix, [[0]], "Expected fallback matrix [[0]]")
     }
 
-    func test_generateRandomLevel_shouldNotgenerateAlreadySolvedLevel() {
+    func test_generateRandomLevel_shouldNotGenerateAlreadySolvedLevel() {
         let stubRandomSource = StubRandomSource(values: [1, 1, 1, 1, 0, 1, 1, 0])
         let level = sut.generateRandomLevel(
             id: 1,
@@ -146,38 +146,189 @@ final class LevelGeneratorTests: XCTestCase {
         XCTAssertFalse(isSolved, "Expected generated level not to be already solved")
     }
 
-    func test_generateRandomLevel_shouldNotDuplicateExistinglevel() {
-        let stubRandomSource = StubRandomSource(values: [0, 1, 1, 0, 1, 0, 0, 1])
-        let existingLevel = Level(id: 1, cellsMatrix: [[0, 1], [1, 0]])
+    func test_generateRandomLevel_shouldNotGenerateLevelEquivalentToExistingLevel() {
+        let stubRandomSource = StubRandomSource(
+            values: [
+                1, 1, 0, 1, // equivalent to existing level
+                1, 0, 0, 0  // unique level
+            ]
+        )
 
-        let level = sut.generateRandomLevel(
+        let existingLevel = Level(
+            id: 1,
+            cellsMatrix: [
+                [1, 1],
+                [1, 0]
+            ]
+        )
+
+        let generatedLevel = sut.generateRandomLevel(
             id: 2,
             size: 2,
             existingLevels: [existingLevel],
             randomSource: stubRandomSource
         )
 
-        XCTAssertNotEqual(
-            level.cellsMatrix,
-            existingLevel.cellsMatrix,
-            "Expected generated level not to duplicate existing level"
+        let expectedLevel = Level(
+            id: 2,
+            cellsMatrix: [
+                [1, 0],
+                [0, 0]
+            ]
+        )
+
+        XCTAssertEqual(
+            generatedLevel,
+            expectedLevel,
+            "Expected generator to skip level equivalent to existing one and return a unique level."
         )
     }
 
-    func test_generateRandomLevel_withAllLevelsExhausted_shouldReturnDefaultLevel() {
-        var existingLevels: [Level] = []
-
-        for index in 0..<15 {
-            existingLevels.append(Level(id: index, cellsMatrix: [[0, 0], [0, 0]]))
-        }
+    func test_generateRandomLevel_withAllUniqueLevelsExhausted_shouldReturnFallbackLevelWithPassedId() {
+        let existingLevels = [
+            Level(id: 0, cellsMatrix: [
+                [0, 0],
+                [0, 0]
+            ]),
+            Level(id: 1, cellsMatrix: [
+                [1, 0],
+                [0, 0]
+            ]),
+            Level(id: 2, cellsMatrix: [
+                [1, 1],
+                [0, 0]
+            ]),
+            Level(id: 3, cellsMatrix: [
+                [1, 0],
+                [0, 1]
+            ]),
+            Level(id: 4, cellsMatrix: [
+                [1, 1],
+                [1, 0]
+            ])
+        ]
 
         let level = sut.generateRandomLevel(
-            id: 15,
+            id: 5,
             size: 2,
             existingLevels: existingLevels
         )
 
-        XCTAssertEqual(level.id, 15, "Expected default level to keep passed id when all variants are exhausted")
-        XCTAssertEqual(level.cellsMatrix, [[0]], "Expected default matrix [[0]]")
+        XCTAssertEqual(
+            level.id,
+            5,
+            "Expected fallback level to keep passed id when all unique levels are exhausted."
+        )
+        XCTAssertEqual(level.cellsMatrix, [[0]], "Expected fallback matrix [[0]].")
+    }
+
+    func test_generateRandomLevel_shouldIgnoreLevelsOfDifferentSizeWhenCheckingExhaustion() {
+        let stubRandomSource = StubRandomSource(
+            values: [
+                0, 1, 1, 1 // the missing 2x2 class: three ones
+            ]
+        )
+
+        let existingLevels = [
+            Level(id: 0, cellsMatrix: [[0]]), // tutorial 1x1, should be ignored
+            Level(id: 1, cellsMatrix: [
+                [0, 0],
+                [0, 0]
+            ]),
+            Level(id: 2, cellsMatrix: [
+                [1, 0],
+                [0, 0]
+            ]),
+            Level(id: 3, cellsMatrix: [
+                [1, 1],
+                [0, 0]
+            ]),
+            Level(id: 4, cellsMatrix: [
+                [1, 0],
+                [0, 1]
+            ])
+        ]
+
+        let generatedLevel = sut.generateRandomLevel(
+            id: 6,
+            size: 2,
+            existingLevels: existingLevels,
+            randomSource: stubRandomSource
+        )
+
+        let expectedLevel = Level(
+            id: 6,
+            cellsMatrix: [
+                [0, 1],
+                [1, 1]
+            ]
+        )
+
+        XCTAssertEqual(
+            generatedLevel,
+            expectedLevel,
+            "Expected generator to ignore levels of different size when checking exhaustion."
+        )
+    }
+
+    func test_generateRandomLevel_shouldKeepTryingUntilItFindsRemainingUniqueLevel() {
+        let duplicatePattern = [
+            1, 0, 0, 0 // one filled cell, equivalent to existing level
+        ]
+
+        let uniquePattern = [
+            0, 1, 1, 1 // three filled cells, unique in this setup
+        ]
+
+        let stubRandomSource = StubRandomSource(
+            values:
+                duplicatePattern +
+                duplicatePattern +
+                duplicatePattern +
+                duplicatePattern +
+                duplicatePattern +
+                uniquePattern
+        )
+
+        let existingLevels = [
+            Level(id: 0, cellsMatrix: [[0]]), // different size, should be ignored
+            Level(id: 1, cellsMatrix: [
+                [0, 0],
+                [0, 0]
+            ]),
+            Level(id: 2, cellsMatrix: [
+                [1, 0],
+                [0, 0]
+            ]),
+            Level(id: 3, cellsMatrix: [
+                [1, 1],
+                [0, 0]
+            ]),
+            Level(id: 4, cellsMatrix: [
+                [1, 0],
+                [0, 1]
+            ])
+        ]
+
+        let generatedLevel = sut.generateRandomLevel(
+            id: 5,
+            size: 2,
+            existingLevels: existingLevels,
+            randomSource: stubRandomSource
+        )
+
+        let expectedLevel = Level(
+            id: 5,
+            cellsMatrix: [
+                [0, 1],
+                [1, 1]
+            ]
+        )
+
+        XCTAssertEqual(
+            generatedLevel,
+            expectedLevel,
+            "Expected generator to keep trying until it finds the remaining unique level."
+        )
     }
 }

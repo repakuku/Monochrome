@@ -25,42 +25,137 @@ final class LevelGenerator: ILevelGenerator {
         randomSource: IRandomSource = RandomSource()
     ) -> Level {
         guard id >= 0, size > 0 else {
-            return Level(id: id, cellsMatrix: [[0]])
+            return fallbackLevel(id: id)
         }
 
-        var correctSize = size % 2 == 0 ? size : size + 1
-        correctSize = max(2, correctSize)
+        let normalizedSize = normalizedSize(from: size)
 
-        let maxAttempts = maxUniqueLevels(for: correctSize)
-
-        guard existingLevels.count < maxAttempts else {
-            return Level(id: id, cellsMatrix: [[0]])
+        guard !isGenerationExhausted(for: normalizedSize, existingLevels: existingLevels) else {
+            return fallbackLevel(id: id)
         }
 
-        var level: Level
-        var attempts = 0
-
-        repeat {
-            let row = Array(repeating: 0, count: correctSize)
-            var cellsMatrix = Array(repeating: row, count: correctSize)
-
-            for row in 0..<correctSize {
-                for col in 0..<correctSize {
-                    cellsMatrix[row][col] = randomSource.next()
-                }
-            }
-
-            level = Level(id: id, cellsMatrix: cellsMatrix)
-
-            attempts += 1
-        } while attempts < maxAttempts
-        && (level.isCompleted || existingLevels.contains { $0.cellsMatrix == level.cellsMatrix })
+        guard let level = findValidLevel(
+            id: id,
+            size: normalizedSize,
+            existingLevels: existingLevels,
+            randomSource: randomSource
+        ) else {
+            return fallbackLevel(id: id)
+        }
 
         return level
     }
 
-    private func maxUniqueLevels(for size: Int) -> Int {
-        Int(pow(2.0, Double(size * size))) - 1
+    private func fallbackLevel(id: Int) -> Level {
+        return Level(
+            id: id,
+            cellsMatrix: [[0]]
+        )
+    }
+
+    private func normalizedSize(from size: Int) -> Int {
+        let evenSize = size.isMultiple(of: 2) ? size : size + 1
+        return max(2, evenSize)
+    }
+
+    private func pow2(_ exponent: Int) -> Int {
+        Int(pow(2.0, Double(exponent)))
+    }
+
+    private func maxCandidateCount(for size: Int) -> Int {
+        let n = size // swiftlint:disable:this identifier_name
+
+        let identity = pow2(n * n)
+
+        let rot90And270Exponent = n.isMultiple(of: 2)
+            ? (n * n) / 4
+            : (n * n + 3) / 4
+        let rot90 = pow2(rot90And270Exponent)
+        let rot270 = rot90
+
+        let rot180Exponent = n.isMultiple(of: 2)
+            ? (n * n) / 2
+            : (n * n + 1) / 2
+        let rot180 = pow2(rot180Exponent)
+
+        let vertical = pow2(n * ((n + 1) / 2))
+        let horizontal = vertical
+
+        let mainDiagonal = pow2(n * (n + 1) / 2)
+        let antiDiagonal = mainDiagonal
+
+        let uniquePatterns = (
+            identity +
+            rot90 +
+            rot180 +
+            rot270 +
+            vertical +
+            horizontal +
+            mainDiagonal +
+            antiDiagonal
+        ) / 8
+
+        let solvedOrbitCount = 1
+
+        return uniquePatterns - solvedOrbitCount
+    }
+
+    private func isGenerationExhausted(for size: Int, existingLevels: [Level]) -> Bool {
+        let levelsWithSameSize = existingLevels.filter { $0.levelSize == size }
+        return levelsWithSameSize.count >= maxCandidateCount(for: size)
+    }
+
+    private func generationAttemptLimit(for size: Int) -> Int {
+        max(50, maxCandidateCount(for: size) * 10)
+    }
+
+    private func makeRandomLevel(
+        id: Int,
+        size: Int,
+        randomSource: IRandomSource
+    ) -> Level {
+        let row = Array(repeating: 0, count: size)
+        var cellsMatrix = Array(repeating: row, count: size)
+
+        for row in 0..<size {
+            for col in 0..<size {
+                cellsMatrix[row][col] = randomSource.next()
+            }
+        }
+
+        return Level(id: id, cellsMatrix: cellsMatrix)
+    }
+
+    private func isInvalidCandidate(
+        _ level: Level,
+        existingLevels: [Level]
+    ) -> Bool {
+        let levelsWithSameSize = existingLevels.filter { $0.levelSize == level.levelSize }
+
+        return level.isCompleted || levelsWithSameSize.contains { $0.isEquivalent(to: level) }
+    }
+
+    private func findValidLevel(
+        id: Int,
+        size: Int,
+        existingLevels: [Level],
+        randomSource: IRandomSource
+    ) -> Level? {
+        let attemptLimit = generationAttemptLimit(for: size)
+
+        for _ in 0..<attemptLimit {
+            let candidate = makeRandomLevel(
+                id: id,
+                size: size,
+                randomSource: randomSource
+            )
+
+            if !isInvalidCandidate(candidate, existingLevels: existingLevels) {
+                return candidate
+            }
+        }
+
+        return nil
     }
 }
 
@@ -94,18 +189,22 @@ final class MockLevelGenerator: ILevelGenerator {
         lastGeneratedSize = size
         lastExistingLevels = existingLevels
 
-        var correctSize = size % 2 == 0 ? size : size + 1
-        correctSize = max(2, correctSize)
+        let normalizedSize = normalizedSize(from: size)
 
-        let row = Array(repeating: 0, count: correctSize)
-        var cellsMatrix = Array(repeating: row, count: correctSize)
+        let row = Array(repeating: 0, count: normalizedSize)
+        var cellsMatrix = Array(repeating: row, count: normalizedSize)
 
-        for row in 0..<correctSize {
-            for col in 0..<correctSize {
+        for row in 0..<normalizedSize {
+            for col in 0..<normalizedSize {
                 cellsMatrix[row][col] = (row + col) % 2
             }
         }
 
         return Level(id: id, cellsMatrix: cellsMatrix)
+    }
+
+    private func normalizedSize(from size: Int) -> Int {
+        let evenSize = size.isMultiple(of: 2) ? size : size + 1
+        return max(2, evenSize)
     }
 }
