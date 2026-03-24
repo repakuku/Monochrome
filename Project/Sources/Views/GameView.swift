@@ -11,11 +11,8 @@ import SwiftUI
 struct GameView: View {
 	@EnvironmentObject var viewModel: GameViewModel
 
-	@State private var showFirstMenuItem = false
-	@State private var showSecondMenuItem = false
-	@State private var showResult = false
-//	@State private var showInstruction = true
-	@State private var showDeletionAlert = false
+	@State private var isMenuOpen = false
+    @State private var activeOverlay: ActiveOverlay = .none
 
 	var body: some View {
 		ZStack {
@@ -27,30 +24,26 @@ struct GameView: View {
                     .zIndex(2)
             } else {
                 BackgroundView(
-                    showFirstMenuItem: $showFirstMenuItem,
-                    showSecondMenuItem: $showSecondMenuItem,
-                    showDeletionAlert: $showDeletionAlert
+                    isMenuOpen: $isMenuOpen,
+                    activeOverlay: $activeOverlay
                 )
-                .blur(radius: (showResult || showDeletionAlert) ? Sizes.Blur.max : Sizes.Blur.min)
-                .disabled((showResult || showDeletionAlert))
+                .blur(radius: activeOverlay == .none ? Sizes.Blur.min : Sizes.Blur.max)
+                .disabled(activeOverlay != .none)
             }
 
-            FieldView(
-                showFirstMenuItem: $showFirstMenuItem,
-                showSecondMenuItem: $showSecondMenuItem
-            )
+            FieldView(isMenuOpen: $isMenuOpen)
             .transition(.scale)
             .zIndex(1)
-            .disabled(viewModel.isLevelCompleted || showResult || showDeletionAlert)
+            .disabled(viewModel.isLevelCompleted || activeOverlay != .none)
 
-            if showResult {
+            if activeOverlay == .result {
                 ResultView()
                     .zIndex(3)
                     .transition(.scale)
             }
 
-            if showDeletionAlert {
-                DeleteGameView(viewIsShowing: $showDeletionAlert)
+            if activeOverlay == .deleteConfirmation {
+                DeleteGameView(activeOverlay: $activeOverlay)
                 .zIndex(4)
                 .transition(.scale)
             }
@@ -63,20 +56,17 @@ struct GameView: View {
 					deadline: .now() + 0.6
 				) {
 					withAnimation {
-						showResult = true
+						activeOverlay = .result
 					}
 				}
-			} else {
+            } else if activeOverlay == .result {
 				withAnimation {
-					showResult = false
+                    activeOverlay = .none
 				}
 			}
 		}
 		.onTapGesture {
-			withAnimation {
-				showFirstMenuItem = false
-				showSecondMenuItem = false
-			}
+            isMenuOpen = false
 		}
 		.statusBarHidden()
 		.navigationBarHidden(true)
